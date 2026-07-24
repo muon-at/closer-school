@@ -1,29 +1,58 @@
-# Welcome to your Lovable project
+# Closerskolen
 
-This project was built with [Lovable](https://lovable.dev).
+Norges eneste salgsutdanning med jobbgaranti. Fra null til closer på 8 uker.
 
-## Build with Lovable
+Komplett webapp: selgende landingsside, søknadsskjema, kursportal med 6 moduler
+(24 leksjoner med ekte innhold + quiz), AI-salgscoach med norske kundepersonas
+og scorecards, eksamensflyt (teori + AI + ekte kundesamtale), community,
+jobbtavle, leaderboard og admin.
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+**Stack:** Vite + React 18 + TypeScript + Tailwind CSS + react-router v6 +
+Supabase (valgfritt). Tester med Vitest + Testing Library.
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+## Kom i gang
 
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
+```bash
+npm install
+npm run dev      # http://localhost:5173
+npm test         # vitest
+npm run build    # typecheck + produksjonsbygg
 ```
 
-## Built with
+## Demo-modus (ingen oppsett nødvendig)
 
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
+Uten `.env` kjører appen i **demo-modus**: all data kommer fra rik norsk
+mock-data (`src/lib/mockData.ts`), og AI-coachen bruker en lokal regelbasert
+kundesimulator (`src/lib/coachSimulator.ts`) som faktisk oppfører seg som en
+norsk kunde — skeptisk åpning, innvendinger fra banken, mykner ved godt
+håndverk og aksepterer booking etter håndterte innvendinger.
+
+Logg inn via **«Fortsett som demo-student Jonas (18)»** på `/logg-inn`.
+
+Ruter: `/` (landingsside), `/pamelding`, `/garanti`, `/vilkar`, `/logg-inn`,
+`/portal/*` (dashbord, kurs, ai-coach, eksamen, community, jobber,
+leaderboard, profil) og `/admin`.
+
+## Produksjon med Supabase
+
+Sett `VITE_SUPABASE_URL` og `VITE_SUPABASE_ANON_KEY` i `.env` (se
+`.env.example`), kjør `supabase/schema.sql` + `supabase/seed.sql`, og deploy
+edge-funksjonen `coach` (ekte AI-kunde via Anthropic). Full guide:
+**[docs/SETUP.md](docs/SETUP.md)**. Forretningsplanen ligger i
+**[docs/FORRETNINGSPLAN.md](docs/FORRETNINGSPLAN.md)**.
+
+## Struktur
+
+```
+src/
+  lib/          supabase.ts (klient|null), data.ts (datalag med demo-fallback),
+                mockData.ts, lessonContent.ts, coachSimulator.ts, types.ts
+  components/   Button, Card, Badge, ProgressBar, StatCard, SectionHeading,
+                Navbar, Footer, PortalLayout, RichText, VideoPlaceholder
+  pages/        Landing, Pamelding, Garanti, Vilkar, LoggInn, Admin, portal/*
+  __tests__/    routes.test.tsx, coach.test.ts, data.test.ts
+supabase/
+  schema.sql    tabeller + RLS (studenter ser eget, admin alt)
+  seed.sql      kursstruktur, quiz og demo-jobber
+  functions/coach/  edge function (Anthropic) + systemprompt.md (Coach Muon)
+```

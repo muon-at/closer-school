@@ -1,10 +1,7 @@
-<!-- LOVABLE:BEGIN -->
-> [!IMPORTANT]
-> This project is connected to [Lovable](https://lovable.dev). Avoid rewriting
-> published git history — force pushing, or rebasing/amending/squashing commits
-> that are already pushed — as it rewrites history on Lovable's side and the
-> user will likely lose their project history.
->
-> Commits you push to the connected branch sync back to Lovable and show up in
-> the editor, so keep the branch in a working state.
-<!-- LOVABLE:END -->
+# Closerskolen — agent notes
+
+- Stack: Vite + React 18 + TypeScript + Tailwind CSS + react-router-dom v6. Package manager: npm.
+- Entry: index.html -> src/main.tsx. Tests: vitest via `npm test`.
+- UI language is Norwegian (bokmål).
+- Demo mode: the app runs fully without env vars using mock data.
+- Data layer: src/lib/data.ts (mock + Supabase). Supabase project: ankdhpqjartysjwpjrfw. Schema in supabase/schema.sql. Edge function: coach.
