@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import { Link, NavLink, Outlet } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { getCurrentUser, isDemoMode } from '../lib/data';
+import { supabase } from '../lib/supabase';
 
 const nav = [
   { to: '/portal', label: 'Dashbord', icon: '📊', end: true },
@@ -15,7 +16,34 @@ const nav = [
 
 export default function PortalLayout() {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  // Auth-guard i produksjonsmodus: uten Supabase-sesjon → /logg-inn.
+  // I demo-modus (ingen Supabase-config) er portalen åpen med mock-data.
+  const [authChecked, setAuthChecked] = useState(isDemoMode);
+  useEffect(() => {
+    if (!supabase) return;
+    let active = true;
+    supabase.auth.getSession().then(({ data }) => {
+      if (!active) return;
+      if (!data.session) {
+        navigate('/logg-inn', { replace: true });
+      } else {
+        setAuthChecked(true);
+      }
+    });
+    return () => {
+      active = false;
+    };
+  }, [navigate]);
   const user = getCurrentUser();
+
+  if (!authChecked) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-zinc-950 text-sm text-zinc-400">
+        Laster …
+      </div>
+    );
+  }
 
   const navItems = nav.map((item) => (
     <NavLink
