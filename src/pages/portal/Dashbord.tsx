@@ -67,7 +67,7 @@ export default function Dashbord() {
 
   return (
     <div className="space-y-10">
-      {/* Topprad: hilsen + kull */}
+      {/* Topprad: hilsen + opptak */}
       <div className="border-b border-line pb-6">
         <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-4">
           <div>

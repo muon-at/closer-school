@@ -174,7 +174,7 @@ describe('Datalaget i demo-modus', () => {
       email: 'test@example.com',
       phone: '90000000',
       motivation: 'Jeg er sulten.',
-      cohort: 'Kull 3 — september 2026',
+      cohort: 'Opptak 3 — september 2026',
     });
     expect(app.status).toBe('ny');
     const all = await getApplications();
@@ -184,7 +184,7 @@ describe('Datalaget i demo-modus', () => {
   it('getCurrentUser gir demo-brukeren i demo-modus', () => {
     const user = getCurrentUser();
     expect(user.name).toBe('Jonas Berg');
-    expect(user.cohort).toContain('Kull 3');
+    expect(user.cohort).toContain('Opptak 3');
   });
 
   it('loadUserContext er no-op (null) i demo-modus og endrer ikke getCurrentUser', async () => {

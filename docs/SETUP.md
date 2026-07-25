@@ -6,7 +6,7 @@ Estimert tid: 1–2 timer (uten juridisk gjennomgang og videoinnspilling).
 ## 0. Forutsetninger
 
 - Node 20+ og npm
-- En [Supabase](https://supabase.com)-konto (gratis tier holder til kull 1)
+- En [Supabase](https://supabase.com)-konto (gratis tier holder til opptak 1)
 - [Supabase CLI](https://supabase.com/docs/guides/cli) for edge-funksjonen
 - En Anthropic API-nøkkel (console.anthropic.com) til AI-coachen
 
@@ -23,7 +23,7 @@ Estimert tid: 1–2 timer (uten juridisk gjennomgang og videoinnspilling).
 1. Dashboard → **SQL Editor** → lim inn hele `supabase/schema.sql` → **Run**.
    (Kjørbar i ett stykke: tabeller, trigger for auto-profil og alle RLS-policies.)
 2. Ny fane i SQL Editor → lim inn `supabase/seed.sql` → **Run**.
-   (Kull, moduler, leksjoner, quiz + eksamensspørsmål og demo-jobber.)
+   (Opptak, moduler, leksjoner, quiz + eksamensspørsmål og demo-jobber.)
 3. Gjør deg selv til admin: opprett bruker via appen/Auth, finn din
    `auth.uid()` under **Authentication → Users**, og kjør:
    ```sql
@@ -111,9 +111,9 @@ Coach Muon blir dramatisk bedre med ekte few-shot-eksempler:
 - [ ] Org.nr og kontaktinfo inn i Footer + vilkår.
 - [ ] Spill inn modulvideoene (manus = leksjonstekstene). Bytt
       `VideoPlaceholder` mot ekte spiller (f.eks. Vimeo/Mux embed).
-- [ ] Bytt placeholder-testimonials på landingssiden mot ekte fra kull 1
+- [ ] Bytt placeholder-testimonials på landingssiden mot ekte fra opptak 1
       (kommentert i `src/pages/Landing.tsx` — markedsføringsloven krever ekte).
 - [ ] Signer 3–5 arbeidsgiverpartnere (garanti-backstop) og legg dem inn i
       `jobs`-tabellen via /admin.
 - [ ] Sett opp betaling (Stripe/Vipps) — bevisst utenfor scope i denne
-      versjonen; søknad + manuell fakturering fungerer for kull 1.
+      versjonen; søknad + manuell fakturering fungerer for opptak 1.

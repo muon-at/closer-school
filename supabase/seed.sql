@@ -8,11 +8,11 @@
 -- (eller kjør en enkel sync — se docs/SETUP.md steg 4).
 -- ============================================================
 
--- ── Kull ────────────────────────────────────────────────────
+-- ── Opptak ────────────────────────────────────────────────────
 insert into public.cohorts (name, starts_at, max_seats, is_open) values
-  ('Kull 3 — september 2026', '2026-09-07', 23, true),
-  ('Kull 4 — november 2026', '2026-11-02', 23, true),
-  ('Venteliste — kull 5 (2027)', null, 23, true)
+  ('Opptak 3 — september 2026', '2026-09-07', 23, true),
+  ('Opptak 4 — november 2026', '2026-11-02', 23, true),
+  ('Venteliste — opptak 5 (2027)', null, 23, true)
 on conflict (name) do nothing;
 
 -- ── Moduler ─────────────────────────────────────────────────

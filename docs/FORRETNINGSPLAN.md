@@ -41,13 +41,13 @@ Verdiligningen:
 
 | Produkt | Pris | Kommentar |
 |---|---|---|
-| Closerskolen — ordinær pris (fra kull 5) | **29 900 kr** | Prisankeret. Kommuniseres alltid som fremtidig ordinær pris — ALDRI som «førpris», «rabatt» eller overstrøket beløp (markedsføringsloven) |
-| Closerskolen — grunnleggerpris (kull 3 og 4) | **9 990 kr** | Ærlig begrunnelse kommuniseres eksplisitt: grunnleggerkullet får tett oppfølging mens videoene ferdigstilles, og resultatene deres brukes (med samtykke) som bevis for neste kull. Delbetaling: **3 × 3 330 kr rentefritt og gebyrfritt** («vi tjener ikke penger på gjelden din» — anti-Klarna-vinkel) |
+| Closerskolen — ordinær pris (fra opptak 5) | **29 900 kr** | Prisankeret. Kommuniseres alltid som fremtidig ordinær pris — ALDRI som «førpris», «rabatt» eller overstrøket beløp (markedsføringsloven) |
+| Closerskolen — grunnleggerpris (opptak 3 og 4) | **9 990 kr** | Ærlig begrunnelse kommuniseres eksplisitt: grunnleggeropptaket får tett oppfølging mens videoene ferdigstilles, og resultatene deres brukes (med samtykke) som bevis for neste opptak. Delbetaling: **3 × 3 330 kr rentefritt og gebyrfritt** («vi tjener ikke penger på gjelden din» — anti-Klarna-vinkel) |
 | Community (etter 3 gratis mnd) | **399 kr/mnd** | Jobbtavle, ukentlig live call review, wins, closing-tips |
 | Plasseringsfee fra arbeidsgivere | **30–60 000 kr/hode** | Underpris mot rekrutteringsbyråer (15–25 % av årslønn = 75–150k). Ferdigtrente, eksamens-beviste kandidater |
 | Stipendplasser | Egenandel fra 2 498 kr | Inntil 75 % prisavslag etter individuell søknad (skjult side /stipend — brukes kun i 7-dagers oppfølgingsløpet, aldri lenket fra landing) |
 
-Lead-først-flyt: all trafikk (FB-ads, 18–25) sendes til gratis søknad FØR pris-forpliktelse — søknader lagres med tidsstempel i Supabase som grunnlag for 7-dagers oppfølging. To inntektsstrømmer per student + community-LTV. Kull-modell med maks 20–30 plasser per kull = ekte scarcity.
+Lead-først-flyt: all trafikk (FB-ads, 18–25) sendes til gratis søknad FØR pris-forpliktelse — søknader lagres med tidsstempel i Supabase som grunnlag for 7-dagers oppfølging. To inntektsstrømmer per student + community-LTV. Opptaksmodell med maks 20–30 plasser per opptak = ekte scarcity.
 
 ## 5. Jobbgarantien (juridisk trygg struktur — CareerFoundry-modellen)
 
@@ -98,16 +98,16 @@ Deretter: sertifikat, jobbgarantiperiode starter, community åpnes.
 ## 9. Go-to-market
 
 1. **Organisk:** TikTok/Reels med «dag i livet som ung selger», lønnsslipp-teasers (innenfor markedsføringsloven), klipp fra call reviews. Målgruppen scroller, ikke googler.
-2. **Wins som salgsmotor:** hvert kull produserer testimonials → neste kull. «Wins Wednesday» er innebygd markedsføring.
+2. **Wins som salgsmotor:** hvert opptak produserer testimonials → neste opptak. «Wins Wednesday» er innebygd markedsføring.
 3. **Betalt:** Meta/TikTok-ads mot 18–25 («Lei av lager/butikk? Ingen utdanning? 8 uker.») — Adspirer-oppsettet ditt kan kjøre dette.
 4. **Partnere:** salgsselskaper deler stipendplasser i egne kanaler (gratis distribusjon).
-5. Kull-lansering med venteliste (scarcity er ekte: sensor-kapasitet på ekte samtaler begrenser kullstørrelsen naturlig).
+5. Opptakslansering med venteliste (scarcity er ekte: sensor-kapasitet på ekte samtaler begrenser opptaksstørrelsen naturlig).
 
-## 10. Økonomi (per kull, 20 studenter, konservativt)
+## 10. Økonomi (per opptak, 20 studenter, konservativt)
 
-- Inntekt: 20 × 29 900 = 598 000 kr + plasseringsfees (10 × 40 000 = 400 000) + community (15 × 399 × 9 mnd ≈ 54 000) ≈ **1,05 MNOK per kull**
-- Kostnader: videoproduksjon (engangs ~50–100k), AI-drift (~5–10k/kull), sensor-timer, plattform (Supabase ~0–500 kr/mnd), ads (~50–100k/kull)
-- 4–6 kull/år realistisk → 4–6 MNOK årsomsetning med god margin fra kull 2 (video gjenbrukes).
+- Inntekt: 20 × 29 900 = 598 000 kr + plasseringsfees (10 × 40 000 = 400 000) + community (15 × 399 × 9 mnd ≈ 54 000) ≈ **1,05 MNOK per opptak**
+- Kostnader: videoproduksjon (engangs ~50–100k), AI-drift (~5–10k/opptak), sensor-timer, plattform (Supabase ~0–500 kr/mnd), ads (~50–100k/opptak)
+- 4–6 opptak/år realistisk → 4–6 MNOK årsomsetning med god margin fra opptak 2 (video gjenbrukes).
 
 ## 11. Risiko og mottrekk
 
@@ -126,4 +126,4 @@ Deretter: sertifikat, jobbgarantiperiode starter, community åpnes.
 3. Sett opp Supabase-prosjekt + deploy (se SETUP.md).
 4. Spill inn modulvideoene (manusstruktur ligger i portalen som placeholder per leksjon).
 5. Juridisk gjennomgang av garantivilkår + kjøpsvilkår (advokat, ~1 dag). *Dette dokumentet er ikke juridisk rådgivning.*
-6. Lanser kull 1 med venteliste.
+6. Lanser opptak 1 med venteliste.

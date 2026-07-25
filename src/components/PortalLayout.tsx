@@ -31,7 +31,7 @@ export default function PortalLayout() {
         navigate('/logg-inn', { replace: true });
         return;
       }
-      // Fyll bruker-cachen (navn/kull fra profiles) FØR portalen rendres,
+      // Fyll bruker-cachen (navn/opptak fra profiles) FØR portalen rendres,
       // slik at synkrone getCurrentUser()-kall i undersidene får ekte data.
       await loadUserContext();
       if (!active) return;

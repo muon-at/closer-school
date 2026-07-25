@@ -33,7 +33,7 @@ const etterpaSteg = [
   {
     n: '03',
     title: 'Tilbud om studieplass',
-    text: 'Passer det for begge, får du tilbud om plass på kull 3. Betaling skjer først når du takker ja.',
+    text: 'Passer det for begge, får du tilbud om plass på opptak 3. Betaling skjer først når du takker ja.',
   },
 ];
 
@@ -144,7 +144,7 @@ export default function Pamelding() {
             </p>
             <div className="px-5 font-mono text-[13px]">
               <div className="flex items-baseline justify-between gap-3 border-b border-dashed border-line py-3">
-                <span className="text-bone/80">Grunnleggerpris kull 3</span>
+                <span className="text-bone/80">Grunnleggerpris opptak 3</span>
                 <span className="shrink-0 font-semibold text-signal">9 990 kr</span>
               </div>
               <div className="flex items-baseline justify-between gap-3 border-b border-dashed border-line py-3">
@@ -178,12 +178,12 @@ export default function Pamelding() {
   return (
     <div className="flex min-h-screen flex-col bg-ink">
       <Navbar />
-      <SectionDivider index={1} name="Søknad — kull 3" />
+      <SectionDivider index={1} name="Søknad — opptak 3" />
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-24 pt-10">
         <div className="grid gap-12 lg:grid-cols-5 lg:gap-16">
           {/* VENSTRE: Skjema */}
           <div className="lg:col-span-3">
-            <p className="label-mono text-signal">— 23 plasser per kull</p>
+            <p className="label-mono text-signal">— 23 plasser per opptak</p>
             <h1 className="mt-4 font-display text-4xl uppercase leading-[0.95] tracking-tight text-bone sm:text-6xl">
               Søk plass på Closerskolen
             </h1>
@@ -254,7 +254,7 @@ export default function Pamelding() {
               </div>
               <div>
                 <label htmlFor="cohort" className={labelCls}>
-                  Hvilket kull søker du til?
+                  Hvilket opptak søker du til?
                 </label>
                 <select
                   id="cohort"

@@ -243,7 +243,7 @@ export default function Profil() {
                 </dd>
               </div>
               <div>
-                <dt className="label-mono text-bone/40">Kull</dt>
+                <dt className="label-mono text-bone/40">Opptak</dt>
                 <dd className="mt-0.5 font-mono text-sm text-bone">{user.cohort}</dd>
               </div>
             </dl>

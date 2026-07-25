@@ -102,7 +102,7 @@ export default function Admin() {
           >
             ← Closer<span className="text-signal">skolen</span>
           </Link>
-          <span className="label-mono text-bone/40">Kull 2 + 3 · demo-data</span>
+          <span className="label-mono text-bone/40">Opptak 2 + 3 · demo-data</span>
         </div>
       </header>
 
@@ -125,7 +125,7 @@ export default function Admin() {
           <StatCard
             label="Aktive studenter"
             value={String(students.length)}
-            sub="på tvers av kullene"
+            sub="på tvers av opptakene"
             icon={<Icon name="user" size={16} />}
           />
           <StatCard
@@ -167,7 +167,7 @@ export default function Admin() {
                 <tr className="border-b border-line">
                   <th className={th}>Kandidat</th>
                   <th className={th}>Kontakt</th>
-                  <th className={th}>Kull</th>
+                  <th className={th}>Opptak</th>
                   <th className={th}>Mottatt</th>
                   <th className={th}>Status</th>
                   <th className={`${th} text-right`}>Handling</th>
@@ -232,7 +232,7 @@ export default function Admin() {
               <thead>
                 <tr className="border-b border-line">
                   <th className={th}>Navn</th>
-                  <th className={th}>Kull</th>
+                  <th className={th}>Opptak</th>
                   <th className={th}>Moduler</th>
                   <th className={th}>AI-samtaler</th>
                   <th className={th}>Snitt-score</th>

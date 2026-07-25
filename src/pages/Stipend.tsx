@@ -10,10 +10,10 @@ import SectionDivider from '../components/SectionDivider';
 import { submitApplication } from '../lib/data';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-const STIPEND_COHORT = 'STIPEND — kull 3';
+const STIPEND_COHORT = 'STIPEND — opptak 3';
 
 const stipendFakta = [
-  'Begrenset antall stipendplasser per kull — for kandidater med sterk motivasjon, men trang økonomi',
+  'Begrenset antall stipendplasser per opptak — for kandidater med sterk motivasjon, men trang økonomi',
   'Stipendet dekker inntil 75 % av kursavgiften — egenandel fra 2 498 kr',
   'Vurderes individuelt etter en kort samtale',
   'Jobbgarantien gjelder fullt ut — samme vilkår som ordinær plass',
@@ -130,7 +130,7 @@ export default function Stipend() {
               Søk om stipendplass.
             </h1>
             <p className="mt-5 max-w-lg leading-relaxed text-bone/60">
-              Vi holder av et begrenset antall stipendplasser per kull for
+              Vi holder av et begrenset antall stipendplasser per opptak for
               kandidater med sterk motivasjon, men trang økonomi. Stipendet
               dekker inntil 75 % av kursavgiften, og søknadene vurderes
               individuelt etter en kort samtale.
@@ -250,7 +250,7 @@ export default function Stipend() {
                 ))}
               </div>
               <div className="mt-6 border-2 border-signal p-5">
-                <p className="label-mono text-bone/60">Grunnleggerpris kull 3</p>
+                <p className="label-mono text-bone/60">Grunnleggerpris opptak 3</p>
                 <p className="mt-2 font-mono text-2xl font-semibold text-bone">
                   9 990 kr
                 </p>

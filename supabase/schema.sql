@@ -54,7 +54,7 @@ create trigger on_auth_user_created
   for each row execute function public.handle_new_user();
 
 -- ------------------------------------------------------------
--- COHORTS: kull med maks antall plasser
+-- COHORTS: opptak med maks antall plasser
 -- ------------------------------------------------------------
 create table if not exists public.cohorts (
   id uuid primary key default gen_random_uuid(),
@@ -259,7 +259,7 @@ create policy "profiles_update_own" on public.profiles
 create policy "profiles_admin_all" on public.profiles
   for all using (public.is_admin()) with check (public.is_admin());
 
--- COHORTS: åpne kull er synlige for alle (også utlogget, for søknadsskjemaet)
+-- COHORTS: åpne opptak er synlige for alle (også utlogget, for søknadsskjemaet)
 create policy "cohorts_select_all" on public.cohorts
   for select using (true);
 create policy "cohorts_admin_write" on public.cohorts

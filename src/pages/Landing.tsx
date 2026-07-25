@@ -8,7 +8,7 @@ import { useState } from 'react';
 
 // MERK: Kortene nedenfor er ILLUSTRATIVE EKSEMPLER (fiktive navn/sitater) på
 // reisen programmet er bygget for — tydelig merket i UI-et. Byttes ut med
-// ekte, dokumenterbare student-testimonials fra kull 1 så snart de finnes —
+// ekte, dokumenterbare student-testimonials fra opptak 1 så snart de finnes —
 // markedsføringsloven krever at publiserte kundeuttalelser er reelle.
 const testimonials = [
   {
@@ -56,12 +56,12 @@ const faq = [
     a: 'Ja, 14 dagers angrerett etter angrerettloven fra du melder deg på. Starter du kurset før fristen, samtykker du uttrykkelig til oppstart — da betaler du kun for det du har brukt hvis du angrer.',
   },
   {
-    q: 'Hvorfor er kull 3 så mye billigere?',
-    a: 'Kull 3 er grunnleggerkullet. Du blir tett fulgt opp av oss mens vi ferdigstiller videoene, og vi bruker resultatene deres (med samtykke) som bevis for neste kull. Derfor er prisen 9 990 kr for kull 3 og 4 — fra kull 5 koster programmet 29 900 kr. Ingen rabattriks, bare en ærlig byttehandel: du er tidlig ute, vi får bevisene.',
+    q: 'Hvorfor er opptak 3 så mye billigere?',
+    a: 'Opptak 3 er grunnleggeropptaket. Du blir tett fulgt opp av oss mens vi ferdigstiller videoene, og vi bruker resultatene deres (med samtykke) som bevis for neste opptak. Derfor er prisen 9 990 kr for opptak 3 og 4 — fra opptak 5 koster programmet 29 900 kr. Ingen rabattriks, bare en ærlig byttehandel: du er tidlig ute, vi får bevisene.',
   },
   {
     q: 'Hvordan fungerer delbetalingen?',
-    a: '3 månedlige trekk à 3 330 kr — samme totalpris som ved engangsbetaling (9 990 kr for kull 3), helt uten renter og gebyrer. Vi tjener ikke penger på gjelden din, kun på at du fullfører og kommer i jobb.',
+    a: '3 månedlige trekk à 3 330 kr — samme totalpris som ved engangsbetaling (9 990 kr for opptak 3), helt uten renter og gebyrer. Vi tjener ikke penger på gjelden din, kun på at du fullfører og kommer i jobb.',
   },
   {
     q: 'Hva slags jobber er det snakk om?',
@@ -128,7 +128,7 @@ const marqueeItems = [
   '8 uker',
   '23 plasser',
   'Sertifikat',
-  'Kull 3',
+  'Opptak 3',
 ];
 
 function FaqItem({ q, a, n }: { q: string; a: string; n: number }) {
@@ -453,20 +453,20 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* PRIS — S.07 (ink). Grunnleggerpris kull 3 — ærlig begrunnelse, ingen «rabatt». */}
+      {/* PRIS — S.07 (ink). Grunnleggerpris opptak 3 — ærlig begrunnelse, ingen «rabatt». */}
       <section>
         <SectionDivider index={7} name="Grunnleggerpris" />
         <div className="mx-auto max-w-6xl px-4 pb-20 pt-10 lg:pb-28 lg:pt-14">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-14">
             <div>
-              <p className="label-mono text-signal">— Grunnleggerpris kull 3</p>
+              <p className="label-mono text-signal">— Grunnleggerpris opptak 3</p>
               <h2 className="mt-4 font-display text-4xl uppercase leading-[0.95] tracking-tight text-bone sm:text-6xl">
                 Hvorfor så billig?
               </h2>
               <p className="mt-5 leading-relaxed text-bone/70">
-                Kull 3 er grunnleggerkullet: du blir tett fulgt opp av oss mens
+                Opptak 3 er grunnleggeropptaket: du blir tett fulgt opp av oss mens
                 vi ferdigstiller videoene, og vi bruker resultatene deres (med
-                samtykke) som bevis for neste kull. Fra kull 5 koster programmet
+                samtykke) som bevis for neste opptak. Fra opptak 5 koster programmet
                 29 900 kr.
               </p>
               <p className="mt-5 border-l-2 border-signal pl-4 text-sm font-medium text-bone/80">
@@ -477,9 +477,9 @@ export default function Landing() {
             <div className="flex flex-col justify-between border-2 border-signal p-6 sm:p-8">
               <div>
                 <p className="label-mono text-bone/60">
-                  Ordinær pris fra kull 5: 29 900 kr
+                  Ordinær pris fra opptak 5: 29 900 kr
                 </p>
-                <p className="label-mono mt-5 text-signal">Grunnleggerpris kull 3</p>
+                <p className="label-mono mt-5 text-signal">Grunnleggerpris opptak 3</p>
                 <p className="mt-2 font-display text-6xl uppercase tracking-tight text-signal sm:text-7xl">
                   9 990 kr
                 </p>
@@ -515,7 +515,7 @@ export default function Landing() {
           </h2>
           <p className="mt-5 max-w-2xl leading-relaxed text-ink/70">
             Fiktive eksempler på reisen vi bygger programmet for — ikke ekte
-            kundeuttalelser. Ekte historier fra kull 1 publiseres fortløpende.
+            kundeuttalelser. Ekte historier fra opptak 1 publiseres fortløpende.
           </p>
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {testimonials.map((t) => (
@@ -530,7 +530,7 @@ export default function Landing() {
                 />
                 <div className="flex flex-1 flex-col p-5">
                   <span className="label-mono mb-4 inline-flex items-center gap-1.5 self-start border border-line-ink px-2.5 py-1 text-ink/60">
-                    Illustrative eksempler — kull 1 pågår
+                    Illustrative eksempler — opptak 1 pågår
                   </span>
                   <p className="flex-1 text-sm leading-relaxed text-ink/70">
                     «{t.quote}»

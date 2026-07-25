@@ -21,7 +21,7 @@ export const demoUser: DemoUser = {
   name: 'Jonas Berg',
   age: 18,
   email: 'jonas.demo@closerskolen.no',
-  cohort: 'Kull 3 — september 2026',
+  cohort: 'Opptak 3 — september 2026',
 };
 
 // ── Moduler ───────────────────────────────────────────────────────────────
@@ -432,7 +432,7 @@ export const applications: Application[] = [
     phone: '412 34 567',
     motivation:
       'Jobber på lager nå og ser ingen vei videre. Har alltid fått høre at jeg er god med folk. Jeg er villig til å jobbe hardere enn alle andre for å bevise det.',
-    cohort: 'Kull 3 — september 2026',
+    cohort: 'Opptak 3 — september 2026',
     createdAt: '2026-07-20',
     status: 'intervju',
   },
@@ -444,7 +444,7 @@ export const applications: Application[] = [
     phone: '923 45 678',
     motivation:
       'Droppet ut av studiene og har jobbet i butikk i to år. Jeg vil ha en jobb der innsatsen min faktisk synes på lønnsslippen.',
-    cohort: 'Kull 3 — september 2026',
+    cohort: 'Opptak 3 — september 2026',
     createdAt: '2026-07-21',
     status: 'ny',
   },
@@ -456,7 +456,7 @@ export const applications: Application[] = [
     phone: '934 56 789',
     motivation:
       'Ferdig med videregående i sommer. Ser folk på TikTok tjene bra på salg og vil lære det ordentlig — ikke bare gjette meg frem.',
-    cohort: 'Kull 4 — november 2026',
+    cohort: 'Opptak 4 — november 2026',
     createdAt: '2026-07-22',
     status: 'ny',
   },
@@ -464,11 +464,11 @@ export const applications: Application[] = [
 
 // ── Studenter (admin-demo) ────────────────────────────────────────────────
 export const students: StudentRow[] = [
-  { id: 's1', name: 'Sara M.', cohort: 'Kull 2', modulesCompleted: 6, approvedCalls: 31, avgScore: 84, examStatus: 'AI-eksamen bestått (84) — ekte samtale booket' },
-  { id: 's2', name: 'Emilie K.', cohort: 'Kull 2', modulesCompleted: 6, approvedCalls: 28, avgScore: 81, examStatus: 'Fullført — sertifisert ✓' },
-  { id: 's3', name: 'Adrian S.', cohort: 'Kull 2', modulesCompleted: 5, approvedCalls: 26, avgScore: 78, examStatus: 'Teori bestått' },
-  { id: 's4', name: 'Jonas B.', cohort: 'Kull 3', modulesCompleted: 1, approvedCalls: 7, avgScore: 74, examStatus: 'Ikke påbegynt' },
-  { id: 's5', name: 'Nora F.', cohort: 'Kull 3', modulesCompleted: 2, approvedCalls: 18, avgScore: 72, examStatus: 'Ikke påbegynt' },
+  { id: 's1', name: 'Sara M.', cohort: 'Opptak 2', modulesCompleted: 6, approvedCalls: 31, avgScore: 84, examStatus: 'AI-eksamen bestått (84) — ekte samtale booket' },
+  { id: 's2', name: 'Emilie K.', cohort: 'Opptak 2', modulesCompleted: 6, approvedCalls: 28, avgScore: 81, examStatus: 'Fullført — sertifisert ✓' },
+  { id: 's3', name: 'Adrian S.', cohort: 'Opptak 2', modulesCompleted: 5, approvedCalls: 26, avgScore: 78, examStatus: 'Teori bestått' },
+  { id: 's4', name: 'Jonas B.', cohort: 'Opptak 3', modulesCompleted: 1, approvedCalls: 7, avgScore: 74, examStatus: 'Ikke påbegynt' },
+  { id: 's5', name: 'Nora F.', cohort: 'Opptak 3', modulesCompleted: 2, approvedCalls: 18, avgScore: 72, examStatus: 'Ikke påbegynt' },
 ];
 
 // ── Eksamens-spørsmål (12 ekte av 40 — resten produseres) ────────────────
@@ -560,7 +560,7 @@ export const weeklyTips = [
 ];
 
 export const cohorts = [
-  'Kull 3 — september 2026',
-  'Kull 4 — november 2026',
-  'Venteliste — kull 5 (2027)',
+  'Opptak 3 — september 2026',
+  'Opptak 4 — november 2026',
+  'Venteliste — opptak 5 (2027)',
 ];

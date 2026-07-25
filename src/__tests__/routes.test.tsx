@@ -28,9 +28,9 @@ describe('Offentlige ruter (demo-modus)', () => {
     expect(
       screen.getAllByText(/norges eneste salgsutdanning med jobbgaranti/i).length,
     ).toBeGreaterThan(0);
-    // Ny prismodell: grunnleggerpris kull 3 — 29 900 kr kun som fremtidig ordinær pris
+    // Ny prismodell: grunnleggerpris opptak 3 — 29 900 kr kun som fremtidig ordinær pris
     expect(screen.getByText(/9 990 kr/)).toBeInTheDocument();
-    expect(screen.getByText(/ordinær pris fra kull 5: 29 900 kr/i)).toBeInTheDocument();
+    expect(screen.getByText(/ordinær pris fra opptak 5: 29 900 kr/i)).toBeInTheDocument();
     expect(screen.getByText(/3 × 3 330 kr/)).toBeInTheDocument();
     expect(screen.getByText(/hver krone tilbake/i)).toBeInTheDocument();
   });

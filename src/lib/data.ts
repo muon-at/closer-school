@@ -78,7 +78,7 @@ export function getCurrentUser(): DemoUser {
 }
 
 /**
- * Supabase-modus: hent auth-bruker + profiles-rad (full_name, kull, streak)
+ * Supabase-modus: hent auth-bruker + profiles-rad (full_name, opptak, streak)
  * og fyll cachen som getCurrentUser() leser. Returnerer null i demo-modus
  * eller når ingen er innlogget.
  */
