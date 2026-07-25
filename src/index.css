@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,9 +9,61 @@ html {
 }
 
 body {
-  @apply bg-zinc-950 text-zinc-100 antialiased;
+  @apply bg-ink font-body text-bone antialiased;
 }
 
 ::selection {
-  @apply bg-amber-500/30;
+  background: #ff4d00;
+  color: #0a0a0a;
+}
+
+/* Kantete scrollbar i salgsgulv-stil */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(244, 241, 234, 0.2);
+  border: 2px solid #0a0a0a;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ff4d00;
+}
+
+@layer utilities {
+  /* Diagonal tape-striper — brukes SPARSOMT (kanter, hover, placeholders) */
+  .stripes {
+    background-image: repeating-linear-gradient(
+      45deg,
+      #ff4d00 0,
+      #ff4d00 1px,
+      transparent 1px,
+      transparent 8px
+    );
+  }
+  .stripes-soft {
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgba(255, 77, 0, 0.16) 0,
+      rgba(255, 77, 0, 0.16) 1px,
+      transparent 1px,
+      transparent 8px
+    );
+  }
+  .hard-shadow {
+    box-shadow: 4px 4px 0 #ff4d00;
+  }
+  .hard-shadow-bone {
+    box-shadow: 4px 4px 0 #f4f1ea;
+  }
+  .hard-shadow-ink {
+    box-shadow: 4px 4px 0 #0a0a0a;
+  }
+  /* Små mono-etiketter: — SLIK BRUKES DEN */
+  .label-mono {
+    @apply font-mono text-[11px] font-medium uppercase tracking-[0.15em];
+  }
 }

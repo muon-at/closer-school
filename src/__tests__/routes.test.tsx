@@ -88,7 +88,8 @@ describe('Portalruter (demo-modus)', () => {
     expect(screen.getByText(/modul 1: fundamentet/i)).toBeInTheDocument();
     expect(screen.getByText(/modul 6: high ticket & karriere/i)).toBeInTheDocument();
     // Modul 4 krever 9 godkjente AI-samtaler — demo-Jonas har 7 → låst
-    expect(screen.getAllByText(/🔒 låst/i).length).toBeGreaterThan(0);
+    // (Designsystemet bruker LÅST-tag med lock-ikon i stedet for emoji)
+    expect(screen.getAllByText(/^låst$/i).length).toBeGreaterThan(0);
   });
 
   it('/portal/kurs/fundamentet viser leksjonsliste', async () => {

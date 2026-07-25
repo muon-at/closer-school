@@ -1,14 +1,27 @@
 import { useEffect, useState } from 'react';
-import Card from '../../components/Card';
-import Badge from '../../components/Badge';
+import Icon, { type IconName } from '../../components/Icon';
+import MediaPlaceholder from '../../components/MediaPlaceholder';
+import PageHeader from '../../components/PageHeader';
 import { getPosts } from '../../lib/data';
 import type { Post } from '../../lib/types';
 
-const typeBadge: Record<Post['type'], { label: string; tone: 'green' | 'amber' | 'zinc' }> = {
-  win: { label: '🏆 Win', tone: 'green' },
-  tips: { label: '💡 Tips', tone: 'amber' },
-  sporsmal: { label: '❓ Spørsmål', tone: 'zinc' },
+const typeTag: Record<Post['type'], { label: string; cls: string }> = {
+  win: { label: 'WIN', cls: 'border-win text-win' },
+  tips: { label: 'TIPS', cls: 'border-signal text-signal' },
+  sporsmal: { label: 'SPØRSMÅL', cls: 'border-line text-bone/60' },
 };
+
+const reactionIcons: { key: keyof Post['reactions']; icon: IconName }[] = [
+  { key: 'fire', icon: 'flame' },
+  { key: 'clap', icon: 'star' },
+  { key: 'money', icon: 'trophy' },
+];
+
+const weekRhythm = [
+  { day: 'MAN', text: 'Ukens closing-tips slippes' },
+  { day: 'ONS', text: 'Del ukas seier i feeden' },
+  { day: 'TOR', text: 'Live call review med Sebastian' },
+];
 
 export default function Community() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -21,91 +34,122 @@ export default function Community() {
   const filtered = filter === 'alle' ? posts : posts.filter((p) => p.type === filter);
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-black text-white sm:text-3xl">Closerskolen Inside 💬</h1>
-        <p className="mt-1 text-sm text-zinc-400">
-          Wins, tips og spørsmål — fra folk som står i akkurat det samme som deg.
-        </p>
-      </div>
-
-      {/* Wins Wednesday-banner */}
-      <div className="rounded-2xl border border-emerald-500/40 bg-gradient-to-r from-emerald-500/15 to-emerald-500/5 p-5">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <p className="font-black text-white">🏆 WINS WEDNESDAY</p>
-            <p className="text-sm text-zinc-300">
-              I dag deler alle ukas seier — stor eller liten. Første salg? Beste
-              AI-score? Post den!
-            </p>
-          </div>
-          <Badge tone="green">Hver onsdag</Badge>
-        </div>
-      </div>
-
-      {/* Ukens closing-tips videokort */}
-      <Card className="flex flex-col gap-4 sm:flex-row sm:items-center">
-        <div className="flex aspect-video w-full items-center justify-center rounded-xl border border-amber-500/30 bg-amber-500/5 sm:w-56">
-          <span className="text-3xl" aria-hidden>▶</span>
-        </div>
-        <div className="flex-1">
-          <Badge tone="amber">🎬 Ukens closing-tips · mandag</Badge>
-          <h2 className="mt-2 font-bold text-white">
-            «Stillheten etter pris» — 4 min med Sebastian
-          </h2>
-          <p className="mt-1 text-sm text-zinc-400">
-            Hvorfor den som snakker først etter prisen taper — og hvordan du
-            trener deg til å tåle stillheten. (Video spilles inn — manus klart.)
+    <div className="space-y-8">
+      <PageHeader
+        eyebrow="Community"
+        title="Closerskolen Inside"
+        sub="Wins, tips og spørsmål — fra folk som står i akkurat det samme som deg."
+        right={
+          <p className="font-mono text-sm font-semibold text-bone">
+            {posts.length}{' '}
+            <span className="label-mono text-bone/40">poster</span>
           </p>
-        </div>
-      </Card>
+        }
+      />
 
-      {/* Filter */}
-      <div className="flex flex-wrap gap-2">
-        {(['alle', 'win', 'tips', 'sporsmal'] as const).map((f) => (
-          <button
-            key={f}
-            onClick={() => setFilter(f)}
-            className={`rounded-full border px-4 py-1.5 text-sm font-medium ${
-              filter === f
-                ? 'border-amber-500 bg-amber-500/15 text-amber-400'
-                : 'border-white/15 text-zinc-400 hover:text-white'
-            }`}
-          >
-            {f === 'alle' ? 'Alle' : f === 'win' ? 'Wins' : f === 'tips' ? 'Tips' : 'Spørsmål'}
-          </button>
-        ))}
+      {/* Wins Wednesday — smal signal-stripe */}
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 bg-signal px-4 py-2.5 text-ink">
+        <span className="font-mono text-xs font-semibold uppercase tracking-[0.15em]">
+          Wins Wednesday
+        </span>
+        <span className="font-mono text-xs">
+          I dag deler alle ukas seier — stor eller liten. Post den!
+        </span>
       </div>
 
-      {/* Feed */}
-      <div className="space-y-4">
-        {filtered.map((p) => (
-          <Card key={p.id}>
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-500/15 text-sm font-bold text-amber-400">
-                {p.author[0]}
-              </span>
-              <div className="flex-1">
-                <p className="text-sm font-semibold text-white">{p.author}</p>
-                <p className="text-xs text-zinc-500">{p.date}</p>
-              </div>
-              <Badge tone={typeBadge[p.type].tone}>{typeBadge[p.type].label}</Badge>
+      <div className="grid gap-8 lg:grid-cols-3">
+        {/* Hovedfeed */}
+        <div className="lg:col-span-2">
+          {/* Filter */}
+          <div className="flex flex-wrap gap-2 border-b border-line pb-4">
+            {(['alle', 'win', 'tips', 'sporsmal'] as const).map((f) => (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className={`label-mono border px-3 py-1.5 transition-colors ${
+                  filter === f
+                    ? 'border-signal bg-signal/10 text-signal'
+                    : 'border-line text-bone/50 hover:border-bone/40 hover:text-bone'
+                }`}
+              >
+                {f === 'alle' ? 'Alle' : f === 'win' ? 'Wins' : f === 'tips' ? 'Tips' : 'Spørsmål'}
+              </button>
+            ))}
+          </div>
+
+          {/* Poster som rader */}
+          <div>
+            {filtered.map((p) => (
+              <article key={p.id} className="border-b border-line py-5">
+                <div className="flex flex-wrap items-center gap-3">
+                  <span
+                    className={`label-mono shrink-0 border px-2 py-0.5 ${typeTag[p.type].cls}`}
+                  >
+                    {typeTag[p.type].label}
+                  </span>
+                  <span className="label-mono text-bone/40">
+                    {p.author} · {p.date}
+                  </span>
+                </div>
+                <h2 className="mt-3 font-semibold leading-snug text-bone">{p.title}</h2>
+                <p className="mt-2 text-sm leading-relaxed text-bone/60">{p.body}</p>
+                <div className="mt-4 flex gap-2">
+                  {reactionIcons.map(({ key, icon }) => (
+                    <button
+                      key={key}
+                      className="label-mono flex items-center gap-1.5 border border-line px-2.5 py-1 text-bone/60 transition-colors hover:border-signal hover:text-signal"
+                    >
+                      <Icon name={icon} size={12} />
+                      {p.reactions[key]}
+                    </button>
+                  ))}
+                </div>
+              </article>
+            ))}
+            {filtered.length === 0 && (
+              <p className="label-mono py-6 text-bone/40">Ingen poster i dette filteret.</p>
+            )}
+          </div>
+        </div>
+
+        {/* Høyre kolonne */}
+        <aside className="space-y-6">
+          <div className="border border-line">
+            <div className="border-b border-line p-4">
+              <p className="label-mono text-signal">— Ukens closing-tips</p>
+              <p className="mt-2 font-display text-sm uppercase tracking-tight text-bone">
+                «Stillheten etter pris» — 4 min
+              </p>
             </div>
-            <h2 className="mt-3 font-bold text-white">{p.title}</h2>
-            <p className="mt-1 text-sm leading-relaxed text-zinc-300">{p.body}</p>
-            <div className="mt-4 flex gap-2 border-t border-white/10 pt-3">
-              <button className="rounded-full border border-white/10 px-3 py-1 text-xs text-zinc-300 hover:border-amber-500/40">
-                🔥 {p.reactions.fire}
-              </button>
-              <button className="rounded-full border border-white/10 px-3 py-1 text-xs text-zinc-300 hover:border-amber-500/40">
-                👏 {p.reactions.clap}
-              </button>
-              <button className="rounded-full border border-white/10 px-3 py-1 text-xs text-zinc-300 hover:border-amber-500/40">
-                💰 {p.reactions.money}
-              </button>
+            <div className="p-4">
+              <MediaPlaceholder
+                kind="video"
+                ratio="16/9"
+                size="sm"
+                label="Ukens tips — Sebastian"
+              />
+              <p className="mt-3 text-xs leading-relaxed text-bone/60">
+                Hvorfor den som snakker først etter prisen taper — og hvordan du
+                trener deg til å tåle stillheten.
+              </p>
             </div>
-          </Card>
-        ))}
+          </div>
+
+          <div className="border border-line p-4">
+            <p className="label-mono text-bone/50">— Ukesrytmen</p>
+            <ul className="mt-3">
+              {weekRhythm.map((r) => (
+                <li
+                  key={r.day}
+                  className="flex items-baseline gap-3 border-b border-line py-2.5 last:border-0"
+                >
+                  <span className="label-mono w-10 shrink-0 text-signal">{r.day}</span>
+                  <span className="font-mono text-xs text-bone/70">{r.text}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </aside>
       </div>
     </div>
   );

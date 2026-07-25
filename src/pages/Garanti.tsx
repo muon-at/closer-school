@@ -1,8 +1,7 @@
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import Card from '../components/Card';
-import Badge from '../components/Badge';
 import Button from '../components/Button';
+import Icon from '../components/Icon';
 
 const vilkar = [
   {
@@ -39,16 +38,18 @@ const vilkar = [
 
 export default function Garanti() {
   return (
-    <div className="flex min-h-screen flex-col bg-zinc-950">
+    <div className="flex min-h-screen flex-col bg-ink">
       <Navbar />
-      <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-16">
-        <Badge tone="green" className="mb-4">🛡️ Jobbgarantien — fulle vilkår</Badge>
-        <h1 className="text-3xl font-black text-white sm:text-4xl">
+      <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-16">
+        <p className="label-mono flex items-center gap-2 text-win">
+          <Icon name="check" size={14} />— Jobbgarantien — fulle vilkår
+        </p>
+        <h1 className="mt-5 font-display text-4xl uppercase leading-[0.95] tracking-tight text-bone sm:text-5xl">
           Jobbtilbud innen 90 dager — eller hver krone tilbake
         </h1>
-        <p className="mt-4 leading-relaxed text-zinc-300">
+        <p className="mt-6 leading-relaxed text-bone/70">
           Løftet vårt er enkelt:{' '}
-          <span className="font-semibold text-white">
+          <span className="font-semibold text-bone">
             Får du ikke tilbud om salgsjobb innen 90 dager etter bestått
             eksamen, refunderer vi 100 % av kursavgiften.
           </span>{' '}
@@ -56,29 +57,31 @@ export default function Garanti() {
           står her, åpent, sånn som Forbrukertilsynet krever og sånn vi
           uansett ville gjort det.
         </p>
-        <p className="mt-3 text-sm text-zinc-400">
+        <p className="mt-4 text-sm leading-relaxed text-bone/50">
           Garantiperioden starter dagen du består siste del av eksamen (den
           ekte kundesamtalen). For at garantien skal gjelde, må disse seks
           vilkårene være oppfylt:
         </p>
 
-        <div className="mt-8 space-y-4">
+        <ol className="mt-10 border-t border-line">
           {vilkar.map((v) => (
-            <Card key={v.n} className="flex gap-4">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-500/15 text-sm font-bold text-emerald-400">
-                {v.n}
+            <li key={v.n} className="grid grid-cols-[3.5rem_1fr] gap-x-4 border-b border-line py-6">
+              <span className="font-mono text-3xl font-semibold text-signal">
+                {String(v.n).padStart(2, '0')}
               </span>
               <div>
-                <h2 className="font-bold text-white">{v.title}</h2>
-                <p className="mt-1 text-sm leading-relaxed text-zinc-400">{v.text}</p>
+                <h2 className="font-display text-lg uppercase tracking-tight text-bone">
+                  {v.title}
+                </h2>
+                <p className="mt-2 text-sm leading-relaxed text-bone/60">{v.text}</p>
               </div>
-            </Card>
+            </li>
           ))}
-        </div>
+        </ol>
 
-        <Card className="mt-8" accent="green">
-          <h2 className="font-bold text-white">Hvorfor tør vi love dette?</h2>
-          <p className="mt-2 text-sm leading-relaxed text-zinc-300">
+        <div className="mt-10 border-2 border-win p-6">
+          <h2 className="label-mono text-win">— Hvorfor tør vi love dette?</h2>
+          <p className="mt-3 text-sm leading-relaxed text-bone/70">
             Fordi garantien ikke er et sjansespill for oss: eksamen siler ut
             dem som ikke er klare, AI-treningen dokumenterer ferdighetene dine,
             og vi har arbeidsgiverpartnere — inkludert salgsselskaper i eget
@@ -86,20 +89,22 @@ export default function Garanti() {
             selgere. Garantien er ikke markedsføring med liten skrift. Den er
             forretningsmodellen vår.
           </p>
-        </Card>
+        </div>
 
-        <p className="mt-8 text-xs text-zinc-500">
+        <p className="mt-10 text-xs leading-relaxed text-bone/40">
           Garantien kommer i tillegg til — og begrenser aldri — rettighetene
           dine etter norsk forbrukerlovgivning, inkludert 14 dagers angrerett
           etter angrerettloven. Se{' '}
-          <a href="/vilkar" className="text-amber-400 underline">
+          <a href="/vilkar" className="text-signal underline underline-offset-2">
             kjøpsvilkårene
           </a>{' '}
           for detaljer.
         </p>
 
-        <div className="mt-10 text-center">
-          <Button to="/pamelding" size="lg">Søk plass på kull 3 →</Button>
+        <div className="mt-12 border-t border-line pt-10 text-center">
+          <Button to="/pamelding" size="lg">
+            Søk plass på kull 3 <Icon name="arrow-right" size={16} />
+          </Button>
         </div>
       </main>
       <Footer />

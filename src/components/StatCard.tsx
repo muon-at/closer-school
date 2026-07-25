@@ -13,15 +13,17 @@ export default function StatCard({
   icon?: ReactNode;
 }) {
   return (
-    <Card className="flex flex-col gap-1">
+    <Card className="flex flex-col gap-1.5">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-medium uppercase tracking-wider text-zinc-400">
-          {label}
-        </span>
-        {icon && <span aria-hidden>{icon}</span>}
+        <span className="label-mono text-bone/50">— {label}</span>
+        {icon && (
+          <span aria-hidden className="text-signal">
+            {icon}
+          </span>
+        )}
       </div>
-      <span className="text-2xl font-bold text-white">{value}</span>
-      {sub && <span className="text-xs text-zinc-400">{sub}</span>}
+      <span className="font-mono text-3xl font-semibold tracking-tight text-bone">{value}</span>
+      {sub && <span className="font-mono text-xs text-bone/50">{sub}</span>}
     </Card>
   );
 }

@@ -5,7 +5,6 @@
 // delbetalingsavtalens utforming, verneting, og samspillet garanti/angrerett.
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import Card from '../components/Card';
 
 const sections = [
   {
@@ -52,26 +51,34 @@ const sections = [
 
 export default function Vilkar() {
   return (
-    <div className="flex min-h-screen flex-col bg-zinc-950">
+    <div className="flex min-h-screen flex-col bg-ink">
       <Navbar />
-      <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-16">
-        <h1 className="text-3xl font-black text-white sm:text-4xl">
+      <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-16">
+        <p className="label-mono text-signal">— Juridisk</p>
+        <h1 className="mt-4 font-display text-4xl uppercase leading-[0.95] tracking-tight text-bone sm:text-5xl">
           Kjøpsvilkår og angrerett
         </h1>
-        <p className="mt-3 text-sm text-zinc-400">
+        <p className="mt-5 text-sm leading-relaxed text-bone/50">
           Sist oppdatert 24. juli 2026. Kort versjon: gratis å søke, 14 dagers
           angrerett, åpne garantivilkår, og ingen renter på delbetaling. Den
           fulle versjonen står under.
         </p>
-        <div className="mt-8 space-y-4">
-          {sections.map((s) => (
-            <Card key={s.title}>
-              <h2 className="font-bold text-white">{s.title}</h2>
-              <p className="mt-2 text-sm leading-relaxed text-zinc-400">{s.body}</p>
-            </Card>
+        <div className="mt-10 border-t border-line">
+          {sections.map((s, i) => (
+            <section key={s.title} className="grid gap-x-4 border-b border-line py-6 sm:grid-cols-[3.5rem_1fr]">
+              <span className="font-mono text-2xl font-semibold text-bone/25">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <div>
+                <h2 className="font-display text-base uppercase tracking-tight text-bone">
+                  {s.title}
+                </h2>
+                <p className="mt-2 text-sm leading-relaxed text-bone/60">{s.body}</p>
+              </div>
+            </section>
           ))}
         </div>
-        <p className="mt-8 text-xs text-zinc-500">
+        <p className="label-mono mt-10 leading-relaxed text-bone/40">
           Spørsmål om vilkårene? Skriv til hei@closerskolen.no — vi svarer på
           vanlig norsk, ikke jusspråk.
         </p>

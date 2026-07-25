@@ -1,4 +1,5 @@
-// Enkel renderer for leksjonstekstene (## overskrift, - punkt, > sitat, avsnitt).
+// Enkel renderer for leksjonstekstene (## overskrift, - punkt, > sitat, avsnitt)
+// i «Salgsgulvet»-stil: display-overskrifter, signal-markører, kantete sitatbokser.
 import { Fragment } from 'react';
 
 export default function RichText({ text }: { text: string }) {
@@ -9,7 +10,10 @@ export default function RichText({ text }: { text: string }) {
         const trimmed = block.trim();
         if (trimmed.startsWith('## ')) {
           return (
-            <h3 key={i} className="pt-2 text-xl font-bold text-white">
+            <h3
+              key={i}
+              className="pt-4 font-display text-lg uppercase leading-tight tracking-tight text-bone sm:text-xl"
+            >
               {trimmed.slice(3)}
             </h3>
           );
@@ -18,7 +22,7 @@ export default function RichText({ text }: { text: string }) {
           return (
             <blockquote
               key={i}
-              className="rounded-xl border border-amber-500/25 bg-amber-500/5 p-4 italic text-amber-100"
+              className="border-l-2 border-signal bg-signal/5 p-4 font-mono text-sm leading-relaxed text-bone/80"
             >
               {trimmed
                 .split('\n')
@@ -35,12 +39,10 @@ export default function RichText({ text }: { text: string }) {
         if (/^([0-9]+\.|-) /.test(trimmed)) {
           const items = trimmed.split('\n').filter(Boolean);
           return (
-            <ul key={i} className="space-y-2 pl-1">
+            <ul key={i} className="space-y-2.5">
               {items.map((item, j) => (
-                <li key={j} className="flex gap-3 text-zinc-300">
-                  <span className="mt-1 text-amber-500" aria-hidden>
-                    •
-                  </span>
+                <li key={j} className="flex gap-3 text-sm leading-relaxed text-bone/70 sm:text-base">
+                  <span className="mt-[0.55em] h-1.5 w-1.5 shrink-0 bg-signal" aria-hidden />
                   <span>{item.replace(/^([0-9]+\.|-) /, '')}</span>
                 </li>
               ))}
@@ -48,7 +50,7 @@ export default function RichText({ text }: { text: string }) {
           );
         }
         return (
-          <p key={i} className="leading-relaxed text-zinc-300">
+          <p key={i} className="text-sm leading-relaxed text-bone/70 sm:text-base">
             {trimmed}
           </p>
         );

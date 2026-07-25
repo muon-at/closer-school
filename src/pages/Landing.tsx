@@ -1,9 +1,9 @@
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Button from '../components/Button';
-import Card from '../components/Card';
 import Badge from '../components/Badge';
-import SectionHeading from '../components/SectionHeading';
+import Icon from '../components/Icon';
+import MediaPlaceholder from '../components/MediaPlaceholder';
 import { useState } from 'react';
 
 // MERK: Kortene nedenfor er ILLUSTRATIVE EKSEMPLER (fiktive navn/sitater) på
@@ -70,14 +70,14 @@ const faq = [
 ];
 
 const timeline = [
-  { week: 'Uke 1', title: 'Fundamentet', text: 'Hvorfor salg, mindset, etikk og lytting. Quiz-gate: 80 %.' },
-  { week: 'Uke 2', title: 'Telefonsalg I', text: 'Åpningen, referanse-metoden, pitch og booking. + 4 AI-samtaler.' },
-  { week: 'Uke 3', title: 'Telefonsalg II', text: 'Behovsavdekking, spørreteknikk, tonalitet. 5 AI-samtaler ≥70.' },
-  { week: 'Uke 4', title: 'Dørsalg', text: 'D2D-psykologi, døråpning, territorium. + 5 AI-samtaler.' },
-  { week: 'Uke 5', title: 'Innvendinger & closing', text: 'Innvendingsbanken og 8 closing-teknikker. 6 AI-samtaler ≥75.' },
-  { week: 'Uke 6', title: 'High ticket & karriere', text: 'Remote closing, discovery calls, karriereplan. 5 AI-samtaler ≥80.' },
-  { week: 'Uke 7', title: 'Eksamensuke', text: 'Teorieksamen (40 spørsmål) + AI-eksamenssamtale med score ≥80.' },
-  { week: 'Uke 8', title: 'Finalen: ekte kundesamtale', text: 'Du tar en reell samtale med ekte kunde — med sensor på linja. Består du, starter jobbgarantien.' },
+  { week: '01', title: 'Fundamentet', text: 'Hvorfor salg, mindset, etikk og lytting.', gate: 'GATE: QUIZ 80 %' },
+  { week: '02', title: 'Telefonsalg I', text: 'Åpningen, referanse-metoden, pitch og booking.', gate: 'GATE: + 4 AI-SAMTALER' },
+  { week: '03', title: 'Telefonsalg II', text: 'Behovsavdekking, spørreteknikk, tonalitet.', gate: 'GATE: 5 AI-SAMTALER ≥70' },
+  { week: '04', title: 'Dørsalg', text: 'D2D-psykologi, døråpning, territorium.', gate: 'GATE: + 5 AI-SAMTALER' },
+  { week: '05', title: 'Innvendinger & closing', text: 'Innvendingsbanken og 8 closing-teknikker.', gate: 'GATE: 6 AI-SAMTALER ≥75' },
+  { week: '06', title: 'High ticket & karriere', text: 'Remote closing, discovery calls, karriereplan.', gate: 'GATE: 5 AI-SAMTALER ≥80' },
+  { week: '07', title: 'Eksamensuke', text: 'Teorieksamen (40 spørsmål) + AI-eksamenssamtale.', gate: 'GATE: SCORE ≥80' },
+  { week: '08', title: 'Finalen: ekte kundesamtale', text: 'Du tar en reell samtale med ekte kunde — med sensor på linja. Består du, starter jobbgarantien.', gate: 'EKTE KUNDESAMTALE — SENSOR PÅ LINJA' },
 ];
 
 const offerStack = [
@@ -89,330 +89,574 @@ const offerStack = [
   { item: 'Bonus: script-bibliotek, innvendingsbank og «første 30 dager»-plan', value: '2 500 kr' },
 ];
 
-function FaqItem({ q, a }: { q: string; a: string }) {
+const pains = [
+  {
+    n: '01',
+    title: 'Lager, butikk, kasse — og null vei videre',
+    text: 'Timelønna er lik uansett hvor hardt du jobber. Om fem år står du samme sted, bare eldre. Innsatsen din fortjener en jobb som betaler for den.',
+  },
+  {
+    n: '02',
+    title: 'Du ser andre tjene penger på TikTok',
+    text: '«Remote closing», «high ticket», «55k denne måneden». Noe av det er tull — men faget bak er ekte. Forskjellen på dem og deg er trening og en fot innenfor.',
+  },
+  {
+    n: '03',
+    title: 'Du vet ikke hva du «skal bli» — og alle maser',
+    text: 'Du trenger ikke en tiårsplan. Du trenger én ferdighet som betaler seg nå, og som åpner dører uansett hva du velger senere. Salg er den ferdigheten.',
+  },
+];
+
+const garantiVilkar = [
+  'Bestått avsluttende eksamen (teori, AI-samtale og ekte kundesamtale)',
+  'Fullført program og minst 25 godkjente AI-treningssamtaler',
+  'Delta i formidlingen: still opp på intervjuer og prøvedager',
+  'Grunnkrav: fylt 18 år, bosatt i Norge, arbeidsfør i perioden',
+  'Kvalifiserte jobbtilbud teller — takker du nei, bortfaller garantien',
+  'Refusjonskrav fremmes skriftlig innen 30 dager etter perioden',
+];
+
+const marqueeItems = [
+  'Jobbgaranti',
+  'AI-coach',
+  'Ekte kundesamtale',
+  '8 uker',
+  '23 plasser',
+  'Sertifikat',
+  'Kull 3',
+];
+
+function FaqItem({ q, a, n }: { q: string; a: string; n: number }) {
   const [open, setOpen] = useState(false);
   return (
-    <Card className="cursor-pointer" onClick={() => setOpen(!open)}>
-      <div className="flex items-center justify-between gap-4">
-        <h3 className="font-semibold text-white">{q}</h3>
-        <span className="text-amber-500" aria-hidden>
-          {open ? '−' : '+'}
+    <div className="border-b border-line">
+      <button
+        type="button"
+        className="flex w-full items-center gap-4 py-5 text-left"
+        onClick={() => setOpen(!open)}
+        aria-expanded={open}
+      >
+        <span className="label-mono w-8 shrink-0 text-signal">
+          {String(n).padStart(2, '0')}
         </span>
-      </div>
-      {open && <p className="mt-3 text-sm leading-relaxed text-zinc-300">{a}</p>}
-    </Card>
+        <span className="flex-1 font-semibold text-bone">{q}</span>
+        <span className="text-signal" aria-hidden>
+          <Icon name={open ? 'x' : 'arrow-right'} size={16} />
+        </span>
+      </button>
+      {open && (
+        <p className="pb-5 pl-12 pr-8 text-sm leading-relaxed text-bone/60">{a}</p>
+      )}
+    </div>
   );
 }
 
 export default function Landing() {
   return (
-    <div className="bg-zinc-950">
+    <div className="bg-ink">
       <Navbar />
 
       {/* HERO */}
-      <section className="relative overflow-hidden">
-        <div
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.15),transparent_60%)]"
-          aria-hidden
-        />
-        <div className="relative mx-auto max-w-6xl px-4 pb-24 pt-20 text-center sm:pt-28">
-          <Badge tone="amber" className="mb-6">
-            ⚡ Norges eneste salgsutdanning med jobbgaranti
-          </Badge>
-          <h1 className="mx-auto max-w-3xl text-4xl font-black tracking-tight text-white sm:text-6xl">
-            Fra null til closer på{' '}
-            <span className="text-amber-500">8 uker</span>
-          </h1>
-          <p className="mx-auto mt-6 max-w-xl text-lg text-zinc-300">
-            Ingen utdanning? Ingen erfaring? Bra.{' '}
-            <span className="font-semibold text-white">
-              Vi trenger bare at du er sulten.
-            </span>
-          </p>
-          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Button to="/pamelding" size="lg">
-              Søk plass på kull 3 →
-            </Button>
-            <Button to="#slik-funker-det" variant="secondary" size="lg">
-              Se hvordan det funker
-            </Button>
+      <section className="border-b border-line">
+        <div className="mx-auto grid max-w-6xl gap-10 px-4 pb-16 pt-14 lg:grid-cols-5 lg:gap-14 sm:pt-20">
+          <div className="lg:col-span-3">
+            <p className="label-mono text-signal">
+              — Norges eneste salgsutdanning med jobbgaranti
+            </p>
+            <h1 className="mt-6 font-display text-5xl uppercase leading-[0.95] tracking-tight text-bone sm:text-7xl lg:text-8xl">
+              Fra null til closer på <span className="text-signal">8 uker</span>.
+            </h1>
+            <p className="mt-6 max-w-lg text-lg leading-relaxed text-bone/70">
+              Ingen utdanning? Ingen erfaring? Bra.{' '}
+              <span className="font-semibold text-bone">
+                Vi trenger bare at du er sulten.
+              </span>
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Button to="/pamelding" size="lg">
+                Søk plass på kull 3 <Icon name="arrow-right" size={16} />
+              </Button>
+              <Button to="#slik-funker-det" variant="secondary" size="lg">
+                Se hvordan det funker
+              </Button>
+            </div>
+            <div className="label-mono mt-10 flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-line pt-5 text-bone/50">
+              <span>23 plasser</span>
+              <span className="text-signal">·</span>
+              <span>Kull 3</span>
+              <span className="text-signal">·</span>
+              <span>Sep 2026</span>
+              <span className="text-signal">·</span>
+              <span>Mål: 97 % i jobb innen 90 dager</span>
+            </div>
           </div>
-          <p className="mt-8 text-sm text-zinc-500">
-            23 plasser per kull — opptak til kull 3 pågår · mål: 97 % i jobb
-            innen 90 dager
-          </p>
+          <div className="lg:col-span-2">
+            <div className="relative">
+              <MediaPlaceholder
+                kind="video"
+                ratio="4/5"
+                label="Sebastian på salgsgulvet — hype-reel 30 sek"
+              />
+              <span className="label-mono absolute left-0 top-0 flex items-center gap-1.5 bg-signal px-2.5 py-1 text-[10px] text-ink">
+                <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-ink" />
+                LIVE
+              </span>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* PAIN */}
-      <section className="mx-auto max-w-6xl px-4 py-20">
-        <SectionHeading
-          eyebrow="Kjenner du deg igjen?"
-          title="Du vet du kan mer enn jobben din krever"
-          center
-        />
-        <div className="grid gap-6 md:grid-cols-3">
-          <Card>
-            <span className="text-3xl" aria-hidden>📦</span>
-            <h3 className="mt-3 text-lg font-bold text-white">
-              Lager, butikk, kasse — og null vei videre
-            </h3>
-            <p className="mt-2 text-sm text-zinc-400">
-              Timelønna er lik uansett hvor hardt du jobber. Om fem år står du
-              samme sted, bare eldre. Innsatsen din fortjener en jobb som
-              betaler for den.
-            </p>
-          </Card>
-          <Card>
-            <span className="text-3xl" aria-hidden>📱</span>
-            <h3 className="mt-3 text-lg font-bold text-white">
-              Du ser andre tjene penger på TikTok
-            </h3>
-            <p className="mt-2 text-sm text-zinc-400">
-              «Remote closing», «high ticket», «55k denne måneden». Noe av det
-              er tull — men faget bak er ekte. Forskjellen på dem og deg er
-              trening og en fot innenfor.
-            </p>
-          </Card>
-          <Card>
-            <span className="text-3xl" aria-hidden>🧭</span>
-            <h3 className="mt-3 text-lg font-bold text-white">
-              Du vet ikke hva du «skal bli» — og alle maser
-            </h3>
-            <p className="mt-2 text-sm text-zinc-400">
-              Du trenger ikke en tiårsplan. Du trenger én ferdighet som betaler
-              seg nå, og som åpner dører uansett hva du velger senere. Salg er
-              den ferdigheten.
-            </p>
-          </Card>
+      {/* MARQUEE */}
+      <div className="overflow-hidden border-b border-line bg-signal py-2.5" aria-hidden>
+        <div className="flex w-max animate-marquee">
+          {[0, 1].map((copy) => (
+            <div
+              key={copy}
+              className="flex shrink-0 items-center font-mono text-[13px] font-semibold uppercase tracking-[0.15em] text-ink"
+            >
+              {marqueeItems.map((item) => (
+                <span key={item} className="flex items-center">
+                  <span className="px-4">{item}</span>
+                  <span>✕</span>
+                </span>
+              ))}
+            </div>
+          ))}
         </div>
-      </section>
+      </div>
 
-      {/* LØSNINGEN / TIDSLINJE */}
-      <section id="slik-funker-det" className="border-y border-white/10 bg-zinc-900/30 py-20">
-        <div className="mx-auto max-w-6xl px-4">
-          <SectionHeading
-            eyebrow="Slik funker det"
-            title="8 uker. 6 moduler. Én ekte kundesamtale."
-            sub="Hver modul har en gate: quiz og godkjente AI-samtaler. Du kommer ikke videre før du kan det — og akkurat derfor tør vi garantere jobb."
-          />
-          <ol className="grid gap-4 md:grid-cols-2">
-            {timeline.map((t, i) => (
-              <li key={t.week}>
-                <Card className={i === 7 ? 'border-emerald-500/40 bg-emerald-500/5' : ''}>
-                  <div className="flex items-baseline gap-3">
-                    <span className="text-sm font-bold text-amber-500">{t.week}</span>
-                    <h3 className="font-bold text-white">{t.title}</h3>
-                  </div>
-                  <p className="mt-1 text-sm text-zinc-400">{t.text}</p>
-                </Card>
-              </li>
+      {/* PAIN — LYS SEKSJON */}
+      <section className="bg-bone text-ink">
+        <div className="mx-auto max-w-6xl px-4 py-20">
+          <p className="label-mono text-signal">— Kjenner du deg igjen?</p>
+          <h2 className="mt-4 max-w-3xl font-display text-4xl uppercase leading-[0.95] tracking-tight sm:text-6xl">
+            Du vet du kan mer enn jobben din krever
+          </h2>
+          <div className="mt-12 border-t border-line-ink">
+            {pains.map((p) => (
+              <div
+                key={p.n}
+                className="grid gap-4 border-b border-line-ink py-8 sm:grid-cols-12 sm:gap-8"
+              >
+                <span className="font-mono text-4xl font-semibold text-signal sm:col-span-2 sm:text-5xl">
+                  {p.n}
+                </span>
+                <h3 className="font-display text-xl uppercase leading-tight tracking-tight sm:col-span-5 sm:text-2xl">
+                  {p.title}
+                </h3>
+                <p className="text-sm leading-relaxed text-ink/70 sm:col-span-5">
+                  {p.text}
+                </p>
+              </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 8-UKERS PROGRAM — VERTIKAL TIDSLINJE */}
+      <section id="slik-funker-det" className="border-b border-line">
+        <div className="mx-auto max-w-6xl px-4 py-20">
+          <p className="label-mono text-signal">— Slik funker det</p>
+          <h2 className="mt-4 max-w-3xl font-display text-4xl uppercase leading-[0.95] tracking-tight text-bone sm:text-6xl">
+            8 uker. 6 moduler. Én ekte kundesamtale.
+          </h2>
+          <p className="mt-5 max-w-2xl leading-relaxed text-bone/60">
+            Hver modul har en gate: quiz og godkjente AI-samtaler. Du kommer
+            ikke videre før du kan det — og akkurat derfor tør vi garantere
+            jobb.
+          </p>
+          <ol className="mt-12">
+            {timeline.map((t) => {
+              const isFinal = t.week === '08';
+              return (
+                <li
+                  key={t.week}
+                  className={`grid gap-3 py-6 sm:grid-cols-12 sm:items-baseline sm:gap-6 ${
+                    isFinal
+                      ? 'border-2 border-signal bg-signal/5 px-4 sm:px-6'
+                      : 'border-b border-line'
+                  }`}
+                >
+                  <span
+                    className={`font-mono text-5xl font-semibold tracking-tight sm:col-span-2 sm:text-6xl ${
+                      isFinal ? 'text-signal' : 'text-bone/25'
+                    }`}
+                  >
+                    {t.week}
+                  </span>
+                  <div className="sm:col-span-6">
+                    <h3 className="font-display text-lg uppercase tracking-tight text-bone sm:text-xl">
+                      {t.title}
+                    </h3>
+                    <p className="mt-1.5 text-sm leading-relaxed text-bone/60">{t.text}</p>
+                  </div>
+                  <p
+                    className={`label-mono sm:col-span-4 sm:text-right ${
+                      isFinal ? 'text-signal' : 'text-bone/40'
+                    }`}
+                  >
+                    {t.gate}
+                  </p>
+                </li>
+              );
+            })}
           </ol>
         </div>
       </section>
 
       {/* AI-COACHEN */}
-      <section className="mx-auto max-w-6xl px-4 py-20">
-        <div className="grid items-center gap-10 lg:grid-cols-2">
-          <div>
-            <SectionHeading
-              eyebrow="AI-salgscoachen"
-              title="Øv deg ubegrenset mot Norges tøffeste AI-kunde — før du møter en ekte"
-              sub="Kari (54) vurderer å si opp TV-pakken. Bjørn (47) har allerede Verisure. Rune (41) presser deg på pris. De sier «jeg må snakke med samboeren» og «send meg noe på mail» — helt til du lærer å svare. Hver samtale scores 0–100 med konkret feedback."
-            />
-            <ul className="space-y-3 text-sm text-zinc-300">
-              <li className="flex gap-3">
-                <span className="text-amber-500">✓</span> 5 norske kundepersonas + eksamenskunde, 3 vanskelighetsgrader
-              </li>
-              <li className="flex gap-3">
-                <span className="text-amber-500">✓</span> Scorecard: åpning, behov, innvendinger, closing
-              </li>
-              <li className="flex gap-3">
-                <span className="text-amber-500">✓</span> «Hva en topp-closer ville sagt» etter hver samtale
-              </li>
-              <li className="flex gap-3">
-                <span className="text-amber-500">✓</span> Du dummer deg ut foran en robot — ikke foran en kunde
-              </li>
-            </ul>
-          </div>
-          {/* Chat-mockup */}
-          <Card className="space-y-3">
-            <div className="flex items-center justify-between border-b border-white/10 pb-3">
-              <p className="text-sm font-semibold text-white">📺 Kari (54) — Allente-kunden</p>
-              <Badge tone="amber">Vanskelighetsgrad 2</Badge>
-            </div>
-            <div className="space-y-3 text-sm">
-              <div className="max-w-[85%] rounded-2xl rounded-tl-sm bg-white/10 p-3 text-zinc-200">
-                Jeg må nesten snakke med mannen min først, vi bestemmer sånt sammen.
-              </div>
-              <div className="ml-auto max-w-[85%] rounded-2xl rounded-tr-sm bg-amber-500/20 p-3 text-amber-50">
-                Selvfølgelig — sånt bestemmer man sammen. Bare så jeg vet det: hvis det sto på deg alene, hadde du gått for det?
-              </div>
-              <div className="max-w-[85%] rounded-2xl rounded-tl-sm bg-white/10 p-3 text-zinc-200">
-                Ja … det er jo egentlig mest jeg som styrer sånt, da.
-              </div>
-            </div>
-            <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-xs">
-              <p className="mb-1 font-bold text-emerald-400">SCORECARD — Godkjent ✓</p>
-              <p className="text-zinc-300">
-                Åpning 82 · Behov 74 · Innvendinger 88 · Closing 78 —{' '}
-                <span className="font-semibold text-white">Totalt 81/100</span>
+      <section className="border-b border-line">
+        <div className="mx-auto max-w-6xl px-4 py-20">
+          <div className="grid gap-12 lg:grid-cols-2 lg:gap-14">
+            <div>
+              <p className="label-mono text-signal">— AI-salgscoachen</p>
+              <h2 className="mt-4 font-display text-3xl uppercase leading-[0.95] tracking-tight text-bone sm:text-5xl">
+                Øv ubegrenset mot Norges tøffeste AI-kunde
+              </h2>
+              <p className="mt-5 leading-relaxed text-bone/60">
+                Kari (54) vurderer å si opp TV-pakken. Bjørn (47) har allerede
+                Verisure. Rune (41) presser deg på pris. De sier «jeg må snakke
+                med samboeren» og «send meg noe på mail» — helt til du lærer å
+                svare. Hver samtale scores 0–100 med konkret feedback.
               </p>
+              <ul className="mt-8 space-y-4 text-sm text-bone/80">
+                {[
+                  '5 norske kundepersonas + eksamenskunde, 3 vanskelighetsgrader',
+                  'Scorecard: åpning, behov, innvendinger, closing',
+                  '«Hva en topp-closer ville sagt» etter hver samtale',
+                  'Du dummer deg ut foran en robot — ikke foran en kunde',
+                ].map((li) => (
+                  <li key={li} className="flex gap-3 border-b border-line pb-4">
+                    <span className="mt-0.5 shrink-0 text-signal">
+                      <Icon name="check" size={16} />
+                    </span>
+                    {li}
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-8">
+                <MediaPlaceholder
+                  kind="image"
+                  ratio="16/9"
+                  label="Skjermopptak av AI-coachen"
+                />
+              </div>
             </div>
-          </Card>
+
+            {/* Chat-mockup i scoreboard-stil */}
+            <div className="border border-line">
+              <div className="flex items-center justify-between border-b border-line px-4 py-3">
+                <p className="label-mono flex items-center gap-2 text-bone">
+                  <Icon name="phone" size={14} className="text-signal" />
+                  Kari (54) — Allente-kunden
+                </p>
+                <span className="label-mono text-signal">Nivå 2</span>
+              </div>
+              <div className="space-y-4 p-4 font-mono text-[13px] leading-relaxed">
+                <div className="max-w-[90%] border border-line bg-bone/5 p-3 text-bone/90">
+                  <p className="label-mono mb-1.5 text-[10px] text-bone/40">— Kunde</p>
+                  Jeg må nesten snakke med mannen min først, vi bestemmer sånt
+                  sammen.
+                </div>
+                <div className="ml-auto max-w-[90%] border-l-2 border-signal bg-signal/5 p-3 text-bone">
+                  <p className="label-mono mb-1.5 text-[10px] text-signal">— Deg</p>
+                  Selvfølgelig — sånt bestemmer man sammen. Bare så jeg vet det:
+                  hvis det sto på deg alene, hadde du gått for det?
+                </div>
+                <div className="max-w-[90%] border border-line bg-bone/5 p-3 text-bone/90">
+                  <p className="label-mono mb-1.5 text-[10px] text-bone/40">— Kunde</p>
+                  Ja … det er jo egentlig mest jeg som styrer sånt, da.
+                </div>
+              </div>
+              {/* Scorecard-tabell */}
+              <div className="border-t border-line">
+                <p className="label-mono flex items-center justify-between border-b border-line px-4 py-2.5 text-bone/60">
+                  Scorecard
+                  <span className="flex items-center gap-1.5 text-win">
+                    <Icon name="check" size={13} /> Godkjent
+                  </span>
+                </p>
+                <table className="w-full font-mono text-[13px]">
+                  <tbody>
+                    {[
+                      ['Åpning', '82'],
+                      ['Behov', '74'],
+                      ['Innvendinger', '88'],
+                      ['Closing', '78'],
+                    ].map(([k, v]) => (
+                      <tr key={k} className="border-b border-line">
+                        <td className="px-4 py-2 uppercase tracking-[0.08em] text-bone/60">{k}</td>
+                        <td className="px-4 py-2 text-right text-bone">{v}</td>
+                      </tr>
+                    ))}
+                    <tr>
+                      <td className="px-4 py-2.5 font-semibold uppercase tracking-[0.08em] text-bone">
+                        Totalt
+                      </td>
+                      <td className="px-4 py-2.5 text-right font-semibold text-signal">
+                        81/100
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* JOBBGARANTIEN */}
-      <section className="mx-auto max-w-6xl px-4 py-10">
-        <div className="rounded-2xl border border-emerald-500/40 bg-gradient-to-br from-emerald-500/15 to-emerald-500/5 p-8 text-center sm:p-14">
-          <Badge tone="green" className="mb-5">🛡️ Jobbgarantien</Badge>
-          <h2 className="mx-auto max-w-2xl text-3xl font-black text-white sm:text-4xl">
-            Får du ikke jobbtilbud innen 90 dager etter bestått eksamen, får du{' '}
-            <span className="text-emerald-400">hver krone tilbake.</span>
+      {/* JOBBGARANTIEN — LYS SEKSJON */}
+      <section className="bg-bone text-ink">
+        <div className="mx-auto max-w-6xl px-4 py-20">
+          <p className="label-mono text-signal">— Jobbgarantien</p>
+          <h2 className="mt-5 font-display text-4xl uppercase leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl">
+            Får du ikke jobb, får du hver krone tilbake.
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-zinc-300">
-            Ikke «hjelp på veien». Ikke «karriereveiledning». Et jobbtilbud —
-            eller 100 % refusjon. Vi kan love det fordi eksamen faktisk beviser
-            at du kan selge, og fordi vi har arbeidsgiverpartnere som venter på
-            kandidatene våre.
+          <p className="mt-6 max-w-2xl leading-relaxed text-ink/70">
+            Ikke «hjelp på veien». Ikke «karriereveiledning». Et jobbtilbud
+            innen 90 dager etter bestått eksamen — eller 100 % refusjon. Vi kan
+            love det fordi eksamen faktisk beviser at du kan selge, og fordi vi
+            har arbeidsgiverpartnere som venter på kandidatene våre.
           </p>
-          <div className="mt-6">
+          <ol className="mt-10 grid gap-x-10 border-t border-line-ink sm:grid-cols-2">
+            {garantiVilkar.map((v, i) => (
+              <li
+                key={v}
+                className="flex items-start gap-4 border-b border-line-ink py-4 font-mono text-[13px] leading-relaxed text-ink/80"
+              >
+                <span className="label-mono mt-0.5 shrink-0 text-ink/40">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span className="flex-1">{v}</span>
+                <span className="mt-0.5 shrink-0 text-win">
+                  <Icon name="check" size={15} />
+                </span>
+              </li>
+            ))}
+          </ol>
+          <div className="mt-10">
             <Button to="/garanti" variant="green">
-              Les de fulle garantivilkårene →
+              Les de fulle garantivilkårene <Icon name="arrow-right" size={15} />
             </Button>
           </div>
         </div>
       </section>
 
       {/* OFFER STACK + PRIS */}
-      <section className="mx-auto max-w-6xl px-4 py-20">
-        <SectionHeading
-          eyebrow="Det du får"
-          title="Alt som skal til — i én pakke"
-          center
-        />
-        <div className="mx-auto max-w-2xl">
-          <Card className="divide-y divide-white/10">
-            {offerStack.map((o) => (
-              <div key={o.item} className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
-                <span className="text-sm text-zinc-200">{o.item}</span>
-                <span className="shrink-0 text-sm font-semibold text-zinc-400">{o.value}</span>
+      <section className="border-b border-line">
+        <div className="mx-auto max-w-6xl px-4 py-20">
+          <p className="label-mono text-signal">— Det du får</p>
+          <h2 className="mt-4 font-display text-4xl uppercase leading-[0.95] tracking-tight text-bone sm:text-6xl">
+            Alt som skal til — i én pakke
+          </h2>
+          <div className="mt-12 grid gap-10 lg:grid-cols-2">
+            {/* Kvittering */}
+            <div className="border border-line">
+              <p className="label-mono border-b border-line px-5 py-3 text-bone/60">
+                Closerskolen — kvittering
+              </p>
+              <div className="p-5 font-mono text-[13px]">
+                {offerStack.map((o) => (
+                  <div
+                    key={o.item}
+                    className="flex items-baseline justify-between gap-3 border-b border-dashed border-line py-3"
+                  >
+                    <span className="text-bone/80">{o.item}</span>
+                    <span className="shrink-0 text-bone/50">{o.value}</span>
+                  </div>
+                ))}
+                <div className="flex items-baseline justify-between gap-3 py-4">
+                  <span className="uppercase tracking-[0.1em] text-bone/60">Totalverdi</span>
+                  <span className="text-bone/50 line-through decoration-signal decoration-2">
+                    33 697 kr
+                  </span>
+                </div>
               </div>
-            ))}
-          </Card>
-          <div className="mt-8 rounded-2xl border border-amber-500/40 bg-amber-500/10 p-8 text-center">
-            <p className="text-sm uppercase tracking-widest text-amber-400">Din investering</p>
-            <p className="mt-2 text-5xl font-black text-white">29 900 kr</p>
-            <p className="mt-2 text-zinc-300">
-              eller <span className="font-bold text-white">6 månedlige trekk à ~4 983 kr</span> — helt rentefritt, samme totalpris
-            </p>
-            <p className="mt-3 text-sm font-medium text-amber-400">
-              «Vi tjener ikke penger på gjelden din.» Ingen renter, ingen
-              gebyrer, ingen Klarna-triks.
-            </p>
-            <div className="mt-6">
-              <Button to="/pamelding" size="lg">Søk plass på kull 3 →</Button>
+            </div>
+            {/* Pris */}
+            <div className="flex flex-col justify-between border-2 border-signal p-6 sm:p-8">
+              <div>
+                <p className="label-mono text-signal">— Din investering</p>
+                <p className="mt-4 font-display text-6xl uppercase tracking-tight text-bone sm:text-7xl">
+                  29 900 kr
+                </p>
+                <div className="label-mono mt-6 border-t border-line pt-5 text-bone/60">
+                  Eller delbetaling
+                </div>
+                <p className="mt-2 font-mono text-xl text-bone">
+                  6 × 4 983 kr
+                </p>
+                <p className="mt-1 text-sm text-bone/60">
+                  6 månedlige trekk à ~4 983 kr — helt rentefritt, samme
+                  totalpris.
+                </p>
+                <p className="mt-5 border-l-2 border-signal pl-4 text-sm font-medium text-bone/80">
+                  «Vi tjener ikke penger på gjelden din.» Ingen renter, ingen
+                  gebyrer, ingen Klarna-triks.
+                </p>
+              </div>
+              <div className="mt-8">
+                <Button to="/pamelding" size="lg" className="w-full">
+                  Søk plass på kull 3 <Icon name="arrow-right" size={16} />
+                </Button>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* COMMUNITY */}
-      <section className="border-y border-white/10 bg-zinc-900/30 py-20">
-        <div className="mx-auto max-w-6xl px-4">
-          <SectionHeading
-            eyebrow="Closerskolen Inside"
-            title="Du blir ikke ferdig — du blir med videre"
-            sub="Etter eksamen åpnes communityet: der jobbene, vanene og nettverket bor. 3 måneder inkludert, deretter 399 kr/mnd hvis du vil bli."
-          />
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            <Card>
-              <span className="text-2xl" aria-hidden>💼</span>
-              <h3 className="mt-2 font-bold text-white">Jobbtavla</h3>
-              <p className="mt-1 text-sm text-zinc-400">
-                Stillinger fra partnerbedrifter — TM, D2D, SDR og remote
-                closing. Søk med sertifikatet ditt vedlagt.
-              </p>
-            </Card>
-            <Card>
-              <span className="text-2xl" aria-hidden>🏆</span>
-              <h3 className="mt-2 font-bold text-white">Wins Wednesday</h3>
-              <p className="mt-1 text-sm text-zinc-400">
-                Hver onsdag deler alle ukas seire — første salg, beste uke, ny
-                jobb. Momentum smitter.
-              </p>
-            </Card>
-            <Card>
-              <span className="text-2xl" aria-hidden>🎧</span>
-              <h3 className="mt-2 font-bold text-white">Live call reviews</h3>
-              <p className="mt-1 text-sm text-zinc-400">
-                Hver torsdag: ekte samtaler gjennomgås live. Du hører hva som
-                funker — ikke bare teorien om det.
-              </p>
-            </Card>
-            <Card>
-              <span className="text-2xl" aria-hidden>📈</span>
-              <h3 className="mt-2 font-bold text-white">Leaderboard</h3>
-              <p className="mt-1 text-sm text-zinc-400">
-                Poeng for AI-scores og aktivitet. Topp 3 hver måned vinner 1:1
-                med Sebastian.
-              </p>
-            </Card>
+      {/* ILLUSTRATIVE EKSEMPLER (se kommentar øverst i fila) */}
+      <section className="border-b border-line">
+        <div className="mx-auto max-w-6xl px-4 py-20">
+          <p className="label-mono text-signal">— Illustrative eksempler</p>
+          <h2 className="mt-4 font-display text-4xl uppercase leading-[0.95] tracking-tight text-bone sm:text-6xl">
+            Slik kan reisen se ut
+          </h2>
+          <p className="mt-5 max-w-2xl leading-relaxed text-bone/60">
+            Fiktive eksempler på reisen vi bygger programmet for — ikke ekte
+            kundeuttalelser. Ekte historier fra kull 1 publiseres fortløpende.
+          </p>
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            {testimonials.map((t) => (
+              <div key={t.name} className="flex flex-col border border-line">
+                <MediaPlaceholder
+                  kind="image"
+                  ratio="1/1"
+                  size="sm"
+                  label={`Portrett — ${t.name.split(' ')[0]} (byttes til ekte student)`}
+                  className="border-0 border-b border-dashed"
+                />
+                <div className="flex flex-1 flex-col p-5">
+                  <Badge tone="zinc" className="mb-4 self-start">
+                    Illustrative eksempler — kull 1 pågår
+                  </Badge>
+                  <p className="flex-1 text-sm leading-relaxed text-bone/70">
+                    «{t.quote}»
+                  </p>
+                  <div className="mt-5 border-t border-line pt-4">
+                    <p className="font-mono text-[13px] font-semibold uppercase tracking-[0.06em] text-bone">
+                      {t.name}
+                    </p>
+                    <p className="label-mono mt-1.5 text-bone/40">
+                      {t.before} <span className="text-signal">→</span>{' '}
+                      <span className="text-win">{t.after}</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ILLUSTRATIVE EKSEMPLER (se kommentar øverst i fila) */}
-      <section className="mx-auto max-w-6xl px-4 py-20">
-        <SectionHeading
-          eyebrow="Illustrative eksempler"
-          title="Slik kan reisen se ut"
-          sub="Fiktive eksempler på reisen vi bygger programmet for — ikke ekte kundeuttalelser. Ekte historier fra kull 1 publiseres fortløpende."
-          center
-        />
-        <div className="grid gap-6 md:grid-cols-3">
-          {testimonials.map((t) => (
-            <Card key={t.name}>
-              <Badge tone="zinc" className="mb-3">
-                Illustrative eksempler — kull 1 pågår
-              </Badge>
-              <p className="text-sm italic leading-relaxed text-zinc-300">«{t.quote}»</p>
-              <div className="mt-4 border-t border-white/10 pt-3">
-                <p className="text-sm font-bold text-white">{t.name}</p>
-                <p className="text-xs text-zinc-500">
-                  {t.before} → <span className="text-emerald-400">{t.after}</span>
+      {/* COMMUNITY — CLOSERSKOLEN INSIDE */}
+      <section className="border-b border-line">
+        <div className="mx-auto max-w-6xl px-4 py-20">
+          <div className="grid gap-12 lg:grid-cols-2 lg:gap-14">
+            <div>
+              <p className="label-mono text-signal">— Closerskolen Inside</p>
+              <h2 className="mt-4 font-display text-3xl uppercase leading-[0.95] tracking-tight text-bone sm:text-5xl">
+                Du blir ikke ferdig — du blir med videre
+              </h2>
+              <p className="mt-5 leading-relaxed text-bone/60">
+                Etter eksamen åpnes communityet: der jobbene, vanene og
+                nettverket bor. Jobbtavle med stillinger fra partnerbedrifter,
+                leaderboard med premier — og en fast ukesrytme. 3 måneder
+                inkludert, deretter 399 kr/mnd hvis du vil bli.
+              </p>
+              {/* Ukesrytme som scoreboard */}
+              <div className="mt-8 border border-line">
+                <p className="label-mono border-b border-line px-4 py-2.5 text-bone/60">
+                  Ukesrytmen
+                </p>
+                {[
+                  {
+                    day: 'MAN',
+                    title: 'Ukesmål & jobbtavle',
+                    text: 'Nye stillinger fra partnerbedrifter — TM, D2D, SDR og remote closing.',
+                    icon: 'briefcase' as const,
+                  },
+                  {
+                    day: 'ONS',
+                    title: 'Wins Wednesday',
+                    text: 'Alle deler ukas seire — første salg, beste uke, ny jobb. Momentum smitter.',
+                    icon: 'trophy' as const,
+                  },
+                  {
+                    day: 'TOR',
+                    title: 'Live call reviews',
+                    text: 'Ekte samtaler gjennomgås live. Du hører hva som funker — ikke bare teorien.',
+                    icon: 'mic' as const,
+                  },
+                ].map((r) => (
+                  <div
+                    key={r.day}
+                    className="grid grid-cols-[3.5rem_1fr] gap-x-4 border-b border-line p-4 last:border-b-0"
+                  >
+                    <span className="font-mono text-lg font-semibold text-signal">
+                      {r.day}
+                    </span>
+                    <div>
+                      <p className="flex items-center gap-2 font-mono text-[13px] font-semibold uppercase tracking-[0.06em] text-bone">
+                        <Icon name={r.icon} size={14} className="text-signal" />
+                        {r.title}
+                      </p>
+                      <p className="mt-1 text-sm leading-relaxed text-bone/60">{r.text}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="flex flex-col gap-6">
+              <MediaPlaceholder
+                kind="video"
+                ratio="16/9"
+                label="Ukens closing-tips — eksempelklipp"
+              />
+              <div className="border border-line p-5">
+                <p className="label-mono flex items-center gap-2 text-bone/60">
+                  <Icon name="chart" size={14} className="text-signal" />
+                  Leaderboard
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-bone/60">
+                  Poeng for AI-scores og aktivitet. Topp 3 hver måned vinner
+                  1:1 med Sebastian.
                 </p>
               </div>
-            </Card>
-          ))}
+            </div>
+          </div>
         </div>
       </section>
 
       {/* FAQ */}
-      <section className="mx-auto max-w-3xl px-4 pb-20">
-        <SectionHeading eyebrow="FAQ" title="Ofte stilte spørsmål" center />
-        <div className="space-y-3">
-          {faq.map((f) => (
-            <FaqItem key={f.q} q={f.q} a={f.a} />
-          ))}
+      <section className="border-b border-line">
+        <div className="mx-auto max-w-3xl px-4 py-20">
+          <p className="label-mono text-signal">— FAQ</p>
+          <h2 className="mt-4 font-display text-4xl uppercase leading-[0.95] tracking-tight text-bone sm:text-5xl">
+            Ofte stilte spørsmål
+          </h2>
+          <div className="mt-10 border-t border-line">
+            {faq.map((f, i) => (
+              <FaqItem key={f.q} q={f.q} a={f.a} n={i + 1} />
+            ))}
+          </div>
         </div>
       </section>
 
       {/* SISTE CTA */}
-      <section className="border-t border-white/10 bg-gradient-to-b from-zinc-950 to-zinc-900 py-20 text-center">
-        <div className="mx-auto max-w-2xl px-4">
-          <h2 className="text-3xl font-black text-white sm:text-4xl">
+      <section className="stripes-soft">
+        <div className="mx-auto max-w-6xl px-4 py-24 text-center">
+          <h2 className="mx-auto font-display text-4xl uppercase leading-[0.95] tracking-tight text-bone sm:text-6xl lg:text-7xl">
             23 plasser. Ett spørsmål:{' '}
-            <span className="text-amber-500">er du sulten nok?</span>
+            <span className="text-signal">er du sulten nok?</span>
           </h2>
-          <p className="mt-4 text-zinc-400">
-            Søknaden er gratis og tar tre minutter. Vi svarer alle innen 48
-            timer.
+          <p className="label-mono mt-8 text-bone/60">
+            Søknaden er gratis og tar tre minutter · Vi svarer alle innen 48 timer
           </p>
-          <div className="mt-8">
-            <Button to="/pamelding" size="lg">Søk plass på kull 3 →</Button>
+          <div className="mt-10">
+            <Button to="/pamelding" size="lg">
+              Søk plass på kull 3 <Icon name="arrow-right" size={16} />
+            </Button>
           </div>
         </div>
       </section>

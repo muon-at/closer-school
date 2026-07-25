@@ -5,19 +5,22 @@ type Variant = 'primary' | 'secondary' | 'ghost' | 'green';
 type Size = 'sm' | 'md' | 'lg';
 
 const base =
-  'inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500/50 disabled:opacity-40 disabled:cursor-not-allowed';
+  'inline-flex items-center justify-center gap-2 rounded-none font-mono font-semibold uppercase tracking-[0.08em] transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-signal disabled:opacity-40 disabled:cursor-not-allowed';
 
 const variants: Record<Variant, string> = {
-  primary: 'bg-amber-500 text-zinc-950 hover:bg-amber-400',
-  secondary: 'border border-white/15 bg-white/5 text-zinc-100 hover:bg-white/10',
-  ghost: 'text-zinc-300 hover:text-white hover:bg-white/5',
-  green: 'bg-emerald-500 text-zinc-950 hover:bg-emerald-400',
+  primary:
+    'bg-signal text-ink hover:-translate-y-0.5 hover:shadow-[4px_4px_0_#F4F1EA] active:translate-y-0 active:shadow-none',
+  secondary:
+    'border border-bone/60 bg-transparent text-bone hover:border-bone hover:-translate-y-0.5 hover:shadow-[4px_4px_0_#FF4D00] active:translate-y-0 active:shadow-none',
+  ghost: 'text-bone/70 hover:text-bone hover:bg-bone/5',
+  green:
+    'bg-win text-ink hover:-translate-y-0.5 hover:shadow-[4px_4px_0_#F4F1EA] active:translate-y-0 active:shadow-none',
 };
 
 const sizes: Record<Size, string> = {
-  sm: 'px-3 py-1.5 text-sm',
-  md: 'px-5 py-2.5 text-sm',
-  lg: 'px-7 py-3.5 text-base',
+  sm: 'px-4 py-2 text-[12px]',
+  md: 'px-6 py-3 text-[13px]',
+  lg: 'px-8 py-4 text-[13px]',
 };
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

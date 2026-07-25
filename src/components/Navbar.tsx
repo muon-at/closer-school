@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import Button from './Button';
+import Icon from './Icon';
 
 const links = [
   { to: '/garanti', label: 'Jobbgarantien' },
@@ -11,20 +12,24 @@ const links = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   return (
-    <header className="sticky top-0 z-40 border-b border-white/10 bg-zinc-950/80 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-line bg-ink/95 backdrop-blur-sm">
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-        <Link to="/" className="flex items-center gap-2 text-lg font-bold text-white">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500 text-sm font-black text-zinc-950">
-            C
-          </span>
-          Closerskolen
+        <Link
+          to="/"
+          className="font-display text-lg uppercase tracking-tight text-bone"
+        >
+          Closer<span className="text-signal">skolen</span>
         </Link>
-        <div className="hidden items-center gap-6 md:flex">
+        <div className="hidden items-center gap-7 md:flex">
           {links.map((l) => (
             <NavLink
               key={l.to}
               to={l.to}
-              className="text-sm text-zinc-300 hover:text-white"
+              className={({ isActive }) =>
+                `label-mono transition-colors ${
+                  isActive ? 'text-signal' : 'text-bone/70 hover:text-bone'
+                }`
+              }
             >
               {l.label}
             </NavLink>
@@ -34,21 +39,21 @@ export default function Navbar() {
           </Button>
         </div>
         <button
-          className="rounded-lg border border-white/15 p-2 text-zinc-300 md:hidden"
+          className="border border-line p-2 text-bone/80 md:hidden"
           onClick={() => setOpen(!open)}
           aria-label="Meny"
         >
-          <span aria-hidden>☰</span>
+          <Icon name={open ? 'x' : 'menu'} size={18} />
         </button>
       </nav>
       {open && (
-        <div className="border-t border-white/10 px-4 py-3 md:hidden">
-          <div className="flex flex-col gap-3">
+        <div className="border-t border-line px-4 py-4 md:hidden">
+          <div className="flex flex-col gap-4">
             {links.map((l) => (
               <NavLink
                 key={l.to}
                 to={l.to}
-                className="text-sm text-zinc-300"
+                className="label-mono text-bone/80"
                 onClick={() => setOpen(false)}
               >
                 {l.label}

@@ -3,22 +3,30 @@ import type { HTMLAttributes, ReactNode } from 'react';
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   accent?: 'none' | 'amber' | 'green';
+  /** Liten mono-etikett i øvre høyre hjørne, f.eks. «GARANTI» / «LIVE» */
+  cornerTag?: string;
 }
 
 export default function Card({
   children,
   accent = 'none',
+  cornerTag,
   className = '',
   ...rest
 }: CardProps) {
   const accentCls =
     accent === 'amber'
-      ? 'border-amber-500/30 bg-amber-500/5'
+      ? 'border-signal bg-signal/5'
       : accent === 'green'
-        ? 'border-emerald-500/30 bg-emerald-500/5'
-        : 'border-white/10 bg-zinc-900/60';
+        ? 'border-win/60 bg-win/5'
+        : 'border-line bg-ink';
   return (
-    <div className={`rounded-2xl border p-6 ${accentCls} ${className}`} {...rest}>
+    <div className={`relative rounded-none border p-6 ${accentCls} ${className}`} {...rest}>
+      {cornerTag && (
+        <span className="label-mono absolute right-0 top-0 border-b border-l border-line bg-ink px-2 py-1 text-[10px] text-signal">
+          {cornerTag}
+        </span>
+      )}
       {children}
     </div>
   );
