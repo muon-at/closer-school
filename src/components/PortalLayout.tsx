@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { getCurrentUser, isDemoMode } from '../lib/data';
+import { getCurrentUser, loadUserContext, isDemoMode } from '../lib/data';
 import { supabase } from '../lib/supabase';
 import Icon, { type IconName } from './Icon';
 
@@ -21,22 +21,27 @@ export default function PortalLayout() {
   // Auth-guard i produksjonsmodus: uten Supabase-sesjon → /logg-inn.
   // I demo-modus (ingen Supabase-config) er portalen åpen med mock-data.
   const [authChecked, setAuthChecked] = useState(isDemoMode);
+  const [user, setUser] = useState(getCurrentUser);
   useEffect(() => {
     if (!supabase) return;
     let active = true;
-    supabase.auth.getSession().then(({ data }) => {
+    supabase.auth.getSession().then(async ({ data }) => {
       if (!active) return;
       if (!data.session) {
         navigate('/logg-inn', { replace: true });
-      } else {
-        setAuthChecked(true);
+        return;
       }
+      // Fyll bruker-cachen (navn/kull fra profiles) FØR portalen rendres,
+      // slik at synkrone getCurrentUser()-kall i undersidene får ekte data.
+      await loadUserContext();
+      if (!active) return;
+      setUser(getCurrentUser());
+      setAuthChecked(true);
     });
     return () => {
       active = false;
     };
   }, [navigate]);
-  const user = getCurrentUser();
 
   if (!authChecked) {
     return (

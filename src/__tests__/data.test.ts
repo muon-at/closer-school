@@ -1,5 +1,8 @@
 // Tester at mock-datalaget leverer komplette data i demo-modus.
 import {
+  getCurrentUser,
+  loadUserContext,
+  saveCoachSession,
   getModules,
   getLessons,
   getQuiz,
@@ -168,6 +171,44 @@ describe('Datalaget i demo-modus', () => {
     expect(app.status).toBe('ny');
     const all = await getApplications();
     expect(all[0].name).toBe('Test Testesen');
+  });
+
+  it('getCurrentUser gir demo-brukeren i demo-modus', () => {
+    const user = getCurrentUser();
+    expect(user.name).toBe('Jonas Berg');
+    expect(user.cohort).toContain('Kull 3');
+  });
+
+  it('loadUserContext er no-op (null) i demo-modus og endrer ikke getCurrentUser', async () => {
+    const ctx = await loadUserContext();
+    expect(ctx).toBeNull();
+    expect(getCurrentUser().name).toBe('Jonas Berg');
+  });
+
+  it('saveCoachSession oppdaterer demo-progresjonen i demo-modus', async () => {
+    const before = await getProgress();
+    const approvedBefore = before.approvedCoachSessions;
+    await saveCoachSession({
+      id: 'cs-test-1',
+      personaId: 'kari',
+      personaName: 'Kari (54)',
+      difficulty: 1,
+      scorecard: {
+        opening: 85,
+        needs: 82,
+        objections: 80,
+        closing: 84,
+        total: 83,
+        approved: true,
+        feedback: ['Bra åpning'],
+        topCloserExample: '',
+        booked: true,
+      },
+      date: '2026-07-25',
+    });
+    const after = await getProgress();
+    expect(after.approvedCoachSessions).toBe(approvedBefore + 1);
+    expect(after.coachSessions[0].id).toBe('cs-test-1');
   });
 
   it('coach-flyt via datalaget: start → melding → scorecard', async () => {
