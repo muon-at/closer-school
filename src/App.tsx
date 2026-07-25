@@ -3,6 +3,7 @@ import Landing from './pages/Landing';
 import Pamelding from './pages/Pamelding';
 import Garanti from './pages/Garanti';
 import Vilkar from './pages/Vilkar';
+import Stipend from './pages/Stipend';
 import LoggInn from './pages/LoggInn';
 import Admin from './pages/Admin';
 import PortalLayout from './components/PortalLayout';
@@ -25,6 +26,9 @@ export function AppRoutes() {
       <Route path="/pamelding" element={<Pamelding />} />
       <Route path="/garanti" element={<Garanti />} />
       <Route path="/vilkar" element={<Vilkar />} />
+      {/* Skjult rute — kun for oppfølgings-løpet (direkte URL i e-post/SMS).
+          Lenkes bevisst IKKE fra landing, nav, footer eller FAQ. */}
+      <Route path="/stipend" element={<Stipend />} />
       <Route path="/logg-inn" element={<LoggInn />} />
       <Route path="/admin" element={<Admin />} />
       <Route path="/portal" element={<PortalLayout />}>

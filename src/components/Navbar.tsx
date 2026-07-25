@@ -35,7 +35,7 @@ export default function Navbar() {
             </NavLink>
           ))}
           <Button to="/pamelding" size="sm">
-            Søk plass på kull 3
+            Se om du kvalifiserer
           </Button>
         </div>
         <button
@@ -60,7 +60,7 @@ export default function Navbar() {
               </NavLink>
             ))}
             <Button to="/pamelding" size="sm">
-              Søk plass på kull 3
+              Se om du kvalifiserer
             </Button>
           </div>
         </div>

@@ -37,16 +37,17 @@ Verdiligningen:
 5. 3 mnd Closerskolen Community inkludert (verdi 1 197 kr)
 6. Bonus: script-bibliotek (tlf + dør), innvendingsbank, «første 30 dager i jobben»-plan
 
-## 4. Prising
+## 4. Prising (grunnleggermodellen)
 
 | Produkt | Pris | Kommentar |
 |---|---|---|
-| Closerskolen (hovedprogram) | **29 900 kr** | Eller **6 × 4 983 kr rentefritt og gebyrfritt** — samme totalpris (29 900 kr) («vi tjener ikke penger på gjelden din» — bevisst anti-Klarna-vinkel, Klarna tar 22 % nom. rente) |
+| Closerskolen — ordinær pris (fra kull 5) | **29 900 kr** | Prisankeret. Kommuniseres alltid som fremtidig ordinær pris — ALDRI som «førpris», «rabatt» eller overstrøket beløp (markedsføringsloven) |
+| Closerskolen — grunnleggerpris (kull 3 og 4) | **9 990 kr** | Ærlig begrunnelse kommuniseres eksplisitt: grunnleggerkullet får tett oppfølging mens videoene ferdigstilles, og resultatene deres brukes (med samtykke) som bevis for neste kull. Delbetaling: **3 × 3 330 kr rentefritt og gebyrfritt** («vi tjener ikke penger på gjelden din» — anti-Klarna-vinkel) |
 | Community (etter 3 gratis mnd) | **399 kr/mnd** | Jobbtavle, ukentlig live call review, wins, closing-tips |
 | Plasseringsfee fra arbeidsgivere | **30–60 000 kr/hode** | Underpris mot rekrutteringsbyråer (15–25 % av årslønn = 75–150k). Ferdigtrente, eksamens-beviste kandidater |
-| Stipendplasser (senere) | 0 kr for kandidat | Arbeidsgiverfinansiert (AW Academy-modellen) — growth-motor og PR |
+| Stipendplasser | Egenandel fra 2 498 kr | Inntil 75 % prisavslag etter individuell søknad (skjult side /stipend — brukes kun i 7-dagers oppfølgingsløpet, aldri lenket fra landing) |
 
-To inntektsstrømmer per student + community-LTV. Kull-modell med maks 20–30 plasser per kull = ekte scarcity.
+Lead-først-flyt: all trafikk (FB-ads, 18–25) sendes til gratis søknad FØR pris-forpliktelse — søknader lagres med tidsstempel i Supabase som grunnlag for 7-dagers oppfølging. To inntektsstrømmer per student + community-LTV. Kull-modell med maks 20–30 plasser per kull = ekte scarcity.
 
 ## 5. Jobbgarantien (juridisk trygg struktur — CareerFoundry-modellen)
 

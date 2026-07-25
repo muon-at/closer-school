@@ -105,7 +105,7 @@ export default function Garanti() {
 
         <div className="mt-12 border-t border-line pt-10 text-center">
           <Button to="/pamelding" size="lg">
-            Søk plass på kull 3 <Icon name="arrow-right" size={16} />
+            Se om du kvalifiserer — gratis søknad <Icon name="arrow-right" size={16} />
           </Button>
         </div>
       </main>

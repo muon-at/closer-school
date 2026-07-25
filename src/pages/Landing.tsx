@@ -56,8 +56,12 @@ const faq = [
     a: 'Ja, 14 dagers angrerett etter angrerettloven fra du melder deg på. Starter du kurset før fristen, samtykker du uttrykkelig til oppstart — da betaler du kun for det du har brukt hvis du angrer.',
   },
   {
+    q: 'Hvorfor er kull 3 så mye billigere?',
+    a: 'Kull 3 er grunnleggerkullet. Du blir tett fulgt opp av oss mens vi ferdigstiller videoene, og vi bruker resultatene deres (med samtykke) som bevis for neste kull. Derfor er prisen 9 990 kr for kull 3 og 4 — fra kull 5 koster programmet 29 900 kr. Ingen rabattriks, bare en ærlig byttehandel: du er tidlig ute, vi får bevisene.',
+  },
+  {
     q: 'Hvordan fungerer delbetalingen?',
-    a: '6 månedlige trekk (5 × 4 983 kr + siste trekk 4 985 kr) — samme totalpris som ved engangsbetaling (29 900 kr), helt uten renter og gebyrer. Vi tjener ikke penger på gjelden din, kun på at du fullfører og kommer i jobb.',
+    a: '3 månedlige trekk à 3 330 kr — samme totalpris som ved engangsbetaling (9 990 kr for kull 3), helt uten renter og gebyrer. Vi tjener ikke penger på gjelden din, kun på at du fullfører og kommer i jobb.',
   },
   {
     q: 'Hva slags jobber er det snakk om?',
@@ -89,21 +93,22 @@ const offerStack = [
   { item: 'Bonus: script-bibliotek, innvendingsbank og «første 30 dager»-plan', value: '2 500 kr' },
 ];
 
+// Strammet inn ~20 % — kortere setninger, samme budskap.
 const pains = [
   {
     n: '01',
     title: 'Lager, butikk, kasse — og null vei videre',
-    text: 'Timelønna er lik uansett hvor hardt du jobber. Om fem år står du samme sted, bare eldre. Innsatsen din fortjener en jobb som betaler for den.',
+    text: 'Timelønna er lik uansett hvor hardt du jobber. Om fem år står du samme sted — bare eldre.',
   },
   {
     n: '02',
     title: 'Du ser andre tjene penger på TikTok',
-    text: '«Remote closing», «high ticket», «55k denne måneden». Noe av det er tull — men faget bak er ekte. Forskjellen på dem og deg er trening og en fot innenfor.',
+    text: '«Remote closing», «55k denne måneden». Mye er tull — men faget bak er ekte. Forskjellen er trening og en fot innenfor.',
   },
   {
     n: '03',
     title: 'Du vet ikke hva du «skal bli» — og alle maser',
-    text: 'Du trenger ikke en tiårsplan. Du trenger én ferdighet som betaler seg nå, og som åpner dører uansett hva du velger senere. Salg er den ferdigheten.',
+    text: 'Du trenger ikke en tiårsplan. Du trenger én ferdighet som betaler seg nå og åpner dører senere. Salg er den ferdigheten.',
   },
 ];
 
@@ -156,39 +161,37 @@ export default function Landing() {
     <div className="bg-ink">
       <Navbar />
 
-      {/* HERO — S.01 (ink) */}
+      {/* HERO — S.01 (ink). Kompakt på small: hero + CTA på én mobilskjerm. */}
       <section className="border-b border-line">
         <SectionDivider index={1} name="Fra null til closer" />
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 pb-20 pt-10 lg:grid-cols-5 lg:gap-14 sm:pt-12 lg:pb-24">
+        <div className="mx-auto grid max-w-6xl gap-8 px-4 pb-12 pt-6 sm:pt-10 lg:grid-cols-5 lg:gap-14 lg:pb-24 lg:pt-10">
           <div className="lg:col-span-3">
             <p className="label-mono text-signal">
               — Norges eneste salgsutdanning med jobbgaranti
             </p>
-            <h1 className="mt-6 font-display text-5xl uppercase leading-[0.95] tracking-tight text-bone sm:text-7xl lg:text-8xl">
+            <h1 className="mt-4 font-display text-4xl uppercase leading-[0.95] tracking-tight text-bone sm:mt-6 sm:text-6xl lg:text-8xl">
               Fra null til closer på <span className="text-signal">8 uker</span>.
             </h1>
-            <p className="mt-6 max-w-lg text-lg leading-relaxed text-bone/70">
+            <p className="mt-4 max-w-lg leading-relaxed text-bone/70 sm:mt-6 sm:text-lg">
               Ingen utdanning? Ingen erfaring? Bra.{' '}
               <span className="font-semibold text-bone">
                 Vi trenger bare at du er sulten.
               </span>
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row">
               <Button to="/pamelding" size="lg">
-                Søk plass på kull 3 <Icon name="arrow-right" size={16} />
+                Se om du kvalifiserer — gratis søknad <Icon name="arrow-right" size={16} />
               </Button>
               <Button to="#slik-funker-det" variant="secondary" size="lg">
                 Se hvordan det funker
               </Button>
             </div>
-            <div className="label-mono mt-10 flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-line pt-5 text-bone/50">
+            <div className="label-mono mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-line pt-4 text-bone/50 sm:mt-10 sm:pt-5">
+              <span>Gratis søknad</span>
+              <span className="text-signal">·</span>
               <span>23 plasser</span>
               <span className="text-signal">·</span>
-              <span>Kull 3</span>
-              <span className="text-signal">·</span>
-              <span>Sep 2026</span>
-              <span className="text-signal">·</span>
-              <span>Mål: 97 % i jobb innen 90 dager</span>
+              <span>Jobbgaranti</span>
             </div>
           </div>
           <div className="lg:col-span-2">
@@ -226,10 +229,10 @@ export default function Landing() {
         </div>
       </div>
 
-      {/* PAIN — S.02 (bone) */}
+      {/* PROBLEM — S.02 (bone) */}
       <section className="bg-bone text-ink">
         <SectionDivider index={2} name="Kjenner du deg igjen?" tone="bone" />
-        <div className="mx-auto max-w-6xl px-4 pb-24 pt-10 lg:pb-32 lg:pt-14">
+        <div className="mx-auto max-w-6xl px-4 pb-20 pt-10 lg:pb-28 lg:pt-14">
           <p className="label-mono text-signal">— Kjenner du deg igjen?</p>
           <h2 className="mt-4 max-w-3xl font-display text-4xl uppercase leading-[0.95] tracking-tight sm:text-6xl">
             Du vet du kan mer enn jobben din krever
@@ -255,10 +258,47 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* 8-UKERS PROGRAM — S.03 (ink), VERTIKAL TIDSLINJE */}
+      {/* HVA DU FÅR — S.03 (ink). Verdi før prosess — uten pris-tall. */}
+      <section>
+        <SectionDivider index={3} name="Hva du får" />
+        <div className="mx-auto max-w-6xl px-4 pb-20 pt-10 lg:pb-28 lg:pt-14">
+          <p className="label-mono text-signal">— Hva du får</p>
+          <h2 className="mt-4 max-w-3xl font-display text-4xl uppercase leading-[0.95] tracking-tight text-bone sm:text-6xl">
+            Alt som skal til — i én pakke
+          </h2>
+          <div className="mx-auto mt-12 max-w-2xl border border-line">
+            <p className="label-mono border-b border-line px-5 py-3 text-bone/60">
+              Closerskolen — kvittering
+            </p>
+            <div className="p-5 font-mono text-[13px]">
+              {offerStack.map((o) => (
+                <div
+                  key={o.item}
+                  className="flex items-baseline justify-between gap-3 border-b border-dashed border-line py-3"
+                >
+                  <span className="text-bone/80">{o.item}</span>
+                  <span className="shrink-0 text-bone/50">{o.value}</span>
+                </div>
+              ))}
+              <div className="flex items-baseline justify-between gap-3 py-4">
+                <span className="uppercase tracking-[0.1em] text-bone/60">Totalverdi</span>
+                <span className="font-semibold text-bone">33 697 kr</span>
+              </div>
+            </div>
+          </div>
+          <div className="mt-10 text-center">
+            <Button to="/pamelding" size="lg">
+              Se om du kvalifiserer — gratis søknad <Icon name="arrow-right" size={16} />
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* SLIK FUNKER DET — S.04 (ink), KOMPAKT TIDSLINJE I TO KOLONNER */}
+      <StripeSpacer />
       <section id="slik-funker-det">
-        <SectionDivider index={3} name="Slik funker det" />
-        <div className="mx-auto max-w-6xl px-4 pb-24 pt-10 lg:pb-32 lg:pt-14">
+        <SectionDivider index={4} name="Slik funker det" />
+        <div className="mx-auto max-w-6xl px-4 pb-20 pt-10 lg:pb-28 lg:pt-14">
           <p className="label-mono text-signal">— Slik funker det</p>
           <h2 className="mt-4 max-w-3xl font-display text-4xl uppercase leading-[0.95] tracking-tight text-bone sm:text-6xl">
             8 uker. 6 moduler. Én ekte kundesamtale.
@@ -268,38 +308,38 @@ export default function Landing() {
             ikke videre før du kan det — og akkurat derfor tør vi garantere
             jobb.
           </p>
-          <ol className="mt-12">
+          <ol className="mt-10 grid gap-x-8 md:grid-cols-2">
             {timeline.map((t) => {
               const isFinal = t.week === '08';
               return (
                 <li
                   key={t.week}
-                  className={`grid gap-3 py-6 sm:grid-cols-12 sm:items-baseline sm:gap-6 ${
+                  className={`flex gap-4 py-5 ${
                     isFinal
-                      ? 'border-2 border-signal bg-signal/5 px-4 sm:px-6'
+                      ? 'border-2 border-signal bg-signal/5 px-4 md:col-span-2 md:px-6'
                       : 'border-b border-line'
                   }`}
                 >
                   <span
-                    className={`font-mono text-5xl font-semibold tracking-tight sm:col-span-2 sm:text-6xl ${
+                    className={`shrink-0 font-mono text-4xl font-semibold tracking-tight ${
                       isFinal ? 'text-signal' : 'text-bone/25'
                     }`}
                   >
                     {t.week}
                   </span>
-                  <div className="sm:col-span-6">
-                    <h3 className="font-display text-lg uppercase tracking-tight text-bone sm:text-xl">
+                  <div className="min-w-0">
+                    <h3 className="font-display text-base uppercase tracking-tight text-bone sm:text-lg">
                       {t.title}
                     </h3>
-                    <p className="mt-1.5 text-sm leading-relaxed text-bone/60">{t.text}</p>
+                    <p className="mt-1 text-sm leading-relaxed text-bone/60">{t.text}</p>
+                    <p
+                      className={`label-mono mt-2 ${
+                        isFinal ? 'text-signal' : 'text-bone/40'
+                      }`}
+                    >
+                      {t.gate}
+                    </p>
                   </div>
-                  <p
-                    className={`label-mono sm:col-span-4 sm:text-right ${
-                      isFinal ? 'text-signal' : 'text-bone/40'
-                    }`}
-                  >
-                    {t.gate}
-                  </p>
                 </li>
               );
             })}
@@ -307,13 +347,11 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Spacer-stripe: to mørke seksjoner etter hverandre */}
+      {/* AI-COACHEN — S.05 (ink), KORT VERSJON */}
       <StripeSpacer />
-
-      {/* AI-COACHEN — S.04 (ink) */}
       <section>
-        <SectionDivider index={4} name="AI-salgscoachen" />
-        <div className="mx-auto max-w-6xl px-4 pb-24 pt-10 lg:pb-32 lg:pt-14">
+        <SectionDivider index={5} name="AI-salgscoachen" />
+        <div className="mx-auto max-w-6xl px-4 pb-20 pt-10 lg:pb-28 lg:pt-14">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-14">
             <div>
               <p className="label-mono text-signal">— AI-salgscoachen</p>
@@ -321,18 +359,13 @@ export default function Landing() {
                 Øv ubegrenset mot Norges tøffeste AI-kunde
               </h2>
               <p className="mt-5 leading-relaxed text-bone/60">
-                Du velger et oppdrag — telefon eller dør, TV & strømming,
-                boligalarm, strøm, fiber eller B2B. Kunden bak er skjult: navn,
-                behov og økonomi må graves frem med gode spørsmål. De sier «jeg
-                må snakke med samboeren» og «send meg noe på mail» — helt til du
-                lærer å svare. Hver samtale ender i et utfall: booket møte,
-                salg, oppfølging eller tapt — og scores 0–100 med konkret
-                feedback.
+                Skjulte kundeoppdrag på telefon og dør. Kunden sier «jeg må
+                snakke med samboeren» og «send meg noe på mail» — helt til du
+                lærer å svare. Hver samtale scores 0–100 med konkret feedback.
               </p>
               <ul className="mt-8 space-y-4 text-sm text-bone/80">
                 {[
                   '5 skjulte kundeoppdrag + eksamensoppdrag, 3 vanskelighetsgrader',
-                  'Scorecard: åpning, behov, innvendinger, closing',
                   '«Hva en topp-closer ville sagt» etter hver samtale',
                   'Du dummer deg ut foran en robot — ikke foran en kunde',
                 ].map((li) => (
@@ -344,16 +377,9 @@ export default function Landing() {
                   </li>
                 ))}
               </ul>
-              <div className="mt-8">
-                <MediaPlaceholder
-                  kind="image"
-                  ratio="16/9"
-                  label="Skjermopptak av AI-coachen"
-                />
-              </div>
             </div>
 
-            {/* Chat-mockup i scoreboard-stil */}
+            {/* Chat-mockup */}
             <div className="border border-line">
               <div className="flex items-center justify-between border-b border-line px-4 py-3">
                 <p className="label-mono flex items-center gap-2 text-bone">
@@ -378,47 +404,21 @@ export default function Landing() {
                   Ja … det er jo egentlig mest jeg som styrer sånt, da.
                 </div>
               </div>
-              {/* Scorecard-tabell */}
-              <div className="border-t border-line">
-                <p className="label-mono flex items-center justify-between border-b border-line px-4 py-2.5 text-bone/60">
-                  Scorecard
-                  <span className="flex items-center gap-1.5 text-win">
-                    <Icon name="check" size={13} /> Godkjent
-                  </span>
-                </p>
-                <table className="w-full font-mono text-[13px]">
-                  <tbody>
-                    {[
-                      ['Åpning', '82'],
-                      ['Behov', '74'],
-                      ['Innvendinger', '88'],
-                      ['Closing', '78'],
-                    ].map(([k, v]) => (
-                      <tr key={k} className="border-b border-line">
-                        <td className="px-4 py-2 uppercase tracking-[0.08em] text-bone/60">{k}</td>
-                        <td className="px-4 py-2 text-right text-bone">{v}</td>
-                      </tr>
-                    ))}
-                    <tr>
-                      <td className="px-4 py-2.5 font-semibold uppercase tracking-[0.08em] text-bone">
-                        Totalt
-                      </td>
-                      <td className="px-4 py-2.5 text-right font-semibold text-signal">
-                        81/100
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+              <p className="label-mono flex items-center justify-between border-t border-line px-4 py-3 text-bone/60">
+                Score: <span className="text-signal">81/100</span>
+                <span className="flex items-center gap-1.5 text-win">
+                  <Icon name="check" size={13} /> Godkjent
+                </span>
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* JOBBGARANTIEN — S.05 (bone) */}
+      {/* JOBBGARANTIEN — S.06 (bone) */}
       <section className="bg-bone text-ink">
-        <SectionDivider index={5} name="Jobbgarantien" tone="bone" />
-        <div className="mx-auto max-w-6xl px-4 pb-24 pt-10 lg:pb-32 lg:pt-14">
+        <SectionDivider index={6} name="Jobbgarantien" tone="bone" />
+        <div className="mx-auto max-w-6xl px-4 pb-20 pt-10 lg:pb-28 lg:pt-14">
           <p className="label-mono text-signal">— Jobbgarantien</p>
           <h2 className="mt-5 font-display text-4xl uppercase leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl">
             Får du ikke jobb, får du hver krone tilbake.
@@ -453,74 +453,62 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* OFFER STACK + PRIS — S.06 (ink) */}
+      {/* PRIS — S.07 (ink). Grunnleggerpris kull 3 — ærlig begrunnelse, ingen «rabatt». */}
       <section>
-        <SectionDivider index={6} name="Det du får" />
-        <div className="mx-auto max-w-6xl px-4 pb-24 pt-10 lg:pb-32 lg:pt-14">
-          <p className="label-mono text-signal">— Det du får</p>
-          <h2 className="mt-4 font-display text-4xl uppercase leading-[0.95] tracking-tight text-bone sm:text-6xl">
-            Alt som skal til — i én pakke
-          </h2>
-          <div className="mt-12 grid gap-10 lg:grid-cols-2">
-            {/* Kvittering */}
-            <div className="border border-line">
-              <p className="label-mono border-b border-line px-5 py-3 text-bone/60">
-                Closerskolen — kvittering
+        <SectionDivider index={7} name="Grunnleggerpris" />
+        <div className="mx-auto max-w-6xl px-4 pb-20 pt-10 lg:pb-28 lg:pt-14">
+          <div className="grid gap-12 lg:grid-cols-2 lg:gap-14">
+            <div>
+              <p className="label-mono text-signal">— Grunnleggerpris kull 3</p>
+              <h2 className="mt-4 font-display text-4xl uppercase leading-[0.95] tracking-tight text-bone sm:text-6xl">
+                Hvorfor så billig?
+              </h2>
+              <p className="mt-5 leading-relaxed text-bone/70">
+                Kull 3 er grunnleggerkullet: du blir tett fulgt opp av oss mens
+                vi ferdigstiller videoene, og vi bruker resultatene deres (med
+                samtykke) som bevis for neste kull. Fra kull 5 koster programmet
+                29 900 kr.
               </p>
-              <div className="p-5 font-mono text-[13px]">
-                {offerStack.map((o) => (
-                  <div
-                    key={o.item}
-                    className="flex items-baseline justify-between gap-3 border-b border-dashed border-line py-3"
-                  >
-                    <span className="text-bone/80">{o.item}</span>
-                    <span className="shrink-0 text-bone/50">{o.value}</span>
-                  </div>
-                ))}
-                <div className="flex items-baseline justify-between gap-3 py-4">
-                  <span className="uppercase tracking-[0.1em] text-bone/60">Totalverdi</span>
-                  <span className="text-bone/50 line-through decoration-signal decoration-2">
-                    33 697 kr
-                  </span>
-                </div>
-              </div>
+              <p className="mt-5 border-l-2 border-signal pl-4 text-sm font-medium text-bone/80">
+                «Vi tjener ikke penger på gjelden din.» Ingen renter, ingen
+                gebyrer, ingen Klarna-triks — heller ikke på delbetaling.
+              </p>
             </div>
-            {/* Pris */}
             <div className="flex flex-col justify-between border-2 border-signal p-6 sm:p-8">
               <div>
-                <p className="label-mono text-signal">— Din investering</p>
-                <p className="mt-4 font-display text-6xl uppercase tracking-tight text-bone sm:text-7xl">
-                  29 900 kr
+                <p className="label-mono text-bone/60">
+                  Ordinær pris fra kull 5: 29 900 kr
+                </p>
+                <p className="label-mono mt-5 text-signal">Grunnleggerpris kull 3</p>
+                <p className="mt-2 font-display text-6xl uppercase tracking-tight text-signal sm:text-7xl">
+                  9 990 kr
                 </p>
                 <div className="label-mono mt-6 border-t border-line pt-5 text-bone/60">
                   Eller delbetaling
                 </div>
-                <p className="mt-2 font-mono text-xl text-bone">
-                  6 × 4 983 kr
-                </p>
+                <p className="mt-2 font-mono text-xl text-bone">3 × 3 330 kr</p>
                 <p className="mt-1 text-sm text-bone/60">
-                  6 månedlige trekk à ~4 983 kr — helt rentefritt, samme
+                  3 månedlige trekk à 3 330 kr — rentefritt og gebyrfritt, samme
                   totalpris.
-                </p>
-                <p className="mt-5 border-l-2 border-signal pl-4 text-sm font-medium text-bone/80">
-                  «Vi tjener ikke penger på gjelden din.» Ingen renter, ingen
-                  gebyrer, ingen Klarna-triks.
                 </p>
               </div>
               <div className="mt-8">
                 <Button to="/pamelding" size="lg" className="w-full">
-                  Søk plass på kull 3 <Icon name="arrow-right" size={16} />
+                  Se om du kvalifiserer — gratis søknad <Icon name="arrow-right" size={16} />
                 </Button>
+                <p className="label-mono mt-4 text-center leading-relaxed text-bone/50">
+                  Grunnleggerprisen låses til søknaden din når du søker i dag.
+                </p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ILLUSTRATIVE EKSEMPLER — S.07 (bone) (se kommentar øverst i fila) */}
+      {/* REISEN / ILLUSTRATIVE EKSEMPLER — S.08 (bone) (se kommentar øverst i fila) */}
       <section className="bg-bone text-ink">
-        <SectionDivider index={7} name="Illustrative eksempler" tone="bone" />
-        <div className="mx-auto max-w-6xl px-4 pb-24 pt-10 lg:pb-32 lg:pt-14">
+        <SectionDivider index={8} name="Illustrative eksempler" tone="bone" />
+        <div className="mx-auto max-w-6xl px-4 pb-20 pt-10 lg:pb-28 lg:pt-14">
           <p className="label-mono text-signal">— Illustrative eksempler</p>
           <h2 className="mt-4 font-display text-4xl uppercase leading-[0.95] tracking-tight sm:text-6xl">
             Slik kan reisen se ut
@@ -563,93 +551,10 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* COMMUNITY — S.08 (ink), CLOSERSKOLEN INSIDE */}
-      <section>
-        <SectionDivider index={8} name="Closerskolen Inside" />
-        <div className="mx-auto max-w-6xl px-4 pb-24 pt-10 lg:pb-32 lg:pt-14">
-          <div className="grid gap-12 lg:grid-cols-2 lg:gap-14">
-            <div>
-              <p className="label-mono text-signal">— Closerskolen Inside</p>
-              <h2 className="mt-4 font-display text-3xl uppercase leading-[0.95] tracking-tight text-bone sm:text-5xl">
-                Du blir ikke ferdig — du blir med videre
-              </h2>
-              <p className="mt-5 leading-relaxed text-bone/60">
-                Etter eksamen åpnes communityet: der jobbene, vanene og
-                nettverket bor. Jobbtavle med stillinger fra partnerbedrifter,
-                leaderboard med premier — og en fast ukesrytme. 3 måneder
-                inkludert, deretter 399 kr/mnd hvis du vil bli.
-              </p>
-              {/* Ukesrytme som scoreboard */}
-              <div className="mt-8 border border-line">
-                <p className="label-mono border-b border-line px-4 py-2.5 text-bone/60">
-                  Ukesrytmen
-                </p>
-                {[
-                  {
-                    day: 'MAN',
-                    title: 'Ukesmål & jobbtavle',
-                    text: 'Nye stillinger fra partnerbedrifter — TM, D2D, SDR og remote closing.',
-                    icon: 'briefcase' as const,
-                  },
-                  {
-                    day: 'ONS',
-                    title: 'Wins Wednesday',
-                    text: 'Alle deler ukas seire — første salg, beste uke, ny jobb. Momentum smitter.',
-                    icon: 'trophy' as const,
-                  },
-                  {
-                    day: 'TOR',
-                    title: 'Live call reviews',
-                    text: 'Ekte samtaler gjennomgås live. Du hører hva som funker — ikke bare teorien.',
-                    icon: 'mic' as const,
-                  },
-                ].map((r) => (
-                  <div
-                    key={r.day}
-                    className="grid grid-cols-[3.5rem_1fr] gap-x-4 border-b border-line p-4 last:border-b-0"
-                  >
-                    <span className="font-mono text-lg font-semibold text-signal">
-                      {r.day}
-                    </span>
-                    <div>
-                      <p className="flex items-center gap-2 font-mono text-[13px] font-semibold uppercase tracking-[0.06em] text-bone">
-                        <Icon name={r.icon} size={14} className="text-signal" />
-                        {r.title}
-                      </p>
-                      <p className="mt-1 text-sm leading-relaxed text-bone/60">{r.text}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="flex flex-col gap-6">
-              <MediaPlaceholder
-                kind="video"
-                ratio="16/9"
-                label="Ukens closing-tips — eksempelklipp"
-              />
-              <div className="border border-line p-5">
-                <p className="label-mono flex items-center gap-2 text-bone/60">
-                  <Icon name="chart" size={14} className="text-signal" />
-                  Leaderboard
-                </p>
-                <p className="mt-2 text-sm leading-relaxed text-bone/60">
-                  Poeng for AI-scores og aktivitet. Topp 3 hver måned vinner
-                  1:1 med Sebastian.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Spacer-stripe: to mørke seksjoner etter hverandre */}
-      <StripeSpacer />
-
       {/* FAQ — S.09 (ink) */}
       <section>
         <SectionDivider index={9} name="FAQ" />
-        <div className="mx-auto max-w-3xl px-4 pb-24 pt-10 lg:pb-32 lg:pt-14">
+        <div className="mx-auto max-w-3xl px-4 pb-20 pt-10 lg:pb-28 lg:pt-14">
           <p className="label-mono text-signal">— FAQ</p>
           <h2 className="mt-4 font-display text-4xl uppercase leading-[0.95] tracking-tight text-bone sm:text-5xl">
             Ofte stilte spørsmål
@@ -667,7 +572,7 @@ export default function Landing() {
 
       {/* SISTE CTA — S.10 (ink + stripes) */}
       <section className="stripes-soft">
-        <SectionDivider index={10} name="Søk plass" />
+        <SectionDivider index={10} name="Gratis søknad" />
         <div className="mx-auto max-w-6xl px-4 pb-28 pt-14 text-center lg:pb-32 lg:pt-16">
           <h2 className="mx-auto font-display text-4xl uppercase leading-[0.95] tracking-tight text-bone sm:text-6xl lg:text-7xl">
             23 plasser. Ett spørsmål:{' '}
@@ -678,7 +583,7 @@ export default function Landing() {
           </p>
           <div className="mt-10">
             <Button to="/pamelding" size="lg">
-              Søk plass på kull 3 <Icon name="arrow-right" size={16} />
+              Se om du kvalifiserer — gratis søknad <Icon name="arrow-right" size={16} />
             </Button>
           </div>
         </div>

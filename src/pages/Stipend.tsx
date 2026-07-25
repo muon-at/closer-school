@@ -1,55 +1,33 @@
+// SKJULT SIDE — kun for oppfølgings-løpet (e-post/SMS etter 7 dager).
+// Skal IKKE lenkes fra landing, nav, footer eller FAQ — kun direkte URL.
 import { useState, type FormEvent } from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Button from '../components/Button';
 import Icon from '../components/Icon';
-import MediaPlaceholder from '../components/MediaPlaceholder';
 import SectionDivider from '../components/SectionDivider';
-import { submitApplication, getCohorts } from '../lib/data';
-import { Link } from 'react-router-dom';
+import { submitApplication } from '../lib/data';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const STIPEND_COHORT = 'STIPEND — kull 3';
 
-// Valgfritt situasjonsfelt — lagres som «[SITUASJON: …]»-prefiks i
-// motivation-strengen (ingen DB-endring nødvendig).
-const situasjoner = [
-  'Skole/studier',
-  'Jobb (butikk/lager/annet)',
-  'Mellom jobber',
-  'Annet',
+const stipendFakta = [
+  'Begrenset antall stipendplasser per kull — for kandidater med sterk motivasjon, men trang økonomi',
+  'Stipendet dekker inntil 75 % av kursavgiften — egenandel fra 2 498 kr',
+  'Vurderes individuelt etter en kort samtale',
+  'Jobbgarantien gjelder fullt ut — samme vilkår som ordinær plass',
 ];
 
-const etterpaSteg = [
-  {
-    n: '01',
-    title: 'Vi leser søknaden din',
-    text: 'Alle søknader leses av et menneske. Du hører fra oss innen 48 timer — uansett svar.',
-  },
-  {
-    n: '02',
-    title: 'Kort telefonsamtale',
-    text: 'Uformell prat på 10–15 minutter. Ingen forberedelse — vi vil bare høre hvorfor du vil dette.',
-  },
-  {
-    n: '03',
-    title: 'Tilbud om studieplass',
-    text: 'Passer det for begge, får du tilbud om plass på kull 3. Betaling skjer først når du takker ja.',
-  },
-];
-
-export default function Pamelding() {
-  const cohorts = getCohorts();
+export default function Stipend() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [form, setForm] = useState({
     name: '',
-    age: '',
     email: '',
     phone: '',
     motivation: '',
-    situation: '',
-    cohort: cohorts[0],
     angrerett: false,
   });
 
@@ -57,14 +35,6 @@ export default function Pamelding() {
     const errors: Record<string, string> = {};
     if (!form.name.trim() || form.name.trim().split(/\s+/).length < 2) {
       errors.name = 'Skriv inn fullt navn (fornavn og etternavn).';
-    }
-    const ageNum = Number(form.age);
-    if (!form.age.trim() || !Number.isFinite(ageNum)) {
-      errors.age = 'Alder må være et tall.';
-    } else if (ageNum < 18) {
-      errors.age = 'Du må være minst 18 år for å søke.';
-    } else if (ageNum > 99) {
-      errors.age = 'Skriv inn en gyldig alder.';
     }
     const digits = form.phone.replace(/\D/g, '');
     if (digits.length < 8) {
@@ -74,7 +44,7 @@ export default function Pamelding() {
       errors.email = 'Skriv inn en gyldig e-postadresse.';
     }
     if (!form.motivation.trim()) {
-      errors.motivation = 'Fortell oss kort hvorfor du søker.';
+      errors.motivation = 'Fortell oss kort hvorfor du fortjener stipendplassen.';
     }
     return errors;
   }
@@ -94,13 +64,11 @@ export default function Pamelding() {
     }
     await submitApplication({
       name: form.name.trim(),
-      age: Number(form.age),
+      age: 0,
       email: form.email.trim(),
       phone: form.phone.trim(),
-      motivation:
-        (form.situation ? `[SITUASJON: ${form.situation}] ` : '') +
-        form.motivation.trim(),
-      cohort: form.cohort,
+      motivation: form.motivation.trim(),
+      cohort: STIPEND_COHORT,
     });
     setSubmitted(true);
   }
@@ -129,42 +97,16 @@ export default function Pamelding() {
             <Icon name="check" size={28} />
           </div>
           <h1 className="font-display text-4xl uppercase leading-[0.95] tracking-tight text-bone sm:text-5xl">
-            Søknad mottatt!
+            Stipendsøknad mottatt!
           </h1>
           <p className="mt-6 leading-relaxed text-bone/70">
-            Takk, {form.name.split(' ')[0]}! Vi har mottatt søknaden din til{' '}
-            <span className="font-semibold text-bone">{form.cohort}</span>. Du
-            hører fra oss innen 48 timer — sjekk innboksen (og søppelposten) på{' '}
-            {form.email}.
+            Takk, {form.name.split(' ')[0]}! Vi har mottatt stipendsøknaden din.
+            Du hører fra oss innen 48 timer — sjekk innboksen (og søppelposten)
+            på {form.email}.
           </p>
-          {/* Pris-oppsummering — søkeren har nå gitt info, her kommer tallene */}
-          <div className="mt-8 w-full border border-line text-left">
-            <p className="label-mono border-b border-line px-5 py-3 text-bone/60">
-              Dette søker du på
-            </p>
-            <div className="px-5 font-mono text-[13px]">
-              <div className="flex items-baseline justify-between gap-3 border-b border-dashed border-line py-3">
-                <span className="text-bone/80">Grunnleggerpris kull 3</span>
-                <span className="shrink-0 font-semibold text-signal">9 990 kr</span>
-              </div>
-              <div className="flex items-baseline justify-between gap-3 border-b border-dashed border-line py-3">
-                <span className="text-bone/80">Eller delbetaling — rentefritt og gebyrfritt</span>
-                <span className="shrink-0 text-bone">3 × 3 330 kr</span>
-              </div>
-              <div className="flex items-baseline justify-between gap-3 py-3">
-                <span className="text-bone/80">
-                  Jobbgaranti: tilbud innen 90 dager — eller pengene tilbake
-                </span>
-                <span className="shrink-0 text-win">
-                  <Icon name="check" size={15} />
-                </span>
-              </div>
-            </div>
-          </div>
           <p className="label-mono mt-6 border-t border-line pt-6 leading-relaxed text-bone/50">
-            Neste steg: en kort telefonsamtale. Ingen forberedelse nødvendig —
-            vi vil bare høre hvorfor du vil dette. Betaling skjer først når du
-            takker ja til plass.
+            Neste steg: en kort telefonsamtale der vi vurderer søknaden din
+            individuelt. Ingen forberedelse nødvendig.
           </p>
           <div className="mt-10">
             <Button to="/">Tilbake til forsiden</Button>
@@ -178,18 +120,20 @@ export default function Pamelding() {
   return (
     <div className="flex min-h-screen flex-col bg-ink">
       <Navbar />
-      <SectionDivider index={1} name="Søknad — kull 3" />
+      <SectionDivider index={1} name="Stipendprogrammet" />
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-24 pt-10">
         <div className="grid gap-12 lg:grid-cols-5 lg:gap-16">
           {/* VENSTRE: Skjema */}
           <div className="lg:col-span-3">
-            <p className="label-mono text-signal">— 23 plasser per kull</p>
+            <p className="label-mono text-signal">— Stipendprogrammet</p>
             <h1 className="mt-4 font-display text-4xl uppercase leading-[0.95] tracking-tight text-bone sm:text-6xl">
-              Søk plass på Closerskolen
+              Søk om stipendplass.
             </h1>
             <p className="mt-5 max-w-lg leading-relaxed text-bone/60">
-              Gratis og uforpliktende. Vi ser ikke etter perfekte CV-er — vi
-              ser etter sult.
+              Vi holder av et begrenset antall stipendplasser per kull for
+              kandidater med sterk motivasjon, men trang økonomi. Stipendet
+              dekker inntil 75 % av kursavgiften, og søknadene vurderes
+              individuelt etter en kort samtale.
             </p>
 
             <form onSubmit={handleSubmit} className="mt-10 space-y-6" noValidate>
@@ -206,22 +150,20 @@ export default function Pamelding() {
                 />
                 <FieldError field="name" />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="age" className={labelCls}>
-                    Alder
+                  <label htmlFor="email" className={labelCls}>
+                    E-post
                   </label>
                   <input
-                    id="age"
-                    type="number"
-                    min={18}
-                    max={99}
-                    className={fieldErrors.age ? inputErrCls : inputCls}
-                    value={form.age}
-                    onChange={(e) => setForm({ ...form, age: e.target.value })}
-                    placeholder="18"
+                    id="email"
+                    type="email"
+                    className={fieldErrors.email ? inputErrCls : inputCls}
+                    value={form.email}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    placeholder="deg@epost.no"
                   />
-                  <FieldError field="age" />
+                  <FieldError field="email" />
                 </div>
                 <div>
                   <label htmlFor="phone" className={labelCls}>
@@ -239,57 +181,8 @@ export default function Pamelding() {
                 </div>
               </div>
               <div>
-                <label htmlFor="email" className={labelCls}>
-                  E-post
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  className={fieldErrors.email ? inputErrCls : inputCls}
-                  value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  placeholder="deg@epost.no"
-                />
-                <FieldError field="email" />
-              </div>
-              <div>
-                <label htmlFor="cohort" className={labelCls}>
-                  Hvilket kull søker du til?
-                </label>
-                <select
-                  id="cohort"
-                  className={inputCls}
-                  value={form.cohort}
-                  onChange={(e) => setForm({ ...form, cohort: e.target.value })}
-                >
-                  {cohorts.map((c) => (
-                    <option key={c} value={c}>
-                      {c}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label htmlFor="situation" className={labelCls}>
-                  Hva gjør du i dag? (valgfritt)
-                </label>
-                <select
-                  id="situation"
-                  className={inputCls}
-                  value={form.situation}
-                  onChange={(e) => setForm({ ...form, situation: e.target.value })}
-                >
-                  <option value="">Velg …</option>
-                  {situasjoner.map((s) => (
-                    <option key={s} value={s}>
-                      {s}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
                 <label htmlFor="motivation" className={labelCls}>
-                  Hvorfor deg? Fortell oss hvorfor du kommer til å fullføre.
+                  Hvorfor fortjener du stipendplassen?
                 </label>
                 <textarea
                   id="motivation"
@@ -328,7 +221,7 @@ export default function Pamelding() {
               )}
 
               <Button type="submit" size="lg" className="w-full">
-                Send søknad — helt gratis
+                Send stipendsøknad — helt gratis
               </Button>
               <p className="label-mono text-center leading-relaxed text-bone/40">
                 Søknaden er ikke en bindende bestilling. Betaling skjer først
@@ -337,38 +230,34 @@ export default function Pamelding() {
             </form>
           </div>
 
-          {/* HØYRE: Sticky info */}
+          {/* HØYRE: Sticky fakta */}
           <aside className="lg:col-span-2">
             <div className="lg:sticky lg:top-24">
               <div className="border border-line">
                 <p className="label-mono border-b border-line px-5 py-3 text-bone/60">
-                  Hva skjer etterpå
+                  Slik fungerer stipendet
                 </p>
-                {etterpaSteg.map((s) => (
+                {stipendFakta.map((f, i) => (
                   <div
-                    key={s.n}
+                    key={f}
                     className="grid grid-cols-[3rem_1fr] gap-x-3 border-b border-line p-5 last:border-b-0"
                   >
                     <span className="font-mono text-2xl font-semibold text-signal">
-                      {s.n}
+                      {String(i + 1).padStart(2, '0')}
                     </span>
-                    <div>
-                      <p className="font-mono text-[13px] font-semibold uppercase tracking-[0.06em] text-bone">
-                        {s.title}
-                      </p>
-                      <p className="mt-1.5 text-sm leading-relaxed text-bone/60">
-                        {s.text}
-                      </p>
-                    </div>
+                    <p className="text-sm leading-relaxed text-bone/70">{f}</p>
                   </div>
                 ))}
               </div>
-              <MediaPlaceholder
-                kind="image"
-                ratio="4/5"
-                label="Fra opptaksdagen"
-                className="mt-6"
-              />
+              <div className="mt-6 border-2 border-signal p-5">
+                <p className="label-mono text-bone/60">Grunnleggerpris kull 3</p>
+                <p className="mt-2 font-mono text-2xl font-semibold text-bone">
+                  9 990 kr
+                </p>
+                <p className="label-mono mt-3 text-signal">
+                  Med stipend: egenandel fra 2 498 kr
+                </p>
+              </div>
             </div>
           </aside>
         </div>

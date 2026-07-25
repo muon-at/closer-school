@@ -18,7 +18,7 @@ const sections = [
   },
   {
     title: '3. Pris og betaling',
-    body: 'Prisen er 29 900 kr, eller rentefri og gebyrfri delbetaling med 6 trekk à 4 983 kr (5 × 4 983 kr + siste trekk på 4 985 kr = 29 900 kr totalt — nøyaktig samme totalpris som ved engangsbetaling; ingen renter, ingen gebyrer, ingen påslag). Betaling skjer først når studieplass er tilbudt og akseptert. Ved delbetaling forfaller første trekk ved kursstart og deretter månedlig. Manglende betaling kan medføre suspensjon av tilgang etter varsel.',
+    body: 'Ordinær pris er 29 900 kr og gjelder fra og med kull 5. For kull 3 og kull 4 gjelder grunnleggerpris på 9 990 kr. Delbetaling tilbys rentefritt og gebyrfritt med 3 månedlige trekk à 3 330 kr (= 9 990 kr totalt — nøyaktig samme totalpris som ved engangsbetaling; ingen renter, ingen gebyrer, ingen påslag). Stipendordning kan innvilges etter individuell søknad, med inntil 75 % prisavslag på gjeldende kursavgift. Betaling skjer først når studieplass er tilbudt og akseptert. Ved delbetaling forfaller første trekk ved kursstart og deretter månedlig. Manglende betaling kan medføre suspensjon av tilgang etter varsel.',
   },
   {
     title: '4. Angrerett (14 dager)',

@@ -108,11 +108,18 @@ describe('Påmeldingsvalidering (V1)', () => {
     expect(screen.getByText(/hvorfor du søker/i)).toBeInTheDocument();
   });
 
-  it('gyldig skjema sendes inn og viser bekreftelse', async () => {
+  it('gyldig skjema sendes inn og viser bekreftelse med pris-oppsummering', async () => {
     renderAt('/pamelding');
     fillForm();
     fireEvent.click(screen.getByRole('button', { name: /send søknad/i }));
     expect(await screen.findByText(/søknad mottatt/i)).toBeInTheDocument();
+    // Bekreftelsessiden viser grunnleggerpris, delbetaling og garanti
+    expect(screen.getByText(/9 990 kr/)).toBeInTheDocument();
+    expect(screen.getByText(/3 × 3 330 kr/)).toBeInTheDocument();
+    expect(
+      screen.getByText(/jobbgaranti: tilbud innen 90 dager/i),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/neste steg: en kort telefonsamtale/i)).toBeInTheDocument();
   });
 });
 

@@ -28,7 +28,10 @@ describe('Offentlige ruter (demo-modus)', () => {
     expect(
       screen.getAllByText(/norges eneste salgsutdanning med jobbgaranti/i).length,
     ).toBeGreaterThan(0);
-    expect(screen.getByText(/29 900 kr/)).toBeInTheDocument();
+    // Ny prismodell: grunnleggerpris kull 3 — 29 900 kr kun som fremtidig ordinær pris
+    expect(screen.getByText(/9 990 kr/)).toBeInTheDocument();
+    expect(screen.getByText(/ordinær pris fra kull 5: 29 900 kr/i)).toBeInTheDocument();
+    expect(screen.getByText(/3 × 3 330 kr/)).toBeInTheDocument();
     expect(screen.getByText(/hver krone tilbake/i)).toBeInTheDocument();
   });
 
@@ -46,12 +49,28 @@ describe('Offentlige ruter (demo-modus)', () => {
     expect(screen.getByText(/frist for refusjonskrav/i)).toBeInTheDocument();
   });
 
-  it('/vilkar viser kjøpsvilkår og angrerett', () => {
+  it('/vilkar viser kjøpsvilkår og angrerett med ny prismodell', () => {
     renderAt('/vilkar');
     expect(
       screen.getByRole('heading', { name: /kjøpsvilkår og angrerett/i }),
     ).toBeInTheDocument();
     expect(screen.getByText(/angrerett \(14 dager\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/grunnleggerpris på 9 990 kr/i)).toBeInTheDocument();
+    expect(screen.getByText(/3 månedlige trekk à 3 330 kr/i)).toBeInTheDocument();
+    expect(screen.getByText(/inntil 75 % prisavslag/i)).toBeInTheDocument();
+  });
+
+  it('/stipend (skjult rute) rendrer stipendside med skjema og «inntil 75 %»', () => {
+    renderAt('/stipend');
+    expect(
+      screen.getByRole('heading', { name: /søk om stipendplass/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByLabelText(/fullt navn/i)).toBeInTheDocument();
+    expect(
+      screen.getByLabelText(/hvorfor fortjener du stipendplassen/i),
+    ).toBeInTheDocument();
+    expect(screen.getAllByText(/inntil 75 %/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/2 498 kr/).length).toBeGreaterThan(0);
   });
 
   it('/logg-inn viser demo-knappen i demo-modus', () => {
