@@ -114,13 +114,17 @@ describe('Portalruter (demo-modus)', () => {
     expect(screen.getByText(/quiz — sjekk at det sitter/i)).toBeInTheDocument();
   });
 
-  it('/portal/ai-coach viser persona-velgeren', async () => {
+  it('/portal/ai-coach viser oppdragsvelgeren med skjulte kunder', async () => {
     renderAt('/portal/ai-coach');
     await waitFor(() => {
-      expect(screen.getByRole('heading', { name: /velg kunde/i })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: /velg oppdrag/i })).toBeInTheDocument();
     });
-    expect(screen.getByText(/kari \(54\)/i)).toBeInTheDocument();
-    expect(screen.getByText(/pris-presseren/i)).toBeInTheDocument();
+    expect(screen.getByText(/tv & strømming \(nysalg\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/boligalarm/i)).toBeInTheDocument();
+    expect(screen.getByText(/b2b møtebooking/i)).toBeInTheDocument();
+    // Kunden bak oppdraget er skjult — ingen navn/alder på kortene
+    expect(screen.queryByText(/kari \(54\)/i)).not.toBeInTheDocument();
+    expect(screen.getAllByText(/skjult kunde/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/vanskelighetsgrad:/i)).toBeInTheDocument();
   });
 
@@ -146,7 +150,7 @@ describe('Portalruter (demo-modus)', () => {
     await waitFor(() => {
       expect(screen.getByText(/jobbtavle/i)).toBeInTheDocument();
     });
-    expect(screen.getByText(/tm-selger — allente-partner/i)).toBeInTheDocument();
+    expect(screen.getByText(/tm-selger — tv & strømming/i)).toBeInTheDocument();
     expect(screen.getByText(/remote closer — high ticket/i)).toBeInTheDocument();
   });
 

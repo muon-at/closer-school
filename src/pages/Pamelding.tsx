@@ -4,6 +4,7 @@ import Footer from '../components/Footer';
 import Button from '../components/Button';
 import Icon from '../components/Icon';
 import MediaPlaceholder from '../components/MediaPlaceholder';
+import SectionDivider from '../components/SectionDivider';
 import { submitApplication, getCohorts } from '../lib/data';
 import { Link } from 'react-router-dom';
 
@@ -140,7 +141,8 @@ export default function Pamelding() {
   return (
     <div className="flex min-h-screen flex-col bg-ink">
       <Navbar />
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-16">
+      <SectionDivider index={1} name="Søknad — kull 3" />
+      <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-24 pt-10">
         <div className="grid gap-12 lg:grid-cols-5 lg:gap-16">
           {/* VENSTRE: Skjema */}
           <div className="lg:col-span-3">

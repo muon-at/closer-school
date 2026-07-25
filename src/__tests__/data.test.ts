@@ -10,7 +10,7 @@ import {
   getPosts,
   getWins,
   getLeaderboard,
-  getCoachPersonas,
+  getCoachMissions,
   getProgress,
   markLessonComplete,
   submitApplication,
@@ -90,11 +90,19 @@ describe('Datalaget i demo-modus', () => {
     expect(board.some((e) => e.isYou)).toBe(true);
   });
 
-  it('returnerer coach-personas inkludert eksamenskunden', async () => {
-    const personas = await getCoachPersonas();
-    expect(personas.map((p) => p.id)).toEqual(
-      expect.arrayContaining(['kari', 'bjorn', 'martin', 'solveig', 'rune', 'eksamenskunden']),
+  it('returnerer 5 oppdrag + eksamensoppdraget (kunden er skjult)', async () => {
+    const missions = await getCoachMissions();
+    expect(missions.map((m) => m.id)).toEqual(
+      expect.arrayContaining(['o1', 'o2', 'o3', 'o4', 'o5', 'eksamen']),
     );
+    const exam = missions.find((m) => m.id === 'eksamen')!;
+    expect(exam.isExam).toBe(true);
+    // Oppdragskortet viser kun retning — aldri kundenavn/alder/situasjon
+    for (const m of missions) {
+      expect(m.channel === 'telefon' || m.channel === 'dør').toBe(true);
+      expect(m.product.length).toBeGreaterThan(0);
+      expect(m.leadTypeLabel.length).toBeGreaterThan(0);
+    }
   });
 
   it('markLessonComplete oppdaterer progresjonen', async () => {
@@ -190,8 +198,8 @@ describe('Datalaget i demo-modus', () => {
     const approvedBefore = before.approvedCoachSessions;
     await saveCoachSession({
       id: 'cs-test-1',
-      personaId: 'kari',
-      personaName: 'Kari (54)',
+      personaId: 'o1',
+      personaName: 'O1 · TV & strømming (nysalg)',
       difficulty: 1,
       scorecard: {
         opening: 85,
@@ -203,6 +211,9 @@ describe('Datalaget i demo-modus', () => {
         feedback: ['Bra åpning'],
         topCloserExample: '',
         booked: true,
+        outcome: 'salg',
+        factsRevealed: 4,
+        factsTotal: 5,
       },
       date: '2026-07-25',
     });
@@ -211,8 +222,8 @@ describe('Datalaget i demo-modus', () => {
     expect(after.coachSessions[0].id).toBe('cs-test-1');
   });
 
-  it('coach-flyt via datalaget: start → melding → scorecard', async () => {
-    const sessionId = startCoachSession('martin', 1);
+  it('coach-flyt via datalaget: start → melding → scorecard med utfall', async () => {
+    const sessionId = startCoachSession('o4', 1);
     const reply = await sendCoachMessage(
       sessionId,
       'Hei, det er Jonas fra Closerskolen — vi har en avtale med velforeningen der. Har dere fiber fra før?',
@@ -221,6 +232,8 @@ describe('Datalaget i demo-modus', () => {
     const scorecard = await endCoachSession(sessionId);
     expect(scorecard.total).toBeGreaterThanOrEqual(0);
     expect(scorecard.total).toBeLessThanOrEqual(100);
+    expect(['booket', 'salg', 'oppfolging', 'tapt']).toContain(scorecard.outcome);
+    expect(scorecard.factsTotal).toBeGreaterThan(0);
     // Økten lagres ikke automatisk — det gjør UI-et via saveCoachSession
   });
 });

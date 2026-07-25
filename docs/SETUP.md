@@ -62,11 +62,11 @@ Test:
 ```bash
 curl -s -X POST "https://<prosjekt>.supabase.co/functions/v1/coach" \
   -H "Authorization: Bearer <anon-key>" -H "Content-Type: application/json" \
-  -d '{"persona":"kari","difficulty":1,"messages":[],"latest":"Hei, det er Jonas fra Closerskolen. Vi har en avtale med velforeningen der du bor — har dere TV-pakke fra før?","mode":"chat"}'
+  -d '{"persona":"o1","difficulty":1,"messages":[],"latest":"Hei, det er Jonas fra Closerskolen. Vi har en avtale med velforeningen der du bor — har dere TV-pakke fra før?","mode":"chat"}'
 ```
 Forventet: `{"reply":"..."}` med et norsk kundesvar.
 
-## 6. Mate inn ekte Allente-transkripsjoner i coach-prompten
+## 6. Mate inn ekte salgstranskripsjoner i coach-prompten
 
 Coach Muon blir dramatisk bedre med ekte few-shot-eksempler:
 
@@ -76,7 +76,7 @@ Coach Muon blir dramatisk bedre med ekte few-shot-eksempler:
 2. Finn kandidater:
    ```sql
    select id, summary, created_at from public.transcripts
-   where summary ilike '%salg%' or summary ilike '%allente%'
+   where summary ilike '%salg%'
    order by created_at desc;
    ```
 3. Velg samtaler med tydelig åpning/innvending/booking. **Anonymiser** navn,

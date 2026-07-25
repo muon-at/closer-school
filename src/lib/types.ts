@@ -32,14 +32,26 @@ export interface QuizQuestion {
   correctIndex: number;
 }
 
-export interface CoachPersona {
+export type CoachLeadType = 'kald' | 'referanse' | 'inbound';
+export type CoachOutcome = 'booket' | 'salg' | 'oppfolging' | 'tapt';
+
+/**
+ * Et treningsoppdrag i AI-coachen. Studenten ser KUN retningen
+ * (kanal, produkt/bransje, lead-type) — kunden bak er skjult og
+ * må graves frem i samtalen.
+ */
+export interface CoachMission {
   id: string;
-  name: string;
-  age: number;
-  role: string;
-  description: string;
+  /** Kort kode til kortet: 'O1' … 'O5', 'EKSAMEN' */
+  code: string;
   channel: 'telefon' | 'dør';
-  emoji: string;
+  /** Produkt/bransje, f.eks. 'TV & strømming (nysalg)' */
+  product: string;
+  leadType: CoachLeadType;
+  /** Visningstekst, f.eks. 'Kald liste', 'Referanse fra nabolaget' */
+  leadTypeLabel: string;
+  /** Hva et vellykket utfall er for oppdraget */
+  goal: 'booket' | 'salg';
   isExam?: boolean;
 }
 
@@ -58,6 +70,11 @@ export interface Scorecard {
   feedback: string[];
   topCloserExample: string;
   booked: boolean;
+  /** Utfallet samtalen endte i */
+  outcome: CoachOutcome;
+  /** Avdekket X av Y nøkkelinfo (discovery-mekanikken) */
+  factsRevealed: number;
+  factsTotal: number;
 }
 
 export interface CoachSessionRecord {

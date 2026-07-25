@@ -1,9 +1,9 @@
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Button from '../components/Button';
-import Badge from '../components/Badge';
 import Icon from '../components/Icon';
 import MediaPlaceholder from '../components/MediaPlaceholder';
+import SectionDivider, { StripeSpacer } from '../components/SectionDivider';
 import { useState } from 'react';
 
 // MERK: Kortene nedenfor er ILLUSTRATIVE EKSEMPLER (fiktive navn/sitater) på
@@ -21,7 +21,7 @@ const testimonials = [
   {
     name: 'Adrian (19), Skien',
     before: 'Lagerarbeider',
-    after: 'TM-selger, Allente-partner',
+    after: 'TM-selger, TV & strømming',
     quote:
       'Referanse-metoden forandret alt for meg. Jeg gikk fra å grue meg til hver samtale til å faktisk glede meg til åpningen.',
   },
@@ -156,9 +156,10 @@ export default function Landing() {
     <div className="bg-ink">
       <Navbar />
 
-      {/* HERO */}
+      {/* HERO — S.01 (ink) */}
       <section className="border-b border-line">
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 pb-16 pt-14 lg:grid-cols-5 lg:gap-14 sm:pt-20">
+        <SectionDivider index={1} name="Fra null til closer" />
+        <div className="mx-auto grid max-w-6xl gap-10 px-4 pb-20 pt-10 lg:grid-cols-5 lg:gap-14 sm:pt-12 lg:pb-24">
           <div className="lg:col-span-3">
             <p className="label-mono text-signal">
               — Norges eneste salgsutdanning med jobbgaranti
@@ -225,9 +226,10 @@ export default function Landing() {
         </div>
       </div>
 
-      {/* PAIN — LYS SEKSJON */}
+      {/* PAIN — S.02 (bone) */}
       <section className="bg-bone text-ink">
-        <div className="mx-auto max-w-6xl px-4 py-20">
+        <SectionDivider index={2} name="Kjenner du deg igjen?" tone="bone" />
+        <div className="mx-auto max-w-6xl px-4 pb-24 pt-10 lg:pb-32 lg:pt-14">
           <p className="label-mono text-signal">— Kjenner du deg igjen?</p>
           <h2 className="mt-4 max-w-3xl font-display text-4xl uppercase leading-[0.95] tracking-tight sm:text-6xl">
             Du vet du kan mer enn jobben din krever
@@ -253,9 +255,10 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* 8-UKERS PROGRAM — VERTIKAL TIDSLINJE */}
-      <section id="slik-funker-det" className="border-b border-line">
-        <div className="mx-auto max-w-6xl px-4 py-20">
+      {/* 8-UKERS PROGRAM — S.03 (ink), VERTIKAL TIDSLINJE */}
+      <section id="slik-funker-det">
+        <SectionDivider index={3} name="Slik funker det" />
+        <div className="mx-auto max-w-6xl px-4 pb-24 pt-10 lg:pb-32 lg:pt-14">
           <p className="label-mono text-signal">— Slik funker det</p>
           <h2 className="mt-4 max-w-3xl font-display text-4xl uppercase leading-[0.95] tracking-tight text-bone sm:text-6xl">
             8 uker. 6 moduler. Én ekte kundesamtale.
@@ -304,9 +307,13 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* AI-COACHEN */}
-      <section className="border-b border-line">
-        <div className="mx-auto max-w-6xl px-4 py-20">
+      {/* Spacer-stripe: to mørke seksjoner etter hverandre */}
+      <StripeSpacer />
+
+      {/* AI-COACHEN — S.04 (ink) */}
+      <section>
+        <SectionDivider index={4} name="AI-salgscoachen" />
+        <div className="mx-auto max-w-6xl px-4 pb-24 pt-10 lg:pb-32 lg:pt-14">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-14">
             <div>
               <p className="label-mono text-signal">— AI-salgscoachen</p>
@@ -314,14 +321,17 @@ export default function Landing() {
                 Øv ubegrenset mot Norges tøffeste AI-kunde
               </h2>
               <p className="mt-5 leading-relaxed text-bone/60">
-                Kari (54) vurderer å si opp TV-pakken. Bjørn (47) har allerede
-                Verisure. Rune (41) presser deg på pris. De sier «jeg må snakke
-                med samboeren» og «send meg noe på mail» — helt til du lærer å
-                svare. Hver samtale scores 0–100 med konkret feedback.
+                Du velger et oppdrag — telefon eller dør, TV & strømming,
+                boligalarm, strøm, fiber eller B2B. Kunden bak er skjult: navn,
+                behov og økonomi må graves frem med gode spørsmål. De sier «jeg
+                må snakke med samboeren» og «send meg noe på mail» — helt til du
+                lærer å svare. Hver samtale ender i et utfall: booket møte,
+                salg, oppfølging eller tapt — og scores 0–100 med konkret
+                feedback.
               </p>
               <ul className="mt-8 space-y-4 text-sm text-bone/80">
                 {[
-                  '5 norske kundepersonas + eksamenskunde, 3 vanskelighetsgrader',
+                  '5 skjulte kundeoppdrag + eksamensoppdrag, 3 vanskelighetsgrader',
                   'Scorecard: åpning, behov, innvendinger, closing',
                   '«Hva en topp-closer ville sagt» etter hver samtale',
                   'Du dummer deg ut foran en robot — ikke foran en kunde',
@@ -348,7 +358,7 @@ export default function Landing() {
               <div className="flex items-center justify-between border-b border-line px-4 py-3">
                 <p className="label-mono flex items-center gap-2 text-bone">
                   <Icon name="phone" size={14} className="text-signal" />
-                  Kari (54) — Allente-kunden
+                  O1 — TV & strømming · skjult kunde
                 </p>
                 <span className="label-mono text-signal">Nivå 2</span>
               </div>
@@ -405,9 +415,10 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* JOBBGARANTIEN — LYS SEKSJON */}
+      {/* JOBBGARANTIEN — S.05 (bone) */}
       <section className="bg-bone text-ink">
-        <div className="mx-auto max-w-6xl px-4 py-20">
+        <SectionDivider index={5} name="Jobbgarantien" tone="bone" />
+        <div className="mx-auto max-w-6xl px-4 pb-24 pt-10 lg:pb-32 lg:pt-14">
           <p className="label-mono text-signal">— Jobbgarantien</p>
           <h2 className="mt-5 font-display text-4xl uppercase leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl">
             Får du ikke jobb, får du hver krone tilbake.
@@ -442,9 +453,10 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* OFFER STACK + PRIS */}
-      <section className="border-b border-line">
-        <div className="mx-auto max-w-6xl px-4 py-20">
+      {/* OFFER STACK + PRIS — S.06 (ink) */}
+      <section>
+        <SectionDivider index={6} name="Det du får" />
+        <div className="mx-auto max-w-6xl px-4 pb-24 pt-10 lg:pb-32 lg:pt-14">
           <p className="label-mono text-signal">— Det du får</p>
           <h2 className="mt-4 font-display text-4xl uppercase leading-[0.95] tracking-tight text-bone sm:text-6xl">
             Alt som skal til — i én pakke
@@ -505,39 +517,41 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ILLUSTRATIVE EKSEMPLER (se kommentar øverst i fila) */}
-      <section className="border-b border-line">
-        <div className="mx-auto max-w-6xl px-4 py-20">
+      {/* ILLUSTRATIVE EKSEMPLER — S.07 (bone) (se kommentar øverst i fila) */}
+      <section className="bg-bone text-ink">
+        <SectionDivider index={7} name="Illustrative eksempler" tone="bone" />
+        <div className="mx-auto max-w-6xl px-4 pb-24 pt-10 lg:pb-32 lg:pt-14">
           <p className="label-mono text-signal">— Illustrative eksempler</p>
-          <h2 className="mt-4 font-display text-4xl uppercase leading-[0.95] tracking-tight text-bone sm:text-6xl">
+          <h2 className="mt-4 font-display text-4xl uppercase leading-[0.95] tracking-tight sm:text-6xl">
             Slik kan reisen se ut
           </h2>
-          <p className="mt-5 max-w-2xl leading-relaxed text-bone/60">
+          <p className="mt-5 max-w-2xl leading-relaxed text-ink/70">
             Fiktive eksempler på reisen vi bygger programmet for — ikke ekte
             kundeuttalelser. Ekte historier fra kull 1 publiseres fortløpende.
           </p>
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {testimonials.map((t) => (
-              <div key={t.name} className="flex flex-col border border-line">
+              <div key={t.name} className="flex flex-col border border-line-ink bg-bone">
                 <MediaPlaceholder
                   kind="image"
                   ratio="1/1"
                   size="sm"
+                  tone="bone"
                   label={`Portrett — ${t.name.split(' ')[0]} (byttes til ekte student)`}
                   className="border-0 border-b border-dashed"
                 />
                 <div className="flex flex-1 flex-col p-5">
-                  <Badge tone="zinc" className="mb-4 self-start">
+                  <span className="label-mono mb-4 inline-flex items-center gap-1.5 self-start border border-line-ink px-2.5 py-1 text-ink/60">
                     Illustrative eksempler — kull 1 pågår
-                  </Badge>
-                  <p className="flex-1 text-sm leading-relaxed text-bone/70">
+                  </span>
+                  <p className="flex-1 text-sm leading-relaxed text-ink/70">
                     «{t.quote}»
                   </p>
-                  <div className="mt-5 border-t border-line pt-4">
-                    <p className="font-mono text-[13px] font-semibold uppercase tracking-[0.06em] text-bone">
+                  <div className="mt-5 border-t border-line-ink pt-4">
+                    <p className="font-mono text-[13px] font-semibold uppercase tracking-[0.06em] text-ink">
                       {t.name}
                     </p>
-                    <p className="label-mono mt-1.5 text-bone/40">
+                    <p className="label-mono mt-1.5 text-ink/50">
                       {t.before} <span className="text-signal">→</span>{' '}
                       <span className="text-win">{t.after}</span>
                     </p>
@@ -549,9 +563,10 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* COMMUNITY — CLOSERSKOLEN INSIDE */}
-      <section className="border-b border-line">
-        <div className="mx-auto max-w-6xl px-4 py-20">
+      {/* COMMUNITY — S.08 (ink), CLOSERSKOLEN INSIDE */}
+      <section>
+        <SectionDivider index={8} name="Closerskolen Inside" />
+        <div className="mx-auto max-w-6xl px-4 pb-24 pt-10 lg:pb-32 lg:pt-14">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-14">
             <div>
               <p className="label-mono text-signal">— Closerskolen Inside</p>
@@ -628,9 +643,13 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="border-b border-line">
-        <div className="mx-auto max-w-3xl px-4 py-20">
+      {/* Spacer-stripe: to mørke seksjoner etter hverandre */}
+      <StripeSpacer />
+
+      {/* FAQ — S.09 (ink) */}
+      <section>
+        <SectionDivider index={9} name="FAQ" />
+        <div className="mx-auto max-w-3xl px-4 pb-24 pt-10 lg:pb-32 lg:pt-14">
           <p className="label-mono text-signal">— FAQ</p>
           <h2 className="mt-4 font-display text-4xl uppercase leading-[0.95] tracking-tight text-bone sm:text-5xl">
             Ofte stilte spørsmål
@@ -643,9 +662,13 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* SISTE CTA */}
+      {/* Spacer-stripe: to mørke seksjoner etter hverandre */}
+      <StripeSpacer />
+
+      {/* SISTE CTA — S.10 (ink + stripes) */}
       <section className="stripes-soft">
-        <div className="mx-auto max-w-6xl px-4 py-24 text-center">
+        <SectionDivider index={10} name="Søk plass" />
+        <div className="mx-auto max-w-6xl px-4 pb-28 pt-14 text-center lg:pb-32 lg:pt-16">
           <h2 className="mx-auto font-display text-4xl uppercase leading-[0.95] tracking-tight text-bone sm:text-6xl lg:text-7xl">
             23 plasser. Ett spørsmål:{' '}
             <span className="text-signal">er du sulten nok?</span>

@@ -7,7 +7,8 @@ import { lessonContent } from './lessonContent';
 import { CoachSimulator, type Difficulty } from './coachSimulator';
 import type {
   Application,
-  CoachPersona,
+  CoachMission,
+  CoachOutcome,
   CoachSessionRecord,
   DemoUser,
   Job,
@@ -307,14 +308,17 @@ function freshProgress(): Progress {
   };
 }
 
+const VALID_OUTCOMES: CoachOutcome[] = ['booket', 'salg', 'oppfolging', 'tapt'];
+
 function mapCoachSessionRow(row: Row): CoachSessionRecord {
   const scores = (row.scores ?? {}) as Partial<Scorecard>;
-  const personaId = String(row.persona ?? '');
-  const persona = mock.coachPersonas.find((cp) => cp.id === personaId);
+  const missionId = String(row.persona ?? '');
+  const mission = mock.coachMissions.find((m) => m.id === missionId);
+  const booked = Boolean(scores.booked ?? false);
   return {
     id: String(row.id),
-    personaId,
-    personaName: persona?.name ?? personaId,
+    personaId: missionId,
+    personaName: mission ? `${mission.code} · ${mission.product}` : missionId,
     difficulty: Number(row.difficulty ?? 1),
     scorecard: {
       opening: Number(scores.opening ?? 0),
@@ -325,7 +329,15 @@ function mapCoachSessionRow(row: Row): CoachSessionRecord {
       approved: Boolean(scores.approved ?? row.approved ?? false),
       feedback: Array.isArray(scores.feedback) ? scores.feedback.map(String) : [],
       topCloserExample: String(scores.topCloserExample ?? ''),
-      booked: Boolean(scores.booked ?? false),
+      booked,
+      // Eldre rader mangler outcome — utled et fornuftig utfall fra booked
+      outcome: VALID_OUTCOMES.includes(scores.outcome as CoachOutcome)
+        ? (scores.outcome as CoachOutcome)
+        : booked
+          ? 'booket'
+          : 'tapt',
+      factsRevealed: Number(scores.factsRevealed ?? 0),
+      factsTotal: Number(scores.factsTotal ?? 0),
     },
     date: String(row.created_at ?? '').slice(0, 10),
   };
@@ -510,16 +522,31 @@ export function isModuleUnlocked(
 }
 
 // ── AI-coach ──────────────────────────────────────────────────────────────
-export async function getCoachPersonas(): Promise<CoachPersona[]> {
-  return mock.coachPersonas;
+export async function getCoachMissions(): Promise<CoachMission[]> {
+  return mock.coachMissions;
 }
+
+/** @deprecated Bruk getCoachMissions — beholdt som alias for eldre kallsteder. */
+export const getCoachPersonas = getCoachMissions;
 
 const activeSimulators = new Map<string, CoachSimulator>();
 
-export function startCoachSession(personaId: string, difficulty: Difficulty): string {
+export function startCoachSession(missionId: string, difficulty: Difficulty): string {
   const sessionId = `sess-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-  activeSimulators.set(sessionId, new CoachSimulator(personaId, difficulty));
+  activeSimulators.set(sessionId, new CoachSimulator(missionId, difficulty));
   return sessionId;
+}
+
+/**
+ * «AVDEKKET INFO»-panelet: hvilke facts studenten har gravd frem så langt.
+ * Kun tilgjengelig i demo-modus (lokal simulator); returnerer null ellers.
+ */
+export function getCoachSessionFacts(
+  sessionId: string,
+): { revealed: { id: string; label: string }[]; total: number } | null {
+  const sim = activeSimulators.get(sessionId);
+  if (!sim) return null;
+  return { revealed: sim.revealedFacts(), total: sim.factCount() };
 }
 
 /**

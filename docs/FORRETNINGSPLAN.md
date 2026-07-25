@@ -75,16 +75,16 @@ Risikostyring i praksis: signer 3–5 partneravtaler med salgsarbeidsgivere FØR
 | 5 | Innvendinger & closing | Innvendingsbanken (norske: «må snakke med samboeren», «har ikke råd», «har allerede leverandør»), 8 closing-teknikker | 6 AI-samtaler score ≥75 |
 | 6 | High ticket & karriere | Remote closing, discovery calls, CV/karrierevei, «første 30 dager» | 5 AI-samtaler score ≥80 |
 | 7 | Eksamensuke | Teorieksamen (40 spm, 80 %) + AI-eksamenssamtale (score ≥80) | Bestått |
-| 8 | Finalen | **Ekte kundesamtale** med sensor på linja (Sebastian/teamet, ekte Allente-/Muon-lead) + evaluering | Sensor godkjenner |
+| 8 | Finalen | **Ekte kundesamtale** med sensor på linja (Sebastian/teamet, ekte TV-leverandør-/Muon-lead) + evaluering | Sensor godkjenner |
 
 Deretter: sertifikat, jobbgarantiperiode starter, community åpnes.
 
 ## 7. AI-coachen («Coach Muon»)
 
 - Chat/tale-basert kundesimulator bygget på Claude via Supabase Edge Function.
-- **Personas:** Allente-kunde (TV/strømming, vurderer oppsigelse), Verisure-eier (dørsalg alarm), skeptisk pensjonist, travel småbarnsfar, «pris-presseren» m.fl. Tre vanskelighetsgrader.
+- **Personas:** TV-leverandør-kunde (TV/strømming, vurderer oppsigelse), Verisure-eier (dørsalg alarm), skeptisk pensjonist, travel småbarnsfar, «pris-presseren» m.fl. Tre vanskelighetsgrader.
 - **Scorecard per samtale:** åpning / behovsavdekking / innvendingshåndtering / closing (0–100), med konkret feedback og «hva en topp-closer ville sagt».
-- Systemprompten er bygget på Sebastians reelle samtalestil fra transkripsjonsbanken (referanse-åpning, folkelig tone, konkret booking). **Viktig neste steg:** ta opp 10–20 ekte Allente-samtaler med Plaud → de ligger da i transkripsjonsbanken → mates inn som few-shot-eksempler i coach-prompten (pipeline er forberedt i koden).
+- Systemprompten er bygget på Sebastians reelle samtalestil fra transkripsjonsbanken (referanse-åpning, folkelig tone, konkret booking). **Viktig neste steg:** ta opp 10–20 ekte salgssamtaler med Plaud → de ligger da i transkripsjonsbanken → mates inn som few-shot-eksempler i coach-prompten (pipeline er forberedt i koden).
 - Gates: modulene låser opp basert på antall godkjente AI-samtaler → beskytter både kvalitet og jobbgarantien.
 
 ## 8. Community («Closerskolen Inside»)
@@ -116,11 +116,11 @@ Deretter: sertifikat, jobbgarantiperiode starter, community åpnes.
 | «Nok et kurs»-skepsis | Ekte kundesamtale som eksamen + åpne vilkår + ekte wins, ikke leiebil-flexing |
 | Angrerett/Forbrukertilsynet | 14 dagers angrerett i checkout, alle vilkår publisert, garanti gir mer enn loven |
 | Lav betalingsevne 18–25 | Rentefri delbetaling + stipendplasser (arbeidsgiverfinansiert) |
-| AI-coach føles «fake» | Bygges på ekte Allente-samtaler (Plaud-pipeline), norske innvendinger, tale-modus på roadmap |
+| AI-coach føles «fake» | Bygges på ekte salgssamtaler (Plaud-pipeline), norske innvendinger, tale-modus på roadmap |
 
 ## 12. Neste steg (praktisk)
 
-1. Ta opp 10–20 ekte Allente-/salgssamtaler med Plaud (mates inn i coach-prompten).
+1. Ta opp 10–20 ekte salgssamtaler med Plaud (mates inn i coach-prompten).
 2. Signer 3–5 arbeidsgiverpartnere (garanti-backstop) — start med egne selskaper.
 3. Sett opp Supabase-prosjekt + deploy (se SETUP.md).
 4. Spill inn modulvideoene (manusstruktur ligger i portalen som placeholder per leksjon).

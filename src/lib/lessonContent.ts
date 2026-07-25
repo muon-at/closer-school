@@ -289,7 +289,7 @@ Uten avdekket behov argumenterer du i blinde. Du skryter av hastighet til en kun
 
 Rekkefølgen er poenget. Du bygger fra fakta → problem → konsekvens → ønsket løsning. Når kunden svarer på nytteverdi-spørsmålet, har hen formulert kjøpsgrunnen selv.
 
-## Eksempel fra en Allente-type samtale
+## Eksempel fra en TV-leverandør-samtale
 
 > Selger: «Hva betaler dere for TV og bredbånd i dag, cirka?»
 > Kunde: «Rundt 1 100 i måneden, tror jeg.»

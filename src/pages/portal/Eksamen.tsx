@@ -239,11 +239,11 @@ export default function Eksamen() {
           Krav: score ≥80 · vanskelighetsgrad låst til nivå 3
         </p>
         <p className="mt-3 max-w-xl text-sm leading-relaxed text-bone/60">
-          Eksamenskunden kombinerer det verste fra alle personas: skeptisk åpning,
-          fire innvendinger og prispress. Samtalen tas i AI-coachen — når
-          teorieksamen er bestått, dukker den opp i persona-velgeren der (med egen
-          EKSAMEN-merking). Scorer du ≥80, registreres dette steget automatisk som
-          bestått.
+          Eksamensoppdraget er verstingen: kunden er helt skjult, kanal og produkt
+          er tilfeldig, og du får ingenting gratis — alt må graves frem. Samtalen
+          tas i AI-coachen — når teorieksamen er bestått, dukker oppdraget opp i
+          oppdragsvelgeren der (med egen EKSAMEN-merking). Scorer du ≥80,
+          registreres dette steget automatisk som bestått.
         </p>
         {progress.examTheoryPassed && !progress.examAiPassed && (
           <div className="mt-5">
@@ -277,7 +277,7 @@ export default function Eksamen() {
           Finalen: reell kunde · sensor på linja · muntlig feedback
         </p>
         <p className="mt-3 max-w-xl text-sm leading-relaxed text-bone/60">
-          Du ringer en reell kunde (ekte Allente-/Muon-lead) med sensor på linja.
+          Du ringer en reell kunde (ekte TV-leverandør-/Muon-lead) med sensor på linja.
           Sensoren vurderer åpning, behov, innvendinger og avslutning — og gir deg
           muntlig feedback rett etterpå. Velg et tidspunkt:
         </p>

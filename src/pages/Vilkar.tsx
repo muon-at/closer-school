@@ -5,6 +5,7 @@
 // delbetalingsavtalens utforming, verneting, og samspillet garanti/angrerett.
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import SectionDivider from '../components/SectionDivider';
 
 const sections = [
   {
@@ -53,7 +54,8 @@ export default function Vilkar() {
   return (
     <div className="flex min-h-screen flex-col bg-ink">
       <Navbar />
-      <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-16">
+      <SectionDivider index={1} name="Kjøpsvilkår og angrerett" />
+      <main className="mx-auto w-full max-w-2xl flex-1 px-4 pb-24 pt-10">
         <p className="label-mono text-signal">— Juridisk</p>
         <h1 className="mt-4 font-display text-4xl uppercase leading-[0.95] tracking-tight text-bone sm:text-5xl">
           Kjøpsvilkår og angrerett

@@ -2,6 +2,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Button from '../components/Button';
 import Icon from '../components/Icon';
+import SectionDivider from '../components/SectionDivider';
 
 const vilkar = [
   {
@@ -40,7 +41,8 @@ export default function Garanti() {
   return (
     <div className="flex min-h-screen flex-col bg-ink">
       <Navbar />
-      <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-16">
+      <SectionDivider index={1} name="Jobbgarantien — fulle vilkår" />
+      <main className="mx-auto w-full max-w-2xl flex-1 px-4 pb-24 pt-10">
         <p className="label-mono flex items-center gap-2 text-win">
           <Icon name="check" size={14} />— Jobbgarantien — fulle vilkår
         </p>

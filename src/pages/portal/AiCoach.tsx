@@ -5,7 +5,8 @@ import Icon from '../../components/Icon';
 import MediaPlaceholder from '../../components/MediaPlaceholder';
 import PageHeader from '../../components/PageHeader';
 import {
-  getCoachPersonas,
+  getCoachMissions,
+  getCoachSessionFacts,
   getProgress,
   setExamStep,
   startCoachSession,
@@ -14,7 +15,13 @@ import {
   saveCoachSession,
   isDemoMode,
 } from '../../lib/data';
-import type { CoachMessage, CoachPersona, Progress, Scorecard } from '../../lib/types';
+import type {
+  CoachMessage,
+  CoachMission,
+  CoachOutcome,
+  Progress,
+  Scorecard,
+} from '../../lib/types';
 import type { Difficulty } from '../../lib/coachSimulator';
 
 const difficultyLabels: Record<Difficulty, string> = {
@@ -22,6 +29,15 @@ const difficultyLabels: Record<Difficulty, string> = {
   2: 'Krevende',
   3: 'Brutal',
 };
+
+const outcomeMeta: Record<CoachOutcome, { label: string; cls: string }> = {
+  booket: { label: 'Booket møte', cls: 'border-win text-win' },
+  salg: { label: 'Salg', cls: 'border-win text-win' },
+  oppfolging: { label: 'Oppfølging avtalt', cls: 'border-signal text-signal' },
+  tapt: { label: 'Tapt', cls: 'border-red-500 text-red-400' },
+};
+
+type FactsState = { revealed: { id: string; label: string }[]; total: number } | null;
 
 function Flames({ level, className = '' }: { level: number; className?: string }) {
   return (
@@ -63,12 +79,13 @@ function ScoreRow({ label, value }: { label: string; value: number }) {
 }
 
 export default function AiCoach() {
-  const [personas, setPersonas] = useState<CoachPersona[]>([]);
-  const [persona, setPersona] = useState<CoachPersona | null>(null);
+  const [missions, setMissions] = useState<CoachMission[]>([]);
+  const [mission, setMission] = useState<CoachMission | null>(null);
   const [difficulty, setDifficulty] = useState<Difficulty>(1);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [messages, setMessages] = useState<CoachMessage[]>([]);
   const [times, setTimes] = useState<string[]>([]);
+  const [facts, setFacts] = useState<FactsState>(null);
   const [input, setInput] = useState('');
   const [scorecard, setScorecard] = useState<Scorecard | null>(null);
   const [progress, setProgress] = useState<Progress | null>(null);
@@ -76,15 +93,15 @@ export default function AiCoach() {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    void Promise.all([getCoachPersonas(), getProgress()]).then(([p, pr]) => {
-      setPersonas(p);
+    void Promise.all([getCoachMissions(), getProgress()]).then(([m, pr]) => {
+      setMissions(m);
       setProgress(pr);
     });
   }, []);
 
-  // Eksamenskunden vises KUN når teorieksamen er bestått
-  const visiblePersonas = personas.filter(
-    (p) => !p.isExam || progress?.examTheoryPassed,
+  // Eksamensoppdraget vises KUN når teorieksamen er bestått
+  const visibleMissions = missions.filter(
+    (m) => !m.isExam || progress?.examTheoryPassed,
   );
 
   useEffect(() => {
@@ -94,14 +111,16 @@ export default function AiCoach() {
   const now = () =>
     new Date().toLocaleTimeString('nb-NO', { hour: '2-digit', minute: '2-digit' });
 
-  function start(p: CoachPersona) {
-    // Eksamenskunden kjøres alltid på vanskelighetsgrad 3 (låst)
-    const d: Difficulty = p.isExam ? 3 : difficulty;
-    if (p.isExam) setDifficulty(3);
-    setPersona(p);
-    setSessionId(startCoachSession(p.id, d));
+  function start(m: CoachMission) {
+    // Eksamensoppdraget kjøres alltid på vanskelighetsgrad 3 (låst)
+    const d: Difficulty = m.isExam ? 3 : difficulty;
+    if (m.isExam) setDifficulty(3);
+    setMission(m);
+    const sid = startCoachSession(m.id, d);
+    setSessionId(sid);
     setMessages([]);
     setTimes([]);
+    setFacts(getCoachSessionFacts(sid));
     setScorecard(null);
   }
 
@@ -114,37 +133,38 @@ export default function AiCoach() {
     setBusy(true);
     try {
       const reply = await sendCoachMessage(sessionId, text, {
-        persona: persona?.id ?? '',
+        persona: mission?.id ?? '',
         difficulty,
         messages: messages.map((m) => ({ role: m.role, text: m.text })),
       });
       setMessages((m) => [...m, { role: 'customer', text: reply }]);
       setTimes((t) => [...t, now()]);
+      setFacts(getCoachSessionFacts(sessionId));
     } finally {
       setBusy(false);
     }
   }
 
   async function endSession() {
-    if (!sessionId || !persona) return;
+    if (!sessionId || !mission) return;
     setBusy(true);
     try {
       const sc = await endCoachSession(sessionId, {
-        persona: persona.id,
+        persona: mission.id,
         difficulty,
         messages: messages.map((m) => ({ role: m.role, text: m.text })),
       });
       setScorecard(sc);
       await saveCoachSession({
         id: sessionId,
-        personaId: persona.id,
-        personaName: `${persona.name} (${persona.age})`,
+        personaId: mission.id,
+        personaName: `${mission.code} · ${mission.product}`,
         difficulty,
         scorecard: sc,
         date: new Date().toISOString().slice(0, 10),
       });
-      // AI-eksamen: score ≥80 mot eksamenspersonaen = bestått steg 2
-      if (persona.isExam && sc.total >= 80) {
+      // AI-eksamen: score ≥80 på eksamensoppdraget = bestått steg 2
+      if (mission.isExam && sc.total >= 80) {
         await setExamStep('ai');
         setProgress((p) => (p ? { ...p, examAiPassed: true } : p));
       }
@@ -154,14 +174,14 @@ export default function AiCoach() {
     }
   }
 
-  const examPass = persona?.isExam && scorecard && scorecard.total >= 80;
+  const examPass = mission?.isExam && scorecard && scorecard.total >= 80;
 
   return (
     <div className="space-y-8">
       <PageHeader
         eyebrow="AI-Coach"
         title="Treningsgulvet"
-        sub={`Velg motstander og vanskelighetsgrad — og øv så mye du vil. Score ≥70 gir godkjent samtale, og du trenger 25 godkjente for jobbgarantien.${
+        sub={`Velg et oppdrag — kunden bak er skjult, og alt du trenger å vite må graves frem med gode spørsmål. Score ≥70 gir godkjent samtale, og du trenger 25 godkjente for jobbgarantien.${
           isDemoMode
             ? ' (Demo-modus: lokal simulator — i produksjon svarer Claude via Supabase.)'
             : ''
@@ -178,11 +198,14 @@ export default function AiCoach() {
       />
 
       <div className="grid gap-8 lg:grid-cols-5">
-        {/* VENSTRE: velg motstander */}
+        {/* VENSTRE: velg oppdrag */}
         <div className="lg:col-span-2">
           <h2 className="font-display text-lg uppercase tracking-tight text-bone">
-            Velg kunde
+            Velg oppdrag
           </h2>
+          <p className="label-mono mt-1 text-bone/40">
+            Du ser kun retningen — kunden er skjult
+          </p>
 
           <div className="mt-4 border border-line p-4">
             <p className="label-mono text-bone/50">Vanskelighetsgrad:</p>
@@ -211,51 +234,46 @@ export default function AiCoach() {
           </div>
 
           <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-            {visiblePersonas.map((p) => {
-              const active = persona?.id === p.id && !scorecard;
+            {visibleMissions.map((m) => {
+              const active = mission?.id === m.id && !scorecard;
               return (
                 <button
-                  key={p.id}
-                  onClick={() => start(p)}
+                  key={m.id}
+                  onClick={() => start(m)}
                   className={`group relative text-left transition-colors ${
-                    p.isExam
+                    m.isExam
                       ? 'border border-signal bg-signal/5'
                       : active
                         ? 'border border-bone/60'
                         : 'border border-line hover:border-signal'
                   }`}
                 >
-                  {p.isExam && (
+                  {m.isExam && (
                     <span className="label-mono absolute right-0 top-0 z-10 border-b border-l border-signal bg-signal px-2 py-1 text-[10px] text-ink">
                       EKSAMEN
                     </span>
                   )}
-                  <MediaPlaceholder
-                    kind="image"
-                    ratio="1/1"
-                    size="sm"
-                    label={
-                      p.isExam
-                        ? 'Persona-portrett: skjult kunde'
-                        : `Persona-portrett: ${p.name} ${p.age}`
-                    }
-                  />
+                  <MediaPlaceholder kind="image" ratio="1/1" size="sm" label="Skjult kunde" />
                   <div className="p-3.5">
-                    <p className="font-display text-sm uppercase tracking-tight text-bone">
-                      {p.name} ({p.age})
+                    <p className="label-mono text-signal">
+                      {m.isExam ? 'EKSAMEN' : `Oppdrag ${m.code}`}
                     </p>
-                    <p className="label-mono mt-1 text-signal">{p.role}</p>
-                    <p className="mt-2 text-xs leading-relaxed text-bone/60">
-                      {p.description}
+                    <p className="mt-1 font-display text-sm uppercase tracking-tight text-bone">
+                      {m.product}
                     </p>
+                    <p className="label-mono mt-2 text-bone/60">{m.leadTypeLabel}</p>
                     <div className="mt-3 flex items-center justify-between border-t border-line pt-2.5">
                       <span className="label-mono flex items-center gap-1.5 text-bone/50">
-                        <Icon name={p.channel === 'dør' ? 'door' : 'phone'} size={12} />
-                        {p.channel === 'dør' ? 'Dørsalg' : 'Telefon'}
+                        <Icon name={m.channel === 'dør' ? 'door' : 'phone'} size={12} />
+                        {m.isExam
+                          ? 'Skjult kanal'
+                          : m.channel === 'dør'
+                            ? 'Dørsalg'
+                            : 'Telefon'}
                       </span>
-                      <Flames level={p.isExam ? 3 : difficulty} />
+                      <Flames level={m.isExam ? 3 : difficulty} />
                     </div>
-                    {p.isExam && (
+                    {m.isExam && (
                       <Badge tone="red" className="mt-3">
                         EKSAMEN · nivå 3 (låst) · krav ≥80
                       </Badge>
@@ -270,16 +288,17 @@ export default function AiCoach() {
         {/* HØYRE: chatvindu / scorecard */}
         <div className="lg:col-span-3">
           {/* Aktiv samtale */}
-          {persona && sessionId && !scorecard && (
-            <div className="flex h-[36rem] flex-col border border-line">
+          {mission && sessionId && !scorecard && (
+            <div className="flex h-[38rem] flex-col border border-line">
               <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line p-4">
                 <div>
                   <p className="font-display text-sm uppercase tracking-tight text-bone">
-                    {persona.name} ({persona.age}) — {persona.role}
+                    {mission.code} — {mission.product}
                   </p>
                   <p className="label-mono mt-1 text-bone/40">
-                    Nivå {difficulty} · {difficultyLabels[difficulty]}
-                    {persona.isExam && ' (låst for eksamen) · krav ≥80'}
+                    Skjult kunde · {mission.leadTypeLabel} · Nivå {difficulty} ·{' '}
+                    {difficultyLabels[difficulty]}
+                    {mission.isExam && ' (låst for eksamen) · krav ≥80'}
                   </p>
                 </div>
                 <Button
@@ -292,12 +311,38 @@ export default function AiCoach() {
                 </Button>
               </div>
 
+              {/* AVDEKKET INFO — fylles etter hvert som studenten graver */}
+              <div className="border-b border-line bg-bone/[0.03] px-4 py-2.5">
+                <p className="label-mono text-bone/40">
+                  Avdekket info · {facts?.revealed.length ?? 0}/{facts?.total ?? 0}
+                </p>
+                {facts && facts.revealed.length > 0 ? (
+                  <ul className="mt-1.5 flex flex-wrap gap-x-5 gap-y-1">
+                    {facts.revealed.map((f) => (
+                      <li
+                        key={f.id}
+                        className="flex items-center gap-1.5 font-mono text-xs text-win"
+                      >
+                        <Icon name="check" size={11} />
+                        {f.label}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="mt-1 font-mono text-xs text-bone/30">
+                    Ingenting ennå — kunden gir ikke bort noe gratis. Still åpne spørsmål.
+                  </p>
+                )}
+              </div>
+
               <div className="flex-1 space-y-4 overflow-y-auto p-4">
                 {messages.length === 0 && (
                   <p className="label-mono py-8 text-center text-bone/40">
-                    {persona.channel === 'dør'
-                      ? 'Døra åpnes … Du starter. Hva sier du?'
-                      : 'Det ringer ut … Kunden tar telefonen. Du starter. Hva sier du?'}
+                    {mission.isExam
+                      ? 'Du vet ingenting om kunden. Du starter. Hva sier du?'
+                      : mission.channel === 'dør'
+                        ? 'Døra åpnes … Du starter. Hva sier du?'
+                        : 'Det ringer ut … Kunden tar telefonen. Du starter. Hva sier du?'}
                   </p>
                 )}
                 {messages.map((m, i) => (
@@ -310,7 +355,7 @@ export default function AiCoach() {
                         m.role === 'seller' ? 'text-right' : ''
                       }`}
                     >
-                      {m.role === 'seller' ? 'Du' : persona.name}
+                      {m.role === 'seller' ? 'Du' : 'Kunde'}
                       {times[i] ? ` · ${times[i]}` : ''}
                     </p>
                     <div
@@ -324,9 +369,7 @@ export default function AiCoach() {
                     </div>
                   </div>
                 ))}
-                {busy && (
-                  <p className="label-mono text-bone/40">{persona.name} tenker …</p>
-                )}
+                {busy && <p className="label-mono text-bone/40">Kunden tenker …</p>}
                 <div ref={bottomRef} />
               </div>
 
@@ -356,9 +399,9 @@ export default function AiCoach() {
             <div className="border border-line">
               <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line p-5">
                 <p className="label-mono text-signal">— Scorecard</p>
-                {persona && (
+                {mission && (
                   <p className="label-mono text-bone/40">
-                    {persona.name} ({persona.age}) · nivå {difficulty}
+                    {mission.code} · {mission.product} · nivå {difficulty}
                   </p>
                 )}
               </div>
@@ -370,8 +413,8 @@ export default function AiCoach() {
                     /100
                   </span>
                 </p>
-                {/* Stempel */}
-                {persona?.isExam ? (
+                {/* Utfalls-stempel */}
+                {mission?.isExam ? (
                   <span
                     className={`inline-block -rotate-3 border-2 px-4 py-2 font-mono text-sm font-semibold uppercase tracking-[0.15em] ${
                       examPass ? 'border-win text-win' : 'border-red-500 text-red-400'
@@ -381,19 +424,16 @@ export default function AiCoach() {
                   </span>
                 ) : (
                   <span
-                    className={`inline-block -rotate-3 border-2 px-4 py-2 font-mono text-sm font-semibold uppercase tracking-[0.15em] ${
-                      scorecard.approved
-                        ? 'border-win text-win'
-                        : 'border-red-500 text-red-400'
-                    }`}
+                    className={`inline-block -rotate-3 border-2 px-4 py-2 font-mono text-sm font-semibold uppercase tracking-[0.15em] ${outcomeMeta[scorecard.outcome].cls}`}
                   >
-                    {scorecard.approved ? 'Godkjent' : 'Ikke godkjent'}
+                    {outcomeMeta[scorecard.outcome].label}
                   </span>
                 )}
               </div>
 
               <p className="label-mono border-y border-line px-5 py-3 text-bone/50">
-                {persona?.isExam
+                {`Avdekket ${scorecard.factsRevealed} av ${scorecard.factsTotal} nøkkelinfo · `}
+                {mission?.isExam
                   ? examPass
                     ? 'AI-eksamen bestått — registrert automatisk på Eksamen-siden'
                     : 'Under 80 — repeter innvendingsbanken og prøv igjen'
@@ -440,8 +480,9 @@ export default function AiCoach() {
               <div className="border-t border-line p-5">
                 <Button
                   onClick={() => {
-                    setPersona(null);
+                    setMission(null);
                     setScorecard(null);
+                    setFacts(null);
                   }}
                 >
                   Ny samtale <Icon name="arrow-right" size={16} />
@@ -457,7 +498,7 @@ export default function AiCoach() {
                 <Icon name="mic" size={22} />
               </span>
               <p className="label-mono max-w-xs text-bone/60">
-                Ingen aktiv samtale — velg motstander og trykk på kortet for å starte
+                Ingen aktiv samtale — velg et oppdrag og trykk på kortet for å starte
               </p>
               <p className="label-mono text-bone/40">
                 Score ≥70 = godkjent · 25 godkjente kreves for garantien

@@ -3,7 +3,7 @@
 import { lessonContent } from './lessonContent';
 import type {
   Application,
-  CoachPersona,
+  CoachMission,
   DemoUser,
   Job,
   LeaderboardEntry,
@@ -245,67 +245,63 @@ export const quizQuestions: QuizQuestion[] = [
   q('forste-30-dager', 3, 'Hva slår motivasjon i lengden?', ['Standarder og rutiner', 'Flaks', 'Energidrikk'], 0),
 ];
 
-// ── AI-coach personas ─────────────────────────────────────────────────────
-export const coachPersonas: CoachPersona[] = [
+// ── AI-coach oppdrag ──────────────────────────────────────────────────────
+// Studenten velger et OPPDRAG (kanal + produkt + lead-type) — kunden bak er
+// SKJULT og må graves frem med gode spørsmål i selve samtalen.
+export const coachMissions: CoachMission[] = [
   {
-    id: 'kari',
-    name: 'Kari',
-    age: 54,
-    role: 'Allente-kunden',
-    description:
-      'Vurderer å si opp TV-pakken. Synes alt er blitt for dyrt, men er redd for å miste sportskanalene til mannen.',
+    id: 'o1',
+    code: 'O1',
     channel: 'telefon',
-    emoji: '📺',
+    product: 'TV & strømming (nysalg)',
+    leadType: 'kald',
+    leadTypeLabel: 'Kald liste',
+    goal: 'salg',
   },
   {
-    id: 'bjorn',
-    name: 'Bjørn',
-    age: 47,
-    role: 'Verisure-eieren',
-    description:
-      'Har alarm fra Verisure og er fornøyd nok. Åpner døra med skepsis — men lytter hvis du er ryddig.',
+    id: 'o2',
+    code: 'O2',
     channel: 'dør',
-    emoji: '🚪',
+    product: 'Boligalarm',
+    leadType: 'referanse',
+    leadTypeLabel: 'Referanse fra nabolaget',
+    goal: 'booket',
   },
   {
-    id: 'martin',
-    name: 'Martin',
-    age: 34,
-    role: 'Travel småbarnsfar',
-    description:
-      'Midt i middagen med to unger. Kort lunte på tidsbruk — men har faktisk dekningsproblemer hjemme.',
+    id: 'o3',
+    code: 'O3',
     channel: 'telefon',
-    emoji: '👶',
+    product: 'Strømavtale',
+    leadType: 'inbound',
+    leadTypeLabel: 'Innkommende interesse',
+    goal: 'salg',
   },
   {
-    id: 'solveig',
-    name: 'Solveig',
-    age: 71,
-    role: 'Skeptisk pensjonist',
-    description:
-      'Har lest om svindel og stoler ikke på selgere. Trenger trygghet, ro og tydelighet — belønner ærlighet.',
-    channel: 'telefon',
-    emoji: '🧶',
+    id: 'o4',
+    code: 'O4',
+    channel: 'dør',
+    product: 'Fiber & internett',
+    leadType: 'kald',
+    leadTypeLabel: 'Kald dør',
+    goal: 'booket',
   },
   {
-    id: 'rune',
-    name: 'Rune',
-    age: 41,
-    role: 'Pris-presseren',
-    description:
-      'Alt handler om pris. Presser deg på rabatt fra første minutt og sammenligner med konkurrenten hele veien.',
+    id: 'o5',
+    code: 'O5',
     channel: 'telefon',
-    emoji: '💸',
+    product: 'B2B møtebooking (SaaS)',
+    leadType: 'kald',
+    leadTypeLabel: 'Kald liste',
+    goal: 'booket',
   },
   {
-    id: 'eksamenskunden',
-    name: 'Eksamenskunden',
-    age: 49,
-    role: 'Eksamen',
-    description:
-      'Full pakke: skeptisk åpning, flere innvendinger og prispress. Krever score ≥80 for bestått.',
+    id: 'eksamen',
+    code: 'EKSAMEN',
     channel: 'telefon',
-    emoji: '🎓',
+    product: 'Eksamensoppdrag',
+    leadType: 'kald',
+    leadTypeLabel: 'Alt skjult · tilfeldig kanal og produkt',
+    goal: 'booket',
     isExam: true,
   },
 ];
@@ -314,13 +310,13 @@ export const coachPersonas: CoachPersona[] = [
 export const jobs: Job[] = [
   {
     id: 'job-1',
-    title: 'TM-selger — Allente-partner',
+    title: 'TM-selger — TV & strømming',
     company: 'Nordic Salgspartner AS',
     location: 'Oslo (kontor) / hybrid',
     pay: 'Fastlønn 220 000 + provisjon. Realistisk år 1: 420 000–550 000 kr',
     type: 'Fulltid',
     description:
-      'Ring varme og kalde lister for en av Nordens største TV- og bredbåndsaktører. Full opplæring, ung kultur, tydelig karrierevei mot teamleder.',
+      'Ring varme og kalde lister for en av Nordens største TV- og strømmeaktører. Full opplæring, ung kultur, tydelig karrierevei mot teamleder.',
     tags: ['Telefonsalg', 'B2C', 'Garanti-partner'],
   },
   {
@@ -386,7 +382,7 @@ export const posts: Post[] = [
     type: 'sporsmal',
     title: 'Hva svarer dere på «vi har akkurat forlenget avtalen»?',
     body:
-      'Fikk denne tre ganger i dag på Allente-lister. Prøvde «når går den ut?» men det føltes tynt. Noen som har et bedre spor?',
+      'Fikk denne tre ganger i dag på TV-leverandør-lister. Prøvde «når går den ut?» men det føltes tynt. Noen som har et bedre spor?',
     reactions: { fire: 2, clap: 0, money: 0 },
     date: '2026-07-21',
   },
@@ -396,7 +392,7 @@ export const posts: Post[] = [
     type: 'win',
     title: 'Godkjent AI-eksamen på første forsøk — 84!',
     body:
-      'Eksamenskunden er BRUTAL på innvendinger, men formelen funker: anerkjenn, utforsk, svar, fremdrift. Ikke hopp over utforsk-steget — det var der jeg feilet i øvingene. Nå gjenstår bare den ekte samtalen 😬',
+      'Eksamensoppdraget er BRUTALT: alt om kunden er skjult, og du får ingenting gratis. Formelen funker: anerkjenn, utforsk, svar, fremdrift. Ikke hopp over utforsk-steget — det var der jeg feilet i øvingene. Nå gjenstår bare den ekte samtalen 😬',
     reactions: { fire: 19, clap: 22, money: 3 },
     date: '2026-07-20',
   },
@@ -505,8 +501,8 @@ export const defaultProgress: Progress = {
   coachSessions: [
     {
       id: 'cs-demo-1',
-      personaId: 'kari',
-      personaName: 'Kari (54)',
+      personaId: 'o1',
+      personaName: 'O1 · TV & strømming',
       difficulty: 1,
       scorecard: {
         opening: 82,
@@ -516,16 +512,19 @@ export const defaultProgress: Progress = {
         total: 76,
         approved: true,
         booked: true,
+        outcome: 'salg',
+        factsRevealed: 4,
+        factsTotal: 5,
         feedback: ['God referanse-åpning.', 'Grav dypere før du pitcher.'],
         topCloserExample:
-          '«Hvis det sto på deg alene, Kari — hadde du gått for det?»',
+          '«Hvis det sto på deg alene — hadde du gått for det?»',
       },
       date: '2026-07-21',
     },
     {
       id: 'cs-demo-2',
-      personaId: 'martin',
-      personaName: 'Martin (34)',
+      personaId: 'o4',
+      personaName: 'O4 · Fiber & internett',
       difficulty: 2,
       scorecard: {
         opening: 88,
@@ -535,6 +534,9 @@ export const defaultProgress: Progress = {
         total: 81,
         approved: true,
         booked: true,
+        outcome: 'booket',
+        factsRevealed: 4,
+        factsTotal: 5,
         feedback: ['Rask og respektfull åpning — perfekt mot en travel kunde.'],
         topCloserExample:
           '«Jeg skal være kjapp: passer tirsdag 17, etter at ungene har lagt seg?»',

@@ -22,20 +22,20 @@ beforeEach(() => {
 afterEach(cleanup);
 
 describe('Eksamensflyt (K1 + V4)', () => {
-  it('Eksamenskunden vises IKKE i persona-velgeren før teorieksamen er bestått', async () => {
+  it('Eksamensoppdraget vises IKKE i oppdragsvelgeren før teorieksamen er bestått', async () => {
     renderAt('/portal/ai-coach');
     await waitFor(() => {
-      expect(screen.getByRole('heading', { name: /velg kunde/i })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: /velg oppdrag/i })).toBeInTheDocument();
     });
-    expect(screen.getByText(/kari \(54\)/i)).toBeInTheDocument();
-    expect(screen.queryByText(/eksamenskunden/i)).not.toBeInTheDocument();
+    expect(screen.getByText(/tv & strømming \(nysalg\)/i)).toBeInTheDocument();
+    expect(screen.queryByText(/eksamensoppdrag/i)).not.toBeInTheDocument();
   });
 
-  it('Eksamenskunden vises med EKSAMEN-badge når teorieksamen er bestått', async () => {
+  it('Eksamensoppdraget vises med EKSAMEN-badge når teorieksamen er bestått', async () => {
     await setExamStep('theory');
     renderAt('/portal/ai-coach');
     await waitFor(() => {
-      expect(screen.getByText(/eksamenskunden/i)).toBeInTheDocument();
+      expect(screen.getByText(/eksamensoppdrag/i)).toBeInTheDocument();
     });
     expect(screen.getByText(/EKSAMEN · nivå 3/i)).toBeInTheDocument();
   });

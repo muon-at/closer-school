@@ -92,7 +92,8 @@ Deno.serve(async (req: Request) => {
   if (mode === 'chat') {
     if (latest) history.push({ role: 'user', content: latest });
     userInstruction =
-      `AKTIV PERSONA: ${persona}. VANSKELIGHETSGRAD: ${difficulty ?? 1} (1=grei, 2=krevende, 3=brutal). ` +
+      `AKTIVT OPPDRAG: ${persona}. VANSKELIGHETSGRAD: ${difficulty ?? 1} (1=grei, 2=krevende, 3=brutal). ` +
+      'Du er den SKJULTE kunden bak oppdraget. Gi aldri bort info gratis — avslør kun ved gode, relevante spørsmål. ' +
       'Svar KUN som kunden, på norsk, maks 2-3 setninger. Bryt aldri rollen.';
   } else {
     userInstruction =
@@ -174,6 +175,26 @@ Deno.serve(async (req: Request) => {
         : [];
       scorecard.booked =
         typeof scorecard.booked === 'boolean' ? scorecard.booked : false;
+      // Utfall: valider mot enum — alt ukjent faller tilbake til 'tapt'
+      const VALID_OUTCOMES = ['booket', 'salg', 'oppfolging', 'tapt'];
+      scorecard.outcome = VALID_OUTCOMES.includes(scorecard.outcome)
+        ? scorecard.outcome
+        : 'tapt';
+      // booked skal alltid være konsistent med utfallet
+      scorecard.booked =
+        scorecard.outcome === 'booket' || scorecard.outcome === 'salg';
+      // Avdekket nøkkelinfo: modellen leverer uncoveredFacts/totalFacts (tall)
+      const revealed = Number(scorecard.uncoveredFacts);
+      const totalFacts = Number(scorecard.totalFacts);
+      scorecard.factsTotal =
+        Number.isFinite(totalFacts) && totalFacts > 0
+          ? Math.min(20, Math.round(totalFacts))
+          : 5;
+      scorecard.factsRevealed = Number.isFinite(revealed)
+        ? Math.max(0, Math.min(scorecard.factsTotal, Math.round(revealed)))
+        : 0;
+      delete scorecard.uncoveredFacts;
+      delete scorecard.totalFacts;
       scorecard.topCloserExample =
         typeof scorecard.topCloserExample === 'string'
           ? scorecard.topCloserExample
@@ -192,7 +213,7 @@ Deno.serve(async (req: Request) => {
           ),
         ),
       );
-      const threshold = persona === 'eksamenskunden' ? 80 : 70;
+      const threshold = persona === 'eksamen' || persona === 'eksamenskunden' ? 80 : 70;
       scorecard.approved = scorecard.total >= threshold;
       return json({ scorecard });
     } catch {
